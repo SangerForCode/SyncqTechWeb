@@ -1,553 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Syncq Technologies — Campus Intelligence</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #faf9f7;
-    --bg2: #f3f1ec;
-    --white: #ffffff;
-    --ink: #18160f;
-    --ink2: #4a4640;
-    --ink3: #9a9690;
-    --rule: #e6e2da;
-    --accent: #1d4ed8;
-    --accent-bg: #eff4ff;
-    --green: #16a34a;
-    --green-bg: #f0fdf4;
-    --green-border: #bbf7d0;
-    --amber: #b45309;
-    --amber-bg: #fffbeb;
-    --red: #b91c1c;
-    --red-bg: #fef2f2;
-    --r: 12px;
-    --rs: 8px;
-  }
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--ink); font-family:'Geist',sans-serif; font-weight:400; -webkit-font-smoothing:antialiased; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SyncQ Teams | Campus Intelligence</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  nav {
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    background:rgba(250,249,247,0.94); backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--rule); height:62px;
-    display:flex; align-items:center; justify-content:space-between; padding:0 52px;
-  }
-  .logo-link { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-weight:600; font-size:0.95rem; }
-  .logo-mark { width:30px; height:30px; background:var(--ink); border-radius:7px; display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Instrument Serif',serif; font-style:italic; font-size:1rem; }
-  .nav-links { display:flex; align-items:center; gap:28px; }
-  .nav-links a { color:var(--ink2); text-decoration:none; font-size:0.85rem; transition:color 0.15s; }
-  .nav-links a:hover { color:var(--ink); }
-  .btn { display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-family:'Geist',sans-serif; border:none; border-radius:var(--rs); font-weight:500; transition:opacity 0.15s; }
-  .btn-dark { background:var(--ink); color:#fff; padding:9px 20px; font-size:0.85rem; }
-  .btn-dark:hover { opacity:0.8; }
-  .btn-outline { background:var(--white); color:var(--ink); border:1px solid var(--rule); padding:11px 24px; font-size:0.875rem; }
-  .btn-outline:hover { border-color:var(--ink2); }
-  .btn-lg { padding:13px 28px; font-size:0.9rem; }
-
-  section { padding:96px 52px; position:relative; }
-  .container { max-width:1060px; margin:0 auto; }
-  .label { font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:0.12em; color:var(--ink3); display:block; margin-bottom:16px; }
-  h1 { font-family:'Instrument Serif',serif; font-size:clamp(2.8rem,5.5vw,4.8rem); line-height:1.07; letter-spacing:-1px; font-weight:400; }
-  h1 em { font-style:italic; color:var(--accent); }
-  h2 { font-family:'Instrument Serif',serif; font-size:clamp(1.9rem,3.5vw,2.9rem); line-height:1.1; letter-spacing:-0.8px; font-weight:400; margin-bottom:14px; }
-  h2 em { font-style:italic; }
-  .lead { font-size:1.05rem; color:var(--ink2); line-height:1.75; font-weight:300; max-width:540px; }
-  hr.rule { border:none; border-top:1px solid var(--rule); margin:0; }
-
-  /* HERO */
-  #hero { padding-top:148px; padding-bottom:100px; }
-  .hero-grid { display:grid; grid-template-columns:1fr 340px; gap:72px; align-items:end; }
-  .badge { display:inline-flex; align-items:center; gap:7px; background:var(--green-bg); border:1px solid var(--green-border); border-radius:50px; padding:5px 14px 5px 8px; font-size:0.75rem; color:var(--green); font-weight:500; margin-bottom:24px; }
-  .badge-dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:blink 2s ease infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .hero-ctas { display:flex; gap:10px; margin-top:36px; flex-wrap:wrap; }
-  .hero-card { border:1px solid var(--rule); border-radius:var(--r); background:var(--white); overflow:hidden; }
-  .stat-row { padding:24px 26px; border-bottom:1px solid var(--rule); }
-  .stat-row:last-child { border-bottom:none; }
-  .stat-num { font-family:'Instrument Serif',serif; font-size:2.2rem; color:var(--ink); letter-spacing:-1px; display:block; }
-  .stat-lbl { font-size:0.78rem; color:var(--ink3); display:block; margin-top:2px; }
-
-  /* PROBLEMS */
-  #problems { background:var(--bg2); }
-  .prob-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:var(--r); overflow:hidden; margin-top:52px; }
-  .prob-card { background:var(--white); padding:30px 26px; transition:background 0.18s; }
-  .prob-card:hover { background:var(--bg); }
-  .prob-icon-wrap { width:36px; height:36px; border-radius:9px; background:var(--bg2); display:flex; align-items:center; justify-content:center; color:var(--ink2); margin-bottom:18px; }
-  .prob-card h3 { font-size:0.92rem; font-weight:600; margin-bottom:9px; }
-  .prob-card p { font-size:0.82rem; color:var(--ink2); line-height:1.65; font-weight:300; }
-  .prob-tag { display:inline-block; margin-top:14px; font-size:0.67rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink3); }
-
-  /* FEATURES */
-  #features { background:var(--white); }
-  .feat-table { margin-top:56px; border:1px solid var(--rule); border-radius:var(--r); overflow:hidden; }
-  .feat-row { display:grid; grid-template-columns:44px 1fr 1fr; border-bottom:1px solid var(--rule); transition:background 0.15s; }
-  .feat-row:last-child { border-bottom:none; }
-  .feat-row:hover { background:var(--bg); }
-  .feat-n { font-size:0.7rem; color:var(--ink3); font-weight:500; padding:26px 0 26px 26px; line-height:1; }
-  .feat-main { padding:24px 20px 24px 4px; }
-  .feat-title { font-size:0.9rem; font-weight:600; display:flex; align-items:center; gap:9px; margin-bottom:7px; color:var(--ink); }
-  .feat-ico { color:var(--ink3); display:flex; flex-shrink:0; }
-  .feat-desc { font-size:0.82rem; color:var(--ink2); line-height:1.6; font-weight:300; }
-  .feat-side { padding:24px 28px 24px 20px; border-left:1px solid var(--rule); }
-
-  /* COMPARISON */
-  #comparison { background:var(--bg2); }
-  .tbl-wrap { margin-top:52px; border:1px solid var(--rule); border-radius:var(--r); overflow-x:auto; background:var(--white); }
-  table { width:100%; border-collapse:collapse; min-width:740px; }
-  thead tr { background:var(--bg); border-bottom:2px solid var(--rule); }
-  th { padding:14px 18px; text-align:center; font-size:0.75rem; font-weight:600; color:var(--ink2); white-space:nowrap; }
-  th:first-child { text-align:left; color:var(--ink3); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; }
-  th.th-s { color:var(--accent); background:var(--accent-bg); border-left:2px solid #bfdbfe; border-right:2px solid #bfdbfe; }
-  tbody tr { border-bottom:1px solid var(--rule); transition:background 0.1s; }
-  tbody tr:last-child { border-bottom:none; }
-  tbody tr:hover { background:var(--bg); }
-  td { padding:11px 18px; text-align:center; font-size:0.8rem; color:var(--ink2); vertical-align:middle; }
-  td:first-child { text-align:left; color:var(--ink); font-weight:500; font-size:0.83rem; }
-  td.td-s { background:rgba(29,78,216,0.03); border-left:2px solid #bfdbfe; border-right:2px solid #bfdbfe; font-weight:500; color:var(--ink); }
-  .pill { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:50px; font-size:0.72rem; font-weight:500; white-space:nowrap; }
-  .p-g { background:var(--green-bg); color:var(--green); }
-  .p-a { background:var(--amber-bg); color:var(--amber); }
-  .p-r { background:var(--red-bg); color:var(--red); opacity:0.75; }
-  .legend { display:flex; gap:18px; margin-top:14px; flex-wrap:wrap; }
-  .leg { display:flex; align-items:center; gap:6px; font-size:0.73rem; color:var(--ink3); }
-
-  /* ABOUT */
-  #about { background:var(--white); }
-  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
-  .about-vis { border:1px solid var(--rule); border-radius:var(--r); background:var(--bg); padding:36px; }
-  .about-wordmark { font-family:'Instrument Serif',serif; font-style:italic; font-size:2.8rem; color:var(--ink); letter-spacing:-1px; margin-bottom:6px; }
-  .about-sub { font-size:0.75rem; color:var(--ink3); margin-bottom:24px; }
-  .chips { display:flex; flex-wrap:wrap; gap:7px; }
-  .chip { background:var(--white); border:1px solid var(--rule); border-radius:50px; padding:4px 13px; font-size:0.73rem; color:var(--ink2); }
-  .bits-row { display:flex; align-items:center; gap:12px; border:1px solid var(--rule); border-radius:var(--rs); padding:16px 18px; background:var(--white); margin-top:24px; }
-  .bits-ico { color:var(--ink3); flex-shrink:0; display:flex; }
-  .bits-txt { font-size:0.82rem; color:var(--ink2); line-height:1.5; }
-  .bits-txt strong { color:var(--ink); font-weight:600; }
-  .about-copy p { color:var(--ink2); line-height:1.8; font-size:0.9rem; font-weight:300; margin-bottom:16px; }
-  .about-copy p:last-child { margin-bottom:0; }
-  .email-link { display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-size:0.83rem; text-decoration:none; font-weight:500; margin-top:8px; }
-  .email-link:hover { text-decoration:underline; }
-
-  /* WAITLIST */
-  #waitlist { background:var(--bg2); text-align:center; }
-  .wl-box { max-width:500px; margin:0 auto; background:var(--white); border:1px solid var(--rule); border-radius:var(--r); padding:44px 40px; text-align:left; }
-  .wl-box h2 { text-align:center; }
-  .wl-box .lead { text-align:center; margin:0 auto 32px; font-size:0.9rem; }
-  .field { margin-bottom:13px; }
-  .field label { display:block; font-size:0.7rem; font-weight:600; color:var(--ink3); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.07em; }
-  .field input { width:100%; border:1px solid var(--rule); border-radius:var(--rs); padding:11px 15px; font-size:0.88rem; color:var(--ink); background:var(--bg); font-family:'Geist',sans-serif; outline:none; transition:border-color 0.15s, box-shadow 0.15s; }
-  .field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(29,78,216,0.08); background:var(--white); }
-  .field input::placeholder { color:var(--ink3); }
-  .note { font-size:0.72rem; color:var(--ink3); margin-top:12px; text-align:center; }
-  .success { text-align:center; padding:24px 0; }
-  .success-title { font-family:'Instrument Serif',serif; font-size:1.6rem; margin:12px 0 8px; }
-  .success-sub { font-size:0.88rem; color:var(--ink2); font-weight:300; }
-
-  /* FOOTER */
-  footer { background:var(--ink); padding:56px 52px 36px; }
-  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:56px; max-width:1060px; margin:0 auto; }
-  .footer-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff; font-weight:600; font-size:0.9rem; margin-bottom:14px; }
-  .footer-logo .logo-mark { background:rgba(255,255,255,0.1); }
-  .footer-brand p { color:rgba(255,255,255,0.4); font-size:0.82rem; line-height:1.7; max-width:250px; font-weight:300; }
-  .femail { color:rgba(255,255,255,0.55); font-size:0.82rem; text-decoration:none; display:inline-block; margin-top:14px; transition:color 0.15s; }
-  .femail:hover { color:#fff; }
-  .fcol h4 { font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:14px; }
-  .fcol a { display:block; color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.82rem; margin-bottom:9px; font-weight:300; transition:color 0.15s; }
-  .fcol a:hover { color:#fff; }
-  .footer-bottom { max-width:1060px; margin:44px auto 0; border-top:1px solid rgba(255,255,255,0.07); padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-  .footer-bottom p { color:rgba(255,255,255,0.25); font-size:0.72rem; }
-
-  .reveal { opacity:0; transform:translateY(20px); transition:opacity 0.55s ease, transform 0.55s ease; }
-  .reveal.in { opacity:1; transform:translateY(0); }
-
-  @media(max-width:860px) {
-    nav { padding:0 20px; }
-    .nav-links { display:none; }
-    section { padding:72px 20px; }
-    #hero { padding-top:120px; padding-bottom:72px; }
-    .hero-grid, .about-grid, .footer-grid { grid-template-columns:1fr; gap:40px; }
-    .hero-card { display:flex; }
-    .stat-row { flex:1; border-bottom:none; border-right:1px solid var(--rule); }
-    .stat-row:last-child { border-right:none; }
-    .prob-grid { grid-template-columns:1fr; }
-    .feat-row { grid-template-columns:36px 1fr; }
-    .feat-side { display:none; }
-    footer { padding:48px 20px 32px; }
-    .wl-box { padding:32px 24px; }
-  }
-</style>
+  <style>
+    /* Custom Scrollbar for the comparison matrix */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
-<body>
-<div id="root"></div>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script>
-const { useState, useEffect } = React;
-const { createRoot } = ReactDOM;
+<body class="bg-[#0D1B2A] text-slate-300 font-sans selection:bg-[#2563EB]/30 overflow-x-hidden">
 
-// SVG Icon system — clean stroke icons
-const icons = {
-  calendar: 'M8 2v3M16 2v3M3 8h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
-  barChart: 'M3 3v18h18M7 16l4-4 4 4 4-4',
-  eye: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
-  clipboard: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-3 7h3m-6 4h6m-6-8h6',
-  repeat: 'M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4m14 2v2a4 4 0 0 1-4 4H3',
-  layers: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
-  user: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z',
-  cpu: 'M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18',
-  shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
-  trendingUp: 'M22 7l-8.5 8.5-5-5L2 17',
-  link: 'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71',
-  lock: 'M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4',
-  settings: 'M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
-  zap: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
-  globe: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z',
-  check: 'M20 6L9 17l-5-5',
-  minus: 'M5 12h14',
-  x: 'M18 6L6 18M6 6l12 12',
-  mail: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6',
-  graduation: 'M22 10v6M2 10l10-5 10 5-10 5-10-5zM6 12v5c3 3 9 3 12 0v-5',
-  arrow: 'M5 12h14M12 5l7 7-7 7',
-};
-const Ico = ({ name, size=16 }) => React.createElement('svg', {
-  width:size, height:size, viewBox:'0 0 24 24', fill:'none',
-  stroke:'currentColor', strokeWidth:1.75, strokeLinecap:'round', strokeLinejoin:'round',
-}, React.createElement('path', { d: icons[name] }));
+  <!-- BACKGROUND EFFECTS -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[#2563EB]/20 blur-[120px]"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-900/20 blur-[120px]"></div>
+  </div>
 
-// ── NAV ──
-function Nav() {
-  const go = (id, e) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); };
-  return React.createElement('nav', null,
-    React.createElement('a', {href:'#hero', className:'logo-link'},
-      React.createElement('div', {className:'logo-mark'}, 'Q'),
-      'Syncq Technologies'
-    ),
-    React.createElement('div', {className:'nav-links'},
-      React.createElement('a', {href:'#problems', onClick:e=>go('problems',e)}, 'Problem'),
-      React.createElement('a', {href:'#features', onClick:e=>go('features',e)}, 'Product'),
-      React.createElement('a', {href:'#comparison', onClick:e=>go('comparison',e)}, 'Compare'),
-      React.createElement('a', {href:'#about', onClick:e=>go('about',e)}, 'About'),
-      React.createElement('button', {className:'btn btn-dark', onClick:()=>document.getElementById('waitlist')?.scrollIntoView({behavior:'smooth'})}, 'Join Waitlist')
-    )
-  );
-}
+  <!-- NAVIGATION -->
+  <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-6">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <div class="w-10 h-10 flex-shrink-0 relative transition-transform group-hover:scale-105 duration-300">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <path d="M72 32 L50 20 L28 32 V48 L50 60 L62 53" stroke="white" stroke-width="10" stroke-linejoin="bevel"/>
+            <path d="M28 68 L50 80 L72 68 V52 L50 40 L38 47" stroke="white" stroke-width="10" stroke-linejoin="bevel"/>
+            <path d="M55 58 L85 85" stroke="#2563EB" stroke-width="12" stroke-linecap="square"/>
+          </svg>
+        </div>
+        <div class="h-7 mx-3 w-px bg-white/20"></div>
+        <div class="flex flex-col items-start justify-center pt-1">
+          <span class="text-[1.35rem] font-bold tracking-tight text-white leading-none mb-1">
+            Sync<span class="text-[#2563EB]">Q</span>
+          </span>
+          <span class="text-[0.45rem] border-b-[1.5px] font-medium tracking-[0.25em] text-slate-300 leading-none uppercase border-[#2563EB] pb-[3px]">
+            Technologies
+          </span>
+        </div>
+      </div>
 
-// ── HERO ──
-function Hero() {
-  const go = id => document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
-  return React.createElement('section', {id:'hero'},
-    React.createElement('div', {className:'container'},
-      React.createElement('div', {className:'hero-grid'},
-        React.createElement('div', null,
-          React.createElement('div', {className:'badge'},
-            React.createElement('span', {className:'badge-dot'}),
-            'Now enrolling — Syncq Teams v1.0'
-          ),
-          React.createElement('h1', null, 'Campus life,', React.createElement('br'), React.createElement('em', null, 'finally unified')),
-          React.createElement('p', {className:'lead', style:{marginTop:22}},
-            'Syncq Teams brings together student identity, academics, clubs, and engagement into one platform — built for institutions that care about the full student experience.'
-          ),
-          React.createElement('div', {className:'hero-ctas'},
-            React.createElement('button', {className:'btn btn-dark btn-lg', onClick:()=>go('waitlist')}, 'Join the Waitlist', React.createElement(Ico,{name:'arrow',size:14})),
-            React.createElement('button', {className:'btn btn-outline btn-lg', onClick:()=>go('comparison')}, 'See Comparison')
-          )
-        ),
-        React.createElement('div', {className:'hero-card'},
-          React.createElement('div', {className:'stat-row'},
-            React.createElement('span', {className:'stat-num'}, '17+'),
-            React.createElement('span', {className:'stat-lbl'}, 'Core capabilities')
-          ),
-          React.createElement('div', {className:'stat-row'},
-            React.createElement('span', {className:'stat-num'}, 'Zero'),
-            React.createElement('span', {className:'stat-lbl'}, 'Adoption friction')
-          ),
-          React.createElement('div', {className:'stat-row'},
-            React.createElement('span', {className:'stat-num'}, '1'),
-            React.createElement('span', {className:'stat-lbl'}, 'Unified platform')
-          )
-        )
-      )
-    )
-  );
-}
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <button onclick="document.getElementById('about').scrollIntoView()" class="text-sm font-medium hover:text-white transition-colors">About Us</button>
+        <button onclick="document.getElementById('compare').scrollIntoView()" class="text-sm font-medium hover:text-white transition-colors">Platform</button>
+        <button onclick="document.getElementById('compare').scrollIntoView()" class="text-sm font-medium hover:text-white transition-colors">Compare</button>
+        <button onclick="document.getElementById('contact').scrollIntoView()" class="text-sm font-medium hover:text-white transition-colors">Contact</button>
+        <button onclick="toggleModal('waitlist-modal', true)" class="px-5 py-2.5 text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+          Join Waitlist
+        </button>
+      </div>
 
-// ── PROBLEMS ──
-function Problems() {
-  const items = [
-    {icon:'calendar', title:'Fragmented Scheduling', desc:'Students juggle academics, clubs, and sports across multiple platforms with no unified calendar. Clashes are constant and avoidable.', tag:'Student-level'},
-    {icon:'barChart', title:'Incomplete Evaluation', desc:'Institutes measure students purely by grades. Club leadership, campus involvement, and extracurricular impact remain invisible.', tag:'Institute-level'},
-    {icon:'eye', title:'No Engagement Visibility', desc:'No centralized way to identify which students are involved and which are quietly disengaged. Institutes are flying blind.', tag:'Institute-level'},
-    {icon:'clipboard', title:'Broken Inductions', desc:'Club inductions rely on Google Forms and spreadsheets. Applicants game priority orders. Data becomes unmanageable at scale.', tag:'Club-level'},
-    {icon:'repeat', title:'Form Fatigue', desc:'Students re-enter the same personal information across ten-plus club applications every semester, with inconsistent results each time.', tag:'Student-level'},
-    {icon:'layers', title:'Event Uncertainty', desc:'Clubs cannot predict event turnout. No reliable RSVP system leads to chronic over or under-preparation and wasted resources.', tag:'Club-level'},
-  ];
-  return React.createElement('section', {id:'problems'},
-    React.createElement('div', {className:'container'},
-      React.createElement('span', {className:'label'}, 'The Problem'),
-      React.createElement('h2', null, React.createElement('em', null, 'Campus life'), ' is fundamentally fragmented'),
-      React.createElement('p', {className:'lead'}, 'Students, clubs, and institutes operate in disconnected silos. No platform understands the complete picture.'),
-      React.createElement('div', {className:'prob-grid reveal'},
-        items.map((it, i) =>
-          React.createElement('div', {className:'prob-card', key:i},
-            React.createElement('div', {className:'prob-icon-wrap'}, React.createElement(Ico, {name:it.icon, size:17})),
-            React.createElement('h3', null, it.title),
-            React.createElement('p', null, it.desc),
-            React.createElement('span', {className:'prob-tag'}, it.tag)
-          )
-        )
-      )
-    )
-  );
-}
+      <!-- Mobile Toggle -->
+      <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+        <i data-lucide="menu" id="menu-icon"></i>
+      </button>
+    </div>
 
-// ── FEATURES ──
-function Features() {
-  const rows = [
-    {icon:'user', title:'Unified Student Profile', l:'One source of truth for every student — auto-populated, consistent across all campus systems.', r:'Eliminates repeated form-filling and ensures clubs, academics, and admin always work from the same data.'},
-    {icon:'cpu', title:'Smart Identity Parsing', l:'Auto-detect and categorise student roles, interests, and commitments without manual entry.', r:'Students are understood in full context — not just as a student ID or a form submission.'},
-    {icon:'barChart', title:'Holistic Student Score (HSAS)', l:'Proprietary algorithm scoring students across academics, extracurriculars, leadership, and engagement.', r:'Gives institutes a complete, fair picture — not just a GPA.'},
-    {icon:'calendar', title:'Availability Intelligence', l:'Predictive heatmaps surface scheduling conflicts before they happen.', r:'Unified calendar across clubs, academics, sports, and administrative events.'},
-    {icon:'settings', title:'QR-Powered Club Induction', l:'Each applicant gets a unique QR code for their interview. Interviewers scan to view responses and rate instantly.', r:'Data syncs to coordinators automatically — no manual aggregation, no spreadsheets.'},
-    {icon:'trendingUp', title:'Real-Time Engagement Heatmaps', l:'Live maps showing where student time and effort actually goes across campus.', r:'Identify disengaged students early and create meaningful, timely interventions.'},
-    {icon:'shield', title:'Predictive Risk Detection', l:'Behavioural AI detects early signals of academic or social risk — before they escalate.', r:'Enables proactive institutional support rather than reactive damage control.'},
-    {icon:'zap', title:'Workload Equity Engine', l:'Algorithmic fairness balances student workloads across academics and extracurriculars automatically.', r:'No student gets overwhelmed. No club over-relies on the same handful of people.'},
-    {icon:'globe', title:'Exponential Network Effect', l:'Unlike linear alternatives, Syncq Teams becomes more valuable with every additional student and institution.', r:'The more campuses that join, the richer the intelligence becomes for everyone.'},
-  ];
-  return React.createElement('section', {id:'features'},
-    React.createElement('div', {className:'container'},
-      React.createElement('span', {className:'label'}, 'The Product'),
-      React.createElement('h2', null, 'Syncq Teams — ', React.createElement('em', null, 'one platform,'), ' every student'),
-      React.createElement('p', {className:'lead'}, 'An AI-native campus platform built for the entire student lifecycle.'),
-      React.createElement('div', {className:'feat-table reveal'},
-        rows.map((r, i) =>
-          React.createElement('div', {className:'feat-row', key:i},
-            React.createElement('span', {className:'feat-n'}, String(i+1).padStart(2,'0')),
-            React.createElement('div', {className:'feat-main'},
-              React.createElement('div', {className:'feat-title'},
-                React.createElement('span', {className:'feat-ico'}, React.createElement(Ico, {name:r.icon, size:14})),
-                r.title
-              ),
-              React.createElement('p', {className:'feat-desc'}, r.l)
-            ),
-            React.createElement('div', {className:'feat-side'},
-              React.createElement('p', {className:'feat-desc', style:{color:'var(--ink3)'}}, r.r)
-            )
-          )
-        )
-      )
-    )
-  );
-}
+    <!-- Mobile Nav -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#0D1B2A] border-b border-white/5 py-4 px-6 flex flex-col gap-4 shadow-xl">
+      <button onclick="closeMenuAndScroll('about')" class="text-left text-lg font-medium text-slate-300">About Us</button>
+      <button onclick="closeMenuAndScroll('compare')" class="text-left text-lg font-medium text-slate-300">Platform</button>
+      <button onclick="closeMenuAndScroll('compare')" class="text-left text-lg font-medium text-slate-300">Compare</button>
+      <button onclick="closeMenuAndScroll('contact')" class="text-left text-lg font-medium text-slate-300">Contact</button>
+      <button onclick="closeMenuAndOpenModal()" class="mt-2 w-full py-3 text-center font-semibold text-white bg-blue-600 rounded-lg">
+        Join Waitlist
+      </button>
+    </div>
+  </nav>
 
-// ── COMPARISON ──
-function Comparison() {
-  const G = t => React.createElement('span',{className:'pill p-g'}, React.createElement(Ico,{name:'check',size:10}), ' ', t);
-  const A = t => React.createElement('span',{className:'pill p-a'}, React.createElement(Ico,{name:'minus',size:10}), ' ', t);
-  const R = (t='None') => React.createElement('span',{className:'pill p-r'}, React.createElement(Ico,{name:'x',size:10}), ' ', t);
+  <main class="relative z-10">
+    <!-- HERO SECTION -->
+    <section class="pt-40 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
+      <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6 leading-tight max-w-4xl">
+        The Future of <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Campus Intelligence</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed">
+        Syncq Teams is the only platform unifying identity, engagement, academics, and behavior into one intelligent ecosystem. Say goodbye to fragmented scheduling and data silos.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button onclick="toggleModal('waitlist-modal', true)" class="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)]">
+          Get Early Access <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        </button>
+        <button onclick="document.getElementById('about').scrollIntoView()" class="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg font-semibold transition-all">
+          Explore Platform
+        </button>
+      </div>
+    </section>
 
-  const rows = [
-    ['Unified Data Layer',         G('Full'),          A('Event only'),  A('Corp only'),   R(),             A('Admin only')],
-    ['Smart Identity Parsing',     G('Auto-detect'),   R('Manual'),      R('Manual'),      R('Manual'),     A('Stored only')],
-    ['Evaluation Engine',          G('Cohort updates'),R(),              R(),              R(),             R()],
-    ['Availability Intelligence',  G('Predictive'),    A('RSVP only'),   R(),              R(),             R()],
-    ['Institutional Calendar',     G('Unified'),       A('Event only'),  A('Fragmented'),  R(),             A('Academic only')],
-    ['Workload Equity',            G('Algorithmic'),   R(),              A('Tasks only'),  R(),             R()],
-    ['Club Induction',             G('QR + verified'), A('Forms'),       R(),              R(),             R()],
-    ['Unified Student Profile',    G('One truth'),     A('Fragmented'),  R(),              R(),             A('Static')],
-    ['Holistic Score (HSAS)',       G('Proprietary'),  R(),              R(),              R(),             R()],
-    ['Engagement Heatmaps',        G('Real-time'),     A('Limited'),     R(),              R(),             R()],
-    ['Behavioral Data Capture',    G('Continuous'),    A('Limited'),     R(),              R(),             R()],
-    ['Predictive Risk Detection',  G('Behavioral AI'), R(),              R(),              R(),             A('Grade-based')],
-    ['Privacy Aggregation',        G('Role-based'),    A('Limited'),     A('Basic'),       R(),             G('Strong')],
-    ['Resource Optimization',      G('Predictive'),    R(),              R(),              R(),             R()],
-    ['Network Effect',             G('Exponential'),   A('Linear'),      A('Linear'),      A('Linear'),     R('Low')],
-    ['Adoption Friction',          G('Zero'),          R('High'),        R('High'),        A('Medium'),     R('Very high')],
-    ['Institutional Stickiness',   G('Very High'),     A('Medium'),      A('Medium'),      R('Low'),        G('High')],
-  ];
+    <!-- ABOUT / PROBLEM-SOLUTION SECTION -->
+    <section id="about" class="py-24 px-6 bg-white/[0.02] border-y border-white/5">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Campuses are fundamentally broken.</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto">Students and administration suffer from fragmented tools, poor visibility into engagement, and inefficient processes. We fix the core infrastructure.</p>
+        </div>
 
-  const heads = ['Capability', 'Syncq Teams', 'Anthology / CampusGroups', 'MS Teams / Viva', 'Slack / Discord', 'SAP / ERP'];
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/[0.07] transition-colors relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+            <i data-lucide="users" class="text-blue-400 mb-6 w-10 h-10"></i>
+            <h3 class="text-xl font-bold text-white mb-3">For Institutes</h3>
+            <ul class="space-y-3 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></div> Holistic Student Score (HSAS) beyond academics.</li>
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></div> Clear visibility into extracurricular engagement.</li>
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></div> Data-driven predictive risk detection.</li>
+            </ul>
+          </div>
+          <!-- Card 2 -->
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/[0.07] transition-colors relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+            <i data-lucide="target" class="text-indigo-400 mb-6 w-10 h-10"></i>
+            <h3 class="text-xl font-bold text-white mb-3">For Clubs & Depts</h3>
+            <ul class="space-y-3 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div> Frictionless QR-based induction intelligence.</li>
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div> End manual data entry and spreadsheet chaos.</li>
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div> Predictive RSVP and event planning certainty.</li>
+            </ul>
+          </div>
+          <!-- Card 3 -->
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/[0.07] transition-colors relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+            <i data-lucide="activity" class="text-cyan-400 mb-6 w-10 h-10"></i>
+            <h3 class="text-xl font-bold text-white mb-3">For Students</h3>
+            <ul class="space-y-3 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shrink-0"></div> Eliminate form fatigue with a Unified Profile.</li>
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shrink-0"></div> Unified Institutional Calendar to prevent clashes.</li>
+              <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-1.5 shrink-0"></div> Fair workload equity and scheduling visibility.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  return React.createElement('section', {id:'comparison'},
-    React.createElement('div', {className:'container'},
-      React.createElement('span', {className:'label'}, 'Competitive Landscape'),
-      React.createElement('h2', null, 'Nothing comes ', React.createElement('em', null, 'close')),
-      React.createElement('p', {className:'lead'}, '17 capabilities. Every alternative falls short on what matters.'),
-      React.createElement('div', {className:'tbl-wrap reveal'},
-        React.createElement('table', null,
-          React.createElement('thead', null,
-            React.createElement('tr', null, heads.map((h,i) => React.createElement('th', {key:i, className:i===1?'th-s':''}, h)))
-          ),
-          React.createElement('tbody', null,
-            rows.map((row, i) =>
-              React.createElement('tr', {key:i},
-                row.map((cell, j) => React.createElement('td', {key:j, className:j===1?'td-s':''}, cell))
-              )
-            )
-          )
-        )
-      ),
-      React.createElement('div', {className:'legend'},
-        React.createElement('div', {className:'leg'}, React.createElement('span',{className:'pill p-g'},React.createElement(Ico,{name:'check',size:9}),' Full'), 'Full support'),
-        React.createElement('div', {className:'leg'}, React.createElement('span',{className:'pill p-a'},React.createElement(Ico,{name:'minus',size:9}),' Partial'), 'Partial support'),
-        React.createElement('div', {className:'leg'}, React.createElement('span',{className:'pill p-r'},React.createElement(Ico,{name:'x',size:9}),' None'), 'Not available'),
-      )
-    )
-  );
-}
+    <!-- COMPARISON MATRIX SECTION -->
+    <section id="compare" class="py-24 px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Why SyncQ Teams Leads</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">See how Project X compares to fragmented, legacy systems that dominate campuses today.</p>
+      </div>
 
-// ── ABOUT ──
-function About() {
-  return React.createElement('section', {id:'about'},
-    React.createElement('div', {className:'container'},
-      React.createElement('div', {className:'about-grid'},
-        React.createElement('div', {className:'about-vis reveal'},
-          React.createElement('div', {className:'about-wordmark'}, 'Syncq'),
-          React.createElement('div', {className:'about-sub'}, 'Campus Intelligence Platform'),
-          React.createElement('div', {className:'chips'},
-            ['AI-Native','Zero Friction','Real-Time','Privacy-First','Holistic','Role-Based'].map((c,i) =>
-              React.createElement('span', {className:'chip', key:i}, c)
-            )
-          ),
-          React.createElement('div', {className:'bits-row'},
-            React.createElement('span', {className:'bits-ico'}, React.createElement(Ico,{name:'graduation',size:20})),
-            React.createElement('div', {className:'bits-txt'},
-              React.createElement('strong', null, 'A BITSian Startup'),
-              React.createElement('br'),
-              'Born at BITS Pilani — where the problems were first-hand'
-            )
-          )
-        ),
-        React.createElement('div', {className:'about-copy reveal'},
-          React.createElement('span', {className:'label'}, 'About Us'),
-          React.createElement('h2', null, 'Built by students,', React.createElement('br'), React.createElement('em', null, 'for every campus')),
-          React.createElement('p', null, 'Syncq Technologies was founded by students who lived the problem — managing clubs, academics, and campus commitments across a dozen disconnected systems at one of India\'s premier engineering institutions.'),
-          React.createElement('p', null, 'We\'re building Syncq Teams — the only platform that unifies student identity, engagement, academics, and behaviour into one intelligent layer. Not another tool. A foundation that replaces them all.'),
-          React.createElement('p', null, 'Our mission: make every campus smarter, every student more visible, and every institution more effective.'),
-          React.createElement('a', {href:'mailto:info@syncqtech.com', className:'email-link'},
-            React.createElement(Ico, {name:'mail', size:14}),
-            'info@syncqtech.com'
-          )
-        )
-      )
-    )
-  );
-}
+      <div class="overflow-x-auto rounded-xl border border-white/10 bg-[#0D1B2A] shadow-2xl custom-scrollbar">
+        <table class="w-full text-left border-collapse min-w-[1000px]">
+          <thead>
+            <tr class="bg-white/5">
+              <th class="p-5 border-b border-white/10 font-semibold text-white sticky left-0 bg-[#112032] z-10 w-1/4">CAPABILITY / FEATURE</th>
+              <th class="p-5 border-b border-white/10 border-l border-white/10 font-bold text-white bg-[#2563EB]/10 w-1/6">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                      <path d="M72 32 L50 20 L28 32 V48 L50 60 L62 53" stroke="white" stroke-width="12" stroke-linejoin="bevel"/>
+                      <path d="M28 68 L50 80 L72 68 V52 L50 40 L38 47" stroke="white" stroke-width="12" stroke-linejoin="bevel"/>
+                      <path d="M55 58 L85 85" stroke="#2563EB" stroke-width="14" stroke-linecap="square"/>
+                    </svg>
+                  </div>
+                  SyncQ Teams
+                </div>
+              </th>
+              <th class="p-5 border-b border-white/10 text-sm font-medium text-slate-300 w-1/6">Anthology / CampusGroups</th>
+              <th class="p-5 border-b border-white/10 text-sm font-medium text-slate-300 w-1/6">Microsoft Teams</th>
+              <th class="p-5 border-b border-white/10 text-sm font-medium text-slate-300 w-1/6">Slack / Discord</th>
+              <th class="p-5 border-b border-white/10 text-sm font-medium text-slate-300 w-1/6">SAP / ERP</th>
+            </tr>
+          </thead>
+          <tbody id="matrix-body" class="text-sm">
+            <!-- Rows injected via JS for cleaner HTML, but I will write them statically for a full robust download -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="mt-8 flex flex-wrap justify-center gap-8 p-6 bg-white/5 border border-white/10 rounded-xl">
+        <div class="flex items-center gap-3">
+          <i data-lucide="shield-check" class="text-blue-400"></i>
+          <div>
+            <p class="text-sm font-semibold text-white">One Intelligent Layer</p>
+            <p class="text-xs text-slate-400">Unlimited institutional impact.</p>
+          </div>
+        </div>
+        <div class="w-px h-10 bg-white/10 hidden md:block"></div>
+        <div class="flex items-center gap-3">
+          <i data-lucide="activity" class="text-indigo-400"></i>
+          <div>
+            <p class="text-sm font-semibold text-white">Stronger Outcomes</p>
+            <p class="text-xs text-slate-400">Happier students. Smarter campuses.</p>
+          </div>
+        </div>
+        <div class="w-px h-10 bg-white/10 hidden md:block"></div>
+        <div class="flex items-center gap-3">
+          <i data-lucide="layers" class="text-cyan-400"></i>
+          <div>
+            <p class="text-sm font-semibold text-white">One Platform</p>
+            <p class="text-xs text-slate-400">Every Student. Endless Impact.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-// ── WAITLIST ──
-function Waitlist() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [done, setDone] = useState(false);
+  <!-- FOOTER -->
+  <footer id="contact" class="bg-[#08111A] border-t border-white/10 pt-16 pb-8 relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-12">
+        <div class="lg:col-span-4">
+          <div class="mb-6">
+            <!-- Footer Brand Logo Large -->
+            <div class="flex items-center cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+              <div class="w-16 h-16 flex-shrink-0 relative transition-transform group-hover:scale-105 duration-300">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                  <path d="M72 32 L50 20 L28 32 V48 L50 60 L62 53" stroke="white" stroke-width="10" stroke-linejoin="bevel"/>
+                  <path d="M28 68 L50 80 L72 68 V52 L50 40 L38 47" stroke="white" stroke-width="10" stroke-linejoin="bevel"/>
+                  <path d="M55 58 L85 85" stroke="#2563EB" stroke-width="12" stroke-linecap="square"/>
+                </svg>
+              </div>
+              <div class="h-10 mx-4 w-px bg-white/20"></div>
+              <div class="flex flex-col items-start justify-center pt-1">
+                <span class="text-4xl font-bold tracking-tight text-white leading-none mb-1">
+                  Sync<span class="text-[#2563EB]">Q</span>
+                </span>
+                <span class="text-[0.65rem] border-b-2 font-medium tracking-[0.25em] text-slate-300 leading-none uppercase border-[#2563EB] pb-[3px]">
+                  Technologies
+                </span>
+              </div>
+            </div>
+          </div>
+          <p class="text-slate-400 mb-6 max-w-sm mt-4">
+            Building the definitive operating system for campus intelligence, student engagement, and holistic academic evaluation.
+          </p>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-slate-300">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-yellow-400"></i>
+            Proudly a BITSian Startup
+          </div>
+        </div>
+        
+        <div class="lg:col-span-2">
+          <h4 class="text-white font-semibold mb-4">Platform</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li><button onclick="document.getElementById('about').scrollIntoView()" class="hover:text-blue-400 transition-colors">Problem & Solution</button></li>
+            <li><button onclick="document.getElementById('compare').scrollIntoView()" class="hover:text-blue-400 transition-colors">Feature Matrix</button></li>
+            <li><button onclick="toggleModal('waitlist-modal', true)" class="hover:text-blue-400 transition-colors">Join Waitlist (Modal)</button></li>
+          </ul>
+        </div>
 
-  const submit = () => {
-    if (!name || !email || !phone) { alert('Please fill in all fields.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
-    const body = `New Waitlist Signup%0A%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0APhone: ${encodeURIComponent(phone)}`;
-    window.location.href = `mailto:info@syncqtech.com?subject=Waitlist Signup — ${encodeURIComponent(name)}&body=${body}`;
-    setDone(true);
-  };
+        <div class="lg:col-span-2">
+          <h4 class="text-white font-semibold mb-4">Contact Us</h4>
+          <ul class="space-y-4 text-sm text-slate-400">
+            <li class="flex items-start gap-3">
+              <i data-lucide="mail" class="w-4 h-4 text-blue-400 shrink-0 mt-0.5"></i>
+              <a href="mailto:info@syncqtech.com" class="hover:text-white transition-colors">
+                info@syncqtech.com
+              </a>
+            </li>
+            <li class="flex items-start gap-3">
+              <i data-lucide="map-pin" class="w-4 h-4 text-blue-400 shrink-0 mt-0.5"></i>
+              <span>BITS Pilani<br/>India</span>
+            </li>
+          </ul>
+        </div>
 
-  return React.createElement('section', {id:'waitlist'},
-    React.createElement('div', {className:'container'},
-      React.createElement('div', {className:'wl-box reveal'},
-        !done
-          ? React.createElement('div', null,
-              React.createElement('span', {className:'label', style:{display:'block',textAlign:'center'}}, 'Early Access'),
-              React.createElement('h2', null, 'Be first ', React.createElement('em', null, 'in the door')),
-              React.createElement('p', {className:'lead'}, 'Join institutions getting early access to Syncq Teams. Limited spots available.'),
-              React.createElement('div', {className:'field'},
-                React.createElement('label', null, 'Full Name'),
-                React.createElement('input', {type:'text', placeholder:'Your name', value:name, onChange:e=>setName(e.target.value)})
-              ),
-              React.createElement('div', {className:'field'},
-                React.createElement('label', null, 'Email Address'),
-                React.createElement('input', {type:'email', placeholder:'you@college.edu', value:email, onChange:e=>setEmail(e.target.value)})
-              ),
-              React.createElement('div', {className:'field'},
-                React.createElement('label', null, 'Contact Number'),
-                React.createElement('input', {type:'tel', placeholder:'+91 00000 00000', value:phone, onChange:e=>setPhone(e.target.value)})
-              ),
-              React.createElement('button', {className:'btn btn-dark', style:{width:'100%',marginTop:6,justifyContent:'center',padding:'13px'}, onClick:submit}, 'Reserve My Spot'),
-              React.createElement('p', {className:'note'}, 'Your information is private. We\'ll only contact you about Syncq Teams access.')
-            )
-          : React.createElement('div', {className:'success'},
-              React.createElement('div', {style:{color:'var(--green)',display:'flex',justifyContent:'center'}}, React.createElement(Ico,{name:'check',size:36})),
-              React.createElement('div', {className:'success-title'}, "You're on the list"),
-              React.createElement('p', {className:'success-sub'}, 'We\'ll reach out to ', React.createElement('strong', null, email), ' soon.')
-            )
-      )
-    )
-  );
-}
+        <div class="lg:col-span-4 bg-white/5 border border-white/10 rounded-2xl p-6">
+          <h4 class="text-white font-semibold mb-4">Reserve Your Spot</h4>
+          
+          <!-- INLINE FOOTER FORM -->
+          <div id="footer-form-container">
+            <form id="footer-waitlist" onsubmit="handleFormSubmit(event, 'footer-waitlist', 'footer-success')" class="flex flex-col gap-4">
+              <div>
+                <label class="block font-medium text-slate-300 text-xs mb-1">Full Name</label>
+                <input required type="text" name="name" class="w-full bg-black/30 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all px-3 py-2 text-sm" placeholder="Enter your name">
+              </div>
+              <div>
+                <label class="block font-medium text-slate-300 text-xs mb-1">Email Address</label>
+                <input required type="email" name="email" class="w-full bg-black/30 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all px-3 py-2 text-sm" placeholder="you@university.edu">
+              </div>
+              <div>
+                <label class="block font-medium text-slate-300 text-xs mb-1">Contact Number</label>
+                <input required type="tel" name="phone" class="w-full bg-black/30 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all px-3 py-2 text-sm" placeholder="+91 98765 43210">
+              </div>
+              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] flex justify-center items-center py-2.5 mt-1 text-sm">
+                <span>Secure My Spot</span>
+              </button>
+            </form>
+          </div>
+          
+          <!-- INLINE FOOTER SUCCESS -->
+          <div id="footer-success" class="hidden py-8 text-center flex-col items-center">
+            <div class="bg-green-500/20 text-green-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] w-12 h-12 mb-4">
+              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-2">You're on the list!</h4>
+            <p class="text-slate-400 text-sm mb-2">Thank you for joining. We'll be in touch soon.</p>
+          </div>
 
-// ── FOOTER ──
-function Footer() {
-  const go = (id, e) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); };
-  return React.createElement('footer', {id:'contact'},
-    React.createElement('div', {className:'footer-grid'},
-      React.createElement('div', null,
-        React.createElement('a', {href:'#', className:'footer-logo'},
-          React.createElement('div', {className:'logo-mark'}, 'Q'),
-          'Syncq Technologies'
-        ),
-        React.createElement('p', null, 'Unifying identity, engagement, academics, and behavior into one intelligent campus ecosystem.'),
-        React.createElement('a', {href:'mailto:info@syncqtech.com', className:'femail'}, 'info@syncqtech.com')
-      ),
-      React.createElement('div', {className:'fcol'},
-        React.createElement('h4', null, 'Product'),
-        React.createElement('a', {href:'#features', onClick:e=>go('features',e)}, 'Features'),
-        React.createElement('a', {href:'#comparison', onClick:e=>go('comparison',e)}, 'Comparison'),
-        React.createElement('a', {href:'#waitlist', onClick:e=>go('waitlist',e)}, 'Join Waitlist'),
-      ),
-      React.createElement('div', {className:'fcol'},
-        React.createElement('h4', null, 'Company'),
-        React.createElement('a', {href:'#about', onClick:e=>go('about',e)}, 'About'),
-        React.createElement('a', {href:'#problems', onClick:e=>go('problems',e)}, 'The Problem'),
-        React.createElement('a', {href:'mailto:info@syncqtech.com'}, 'Contact Us'),
-      )
-    ),
-    React.createElement('div', {className:'footer-bottom'},
-      React.createElement('p', null, '© 2026 Syncq Technologies. All rights reserved. Built at BITS Pilani.'),
-      React.createElement('p', null, 'A BITSian Startup')
-    )
-  );
-}
+        </div>
+      </div>
+      
+      <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>&copy; <span id="year"></span> Syncq Technologies. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-slate-300 transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-slate-300 transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-// ── APP ──
-function App() {
-  useEffect(() => {
-    const els = document.querySelectorAll('.reveal');
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.1 });
-    els.forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
+  <!-- WAITLIST MODAL -->
+  <div id="waitlist-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModal('waitlist-modal', false)"></div>
+    <div class="relative bg-[#0D1B2A] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="waitlist-content">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-white/10 flex items-center justify-between bg-white/5">
+        <h3 class="text-xl font-bold text-white">Join the Waiting List</h3>
+        <button onclick="toggleModal('waitlist-modal', false)" class="text-slate-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
 
-  return React.createElement('div', null,
-    React.createElement(Nav),
-    React.createElement(Hero),
-    React.createElement('hr', {className:'rule'}),
-    React.createElement(Problems),
-    React.createElement('hr', {className:'rule'}),
-    React.createElement(Features),
-    React.createElement('hr', {className:'rule'}),
-    React.createElement(Comparison),
-    React.createElement('hr', {className:'rule'}),
-    React.createElement(About),
-    React.createElement('hr', {className:'rule'}),
-    React.createElement(Waitlist),
-    React.createElement(Footer)
-  );
-}
+      <!-- Modal Body / Form -->
+      <div id="modal-form-container">
+        <form id="modal-waitlist" onsubmit="handleFormSubmit(event, 'modal-waitlist', 'modal-success')" class="p-6 flex flex-col gap-5">
+          <div>
+            <label class="block font-medium text-slate-300 text-sm mb-1.5">Full Name</label>
+            <input required type="text" name="name" class="w-full bg-black/30 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all px-4 py-3" placeholder="Enter your name">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-300 text-sm mb-1.5">Email Address</label>
+            <input required type="email" name="email" class="w-full bg-black/30 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all px-4 py-3" placeholder="you@university.edu">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-300 text-sm mb-1.5">Contact Number</label>
+            <input required type="tel" name="phone" class="w-full bg-black/30 border border-white/10 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all px-4 py-3" placeholder="+91 98765 43210">
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] flex justify-center items-center py-3.5 mt-2">
+            <span>Secure My Spot</span>
+          </button>
+          <p class="text-center text-xs text-slate-500 mt-2">
+            By joining, you agree to receive updates about Syncq Teams.
+          </p>
+        </form>
+      </div>
 
-createRoot(document.getElementById('root')).render(React.createElement(App));
-</script>
+      <!-- Modal Success -->
+      <div id="modal-success" class="hidden p-8 text-center flex-col items-center">
+        <div class="bg-green-500/20 text-green-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] w-16 h-16 mb-6">
+          <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+        </div>
+        <h4 class="text-2xl font-bold text-white mb-2">You're on the list!</h4>
+        <p class="text-slate-400 mb-8" id="modal-success-email">
+          Thank you for joining. We'll be in touch soon.
+        </p>
+        <button onclick="toggleModal('waitlist-modal', false)" class="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold transition-colors border border-white/10">
+          Close Window
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Initialize Icons
+    lucide.createIcons();
+    
+    // Set current year
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    // Matrix Data rendering
+    const matrixData = [
+      { feature: "Unified Campus Data Layer", syncq: { text: "Full (Academics + Clubs + Behavior)", status: "green" }, anthology: { text: "Event-focused", status: "yellow" }, teams: { text: "Corporate-only", status: "yellow" }, slack: { text: "None", status: "red" }, sap: { text: "Academic/admin only", status: "yellow" } },
+      { feature: "Smart Identity Parsing", syncq: { text: "Auto-detect", status: "green" }, anthology: { text: "Manual", status: "red" }, teams: { text: "Manual", status: "red" }, slack: { text: "Manual", status: "red" }, sap: { text: "Stored only", status: "yellow" } },
+      { feature: "Evaluation Propagation", syncq: { text: "Viral cohort updates", status: "green" }, anthology: { text: "—", status: "red" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Availability Intelligence", syncq: { text: "Predictive heatmaps", status: "green" }, anthology: { text: "RSVP only", status: "yellow" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Institutional Calendar", syncq: { text: "Unified", status: "green" }, anthology: { text: "Event-only", status: "yellow" }, teams: { text: "Fragmented", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "Academic-only", status: "yellow" } },
+      { feature: "Workload Equity Engine", syncq: { text: "Algorithmic fairness", status: "green" }, anthology: { text: "—", status: "red" }, teams: { text: "Tasks only", status: "yellow" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Club Induction Intelligence", syncq: { text: "QR + verified", status: "green" }, anthology: { text: "Forms", status: "yellow" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Unified Student Profile", syncq: { text: "One source of truth", status: "green" }, anthology: { text: "Fragmented", status: "yellow" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "Static", status: "yellow" } },
+      { feature: "Holistic Student Score (HSAS)", syncq: { text: "Proprietary", status: "green" }, anthology: { text: "—", status: "red" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Engagement Heatmaps", syncq: { text: "Real-time", status: "green" }, anthology: { text: "Limited", status: "yellow" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Behavioral Data Capture", syncq: { text: "Continuous", status: "green" }, anthology: { text: "Limited", status: "yellow" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Predictive Risk Detection", syncq: { text: "Behavioral AI", status: "green" }, anthology: { text: "—", status: "red" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "Grade-based", status: "yellow" } },
+      { feature: "Privacy-Aware Aggregation", syncq: { text: "Role-based", status: "green" }, anthology: { text: "Limited", status: "yellow" }, teams: { text: "Basic", status: "yellow" }, slack: { text: "—", status: "red" }, sap: { text: "Strong but rigid", status: "green" } },
+      { feature: "Resource Optimization", syncq: { text: "Predictive", status: "green" }, anthology: { text: "—", status: "red" }, teams: { text: "—", status: "red" }, slack: { text: "—", status: "red" }, sap: { text: "—", status: "red" } },
+      { feature: "Network Effect Strength", syncq: { text: "Exponential", status: "green" }, anthology: { text: "Linear", status: "yellow" }, teams: { text: "Linear", status: "yellow" }, slack: { text: "Linear", status: "yellow" }, sap: { text: "Low", status: "red" } },
+      { feature: "Adoption Friction", syncq: { text: "Zero (auto onboarding)", status: "green" }, anthology: { text: "High", status: "red" }, teams: { text: "High", status: "red" }, slack: { text: "Medium", status: "yellow" }, sap: { text: "Very high", status: "red" } },
+      { feature: "Institutional Stickiness", syncq: { text: "Very High", status: "green" }, anthology: { text: "Medium", status: "yellow" }, teams: { text: "Medium", status: "yellow" }, slack: { text: "Low", status: "red" }, sap: { text: "High", status: "green" } },
+    ];
+
+    const tbody = document.getElementById('matrix-body');
+    
+    function getStatusCircle(status, isSyncq = false) {
+      if (status === 'green') return `<div class="w-${isSyncq ? '2.5 h-2.5' : '2 h-2'} rounded-full shrink-0 bg-green-500 ${isSyncq ? 'shadow-[0_0_8px_rgba(34,197,94,0.6)]' : ''}"></div>`;
+      if (status === 'yellow') return `<div class="w-2 h-2 rounded-full shrink-0 bg-yellow-500"></div>`;
+      return `<div class="w-2 h-2 rounded-full shrink-0 bg-red-500"></div>`;
+    }
+
+    matrixData.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-white/[0.02] transition-colors group';
+      tr.innerHTML = `
+        <td class="p-4 border-b border-white/5 font-medium text-slate-200 sticky left-0 bg-[#0D1B2A] group-hover:bg-[#112032] transition-colors z-10">${row.feature}</td>
+        <td class="p-4 border-b border-white/5 border-l border-white/5 bg-[#2563EB]/5">
+          <div class="flex items-center gap-2">
+            ${getStatusCircle(row.syncq.status, true)}
+            <span class="text-white font-medium">${row.syncq.text}</span>
+          </div>
+        </td>
+        <td class="p-4 border-b border-white/5">
+          <div class="flex items-center gap-2">
+            ${getStatusCircle(row.anthology.status)}
+            <span class="text-slate-400">${row.anthology.text}</span>
+          </div>
+        </td>
+        <td class="p-4 border-b border-white/5">
+          <div class="flex items-center gap-2">
+            ${getStatusCircle(row.teams.status)}
+            <span class="text-slate-400">${row.teams.text}</span>
+          </div>
+        </td>
+        <td class="p-4 border-b border-white/5">
+          <div class="flex items-center gap-2">
+            ${getStatusCircle(row.slack.status)}
+            <span class="text-slate-400">${row.slack.text}</span>
+          </div>
+        </td>
+        <td class="p-4 border-b border-white/5">
+          <div class="flex items-center gap-2">
+            ${getStatusCircle(row.sap.status)}
+            <span class="text-slate-400">${row.sap.text}</span>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        nav.classList.replace('bg-transparent', 'bg-[#0D1B2A]/90');
+        nav.classList.add('backdrop-blur-md', 'border-b', 'border-white/5');
+      } else {
+        nav.classList.replace('bg-[#0D1B2A]/90', 'bg-transparent');
+        nav.classList.remove('backdrop-blur-md', 'border-b', 'border-white/5');
+      }
+    });
+
+    // Mobile Menu Toggle
+    let isMenuOpen = false;
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        menu.classList.remove('hidden');
+      } else {
+        menu.classList.add('hidden');
+      }
+    }
+
+    function closeMenuAndScroll(id) {
+      toggleMobileMenu();
+      document.getElementById(id).scrollIntoView();
+    }
+
+    function closeMenuAndOpenModal() {
+      toggleMobileMenu();
+      toggleModal('waitlist-modal', true);
+    }
+
+    // Modal Toggle
+    function toggleModal(modalId, show) {
+      const modal = document.getElementById(modalId);
+      const content = document.getElementById('waitlist-content');
+      
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        // small delay for transition
+        setTimeout(() => {
+          modal.classList.replace('opacity-0', 'opacity-100');
+          content.classList.replace('scale-95', 'scale-100');
+        }, 10);
+      } else {
+        modal.classList.replace('opacity-100', 'opacity-0');
+        content.classList.replace('scale-100', 'scale-95');
+        setTimeout(() => {
+          modal.classList.remove('flex');
+          modal.classList.add('hidden');
+        }, 300);
+      }
+    }
+
+    // Form Submission Logic
+    function handleFormSubmit(event, formId, successId) {
+      event.preventDefault();
+      
+      const form = document.getElementById(formId);
+      const btn = form.querySelector('button[type="submit"]');
+      const emailInput = form.querySelector('input[type="email"]');
+      const btnSpan = btn.querySelector('span');
+      
+      // Loading State
+      btn.disabled = true;
+      btn.classList.add('bg-blue-600/50');
+      btn.classList.remove('hover:bg-blue-500');
+      btnSpan.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+
+      // --- INTEGRATION NOTE ---
+      // To connect to an email service like Formspree, replace this setTimeout block with an API call:
+      /*
+      fetch('YOUR_FORMSPREE_ENDPOINT_URL', {
+         method: 'POST',
+         body: new FormData(form),
+         headers: { 'Accept': 'application/json' }
+      }).then(response => {
+         // Show success
+      });
+      */
+      
+      // Simulate network request
+      setTimeout(() => {
+        form.parentElement.classList.add('hidden');
+        const successDiv = document.getElementById(successId);
+        successDiv.classList.remove('hidden');
+        successDiv.classList.add('flex');
+        
+        if(successId === 'modal-success' && emailInput) {
+           document.getElementById('modal-success-email').innerHTML = `Thank you for joining. We'll be in touch soon at <strong>${emailInput.value}</strong>.`;
+        }
+      }, 1500);
+    }
+  </script>
 </body>
 </html>
