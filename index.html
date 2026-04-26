@@ -19,11 +19,16 @@
           fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
             brand: {
-              bg: '#0A0F1C',       // Deepest navy/black
-              card: '#111827',     // Slate 900
-              border: '#1F2937',   // Slate 800
-              primary: '#3B82F6',  // Blue 500
-              accent: '#0EA5E9',   // Sky 500
+              bg: '#07111F',       // Deepest navy
+              card: '#0F1E36',     // Navy panel
+              border: '#1D355E',   // Steel blue border
+              primary: '#2563EB',  // Blue 600
+              accent: '#38BDF8',   // Sky 400
+              success: '#22C55E',
+              warning: '#FBBF24',
+              danger: '#EF4444',
+              ink: '#EAF2FF',
+              surface: '#0B1728',
             }
           },
           animation: {
@@ -48,27 +53,70 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
   <style>
-    body { background-color: #0A0F1C; }
+    body { background-color: #07111F; }
     
     /* Elegant Custom Scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #0A0F1C; }
-    ::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    ::-webkit-scrollbar-track { background: #07111F; }
+    ::-webkit-scrollbar-thumb { background: #1D355E; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2563EB; }
 
     /* Grid Background Pattern */
     .bg-grid-pattern {
       background-size: 40px 40px;
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-image: linear-gradient(to right, rgba(56, 189, 248, 0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
     }
     
     /* Glassmorphism utilities */
-    .glass { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-    .glass-card { background: linear-gradient(180deg, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.8) 100%); border: 1px solid rgba(255,255,255,0.08); }
+    .glass { background: rgba(9, 18, 32, 0.74); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(29,53,94,0.6); }
+    .glass-card { background: linear-gradient(180deg, rgba(15, 30, 54, 0.55) 0%, rgba(11, 23, 40, 0.92) 100%); border: 1px solid rgba(29,53,94,0.7); }
     
     /* SyncQ Column Highlight in Matrix */
-    .matrix-syncq-col { background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, rgba(14, 165, 233, 0.02) 100%); border-left: 1px solid rgba(59, 130, 246, 0.2); border-right: 1px solid rgba(59, 130, 246, 0.2); }
+    .matrix-syncq-col { background: linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, rgba(56, 189, 248, 0.03) 100%); border-left: 1px solid rgba(37, 99, 235, 0.24); border-right: 1px solid rgba(37, 99, 235, 0.24); }
+
+    /* Analytics Visual Helpers */
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.35) rgba(15, 23, 42, 0.8);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.5);
+    }
+
+    .heatmap-cell {
+      border-radius: 6px;
+      min-height: 18px;
+      min-width: 18px;
+      transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+    }
+
+    .heatmap-cell:hover {
+      transform: scale(1.08);
+      filter: brightness(1.1);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 0 16px rgba(59,130,246,0.15);
+    }
+
+    .heatmap-level-1 { background: rgba(37, 99, 235, 0.12); }
+    .heatmap-level-2 { background: rgba(37, 99, 235, 0.24); }
+    .heatmap-level-3 { background: rgba(56, 189, 248, 0.38); }
+    .heatmap-level-4 { background: rgba(34, 197, 94, 0.5); }
+    .heatmap-level-5 { background: rgba(34, 197, 94, 0.78); }
   </style>
 </head>
 <body class="text-slate-300 font-sans antialiased overflow-x-hidden selection:bg-brand-primary/30 selection:text-white">
@@ -81,6 +129,7 @@
         <span class="text-white font-bold text-lg md:text-xl tracking-tight">SyncQ <span class="text-slate-400 font-medium">Teams</span></span>
       </div>
       
+      
       <!-- Desktop Menu -->
       <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
         <a href="#product" class="hover:text-white transition-colors">Product</a>
@@ -88,20 +137,15 @@
         <a href="#comparison" class="hover:text-white transition-colors">Comparison</a>
         <a href="#enterprise" class="hover:text-white transition-colors">Enterprise</a>
       </div>
-
-      <div class="flex items-center gap-3">
+      
+      <div class="flex items-center gap-3 ml-auto">
         <!-- Desktop / tablet: keep full button -->
-        <button onclick="document.getElementById('waitlist').scrollIntoView(); closeMobileMenu();" class="hidden md:inline-flex px-4 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium text-white bg-brand-primary hover:bg-blue-500 rounded-lg shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all transform hover:scale-[1.02]">
+        <button onclick="document.getElementById('waitlist').scrollIntoView(); closeMobileMenu();" class="hidden md:inline-flex px-4 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium text-white bg-brand-primary hover:bg-blue-500 rounded-lg shadow-[0_0_20px_rgba(37,99,235,0.35)] hover:shadow-[0_0_25px_rgba(56,189,248,0.45)] transition-all transform hover:scale-[1.02]">
           Request Early Access
         </button>
 
-        <!-- Mobile: compact icon replacing the large button -->
-        <!-- <button onclick="document.getElementById('waitlist').scrollIntoView(); closeMobileMenu();" class="md:hidden text-slate-300 hover:text-white p-2 mr-1" aria-label="Request Early Access"> -->
-          <!-- <i data-lucide="phone" class="w-5 h-5"></i> -->
-        </button>
-
         <!-- Mobile Menu Toggle -->
-        <button onclick="toggleMobileMenu()" class="md:hidden text-slate-300 hover:text-white p-1">
+        <button onclick="toggleMobileMenu()" class="md:hidden text-slate-300 hover:text-white p-1 ml-auto" aria-label="Toggle menu">
           <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
       </div>
@@ -109,7 +153,7 @@
   </nav>
 
   <!-- Mobile Dropdown Menu -->
-  <div id="mobile-menu" class="fixed inset-0 z-40 bg-[#0A0F1C]/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 hidden transition-all duration-300">
+  <div id="mobile-menu" class="fixed inset-0 z-40 bg-[#07111F]/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 hidden transition-all duration-300">
     <button onclick="toggleMobileMenu()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
       <i data-lucide="x" class="w-8 h-8"></i>
     </button>
@@ -121,22 +165,21 @@
       Request Early Access
     </button>
   </div>
-
+  
   <!-- ==================== HERO SECTION (OUTCOME DRIVEN) ==================== -->
+  <!-- <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-brand-primary/30 text-brand-accent text-[10px] md:text-xs font-semibold uppercase tracking-wider mb-6 md:mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+      <span class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-accent animate-pulse"></span>
+      Enterprise Campus OS
+    </div> -->
   <section class="relative pt-28 pb-16 md:pt-48 md:pb-32 overflow-hidden px-4 sm:px-6">
     <!-- Background Effects -->
     <div class="absolute inset-0 bg-grid-pattern opacity-50 z-0"></div>
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] md:w-[800px] h-[300px] md:h-[400px] bg-brand-primary/20 blur-[80px] md:blur-[100px] rounded-full pointer-events-none z-0"></div>
-
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] md:w-[800px] h-[300px] md:h-[400px] bg-brand-primary/25 blur-[80px] md:blur-[100px] rounded-full pointer-events-none z-0"></div>
     <div class="max-w-5xl mx-auto relative z-10 text-center flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-brand-primary/30 text-brand-accent text-[10px] md:text-xs font-semibold uppercase tracking-wider mb-6 md:mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
-        <span class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-accent animate-pulse"></span>
-        Enterprise Campus OS
-      </div>
       
       <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-5 md:mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
         Unify Campus Operations.<br/>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">Unlock Student Intelligence.</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-accent">Unlock Student Intelligence.</span>
       </h1>
       
       <p class="text-base sm:text-lg lg:text-xl text-slate-400 max-w-2xl mb-8 md:mb-10 leading-relaxed animate-fade-in-up px-2" style="animation-delay: 0.3s;">
@@ -147,7 +190,7 @@
         <button onclick="document.getElementById('dashboard-preview').scrollIntoView()" class="w-full sm:w-auto px-6 py-3.5 md:px-8 text-sm md:text-base font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg transition-all backdrop-blur-sm flex items-center justify-center gap-2 hover:scale-[1.02]">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i> View Platform
         </button>
-        <button onclick="document.getElementById('waitlist').scrollIntoView()" class="w-full sm:w-auto px-6 py-3.5 md:px-8 text-sm md:text-base font-semibold text-white bg-brand-primary hover:bg-blue-500 rounded-lg shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)] transition-all flex items-center justify-center gap-2 group hover:scale-[1.02]">
+        <button onclick="document.getElementById('waitlist').scrollIntoView()" class="w-full sm:w-auto px-6 py-3.5 md:px-8 text-sm md:text-base font-semibold text-white bg-brand-primary hover:bg-blue-500 rounded-lg shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(56,189,248,0.55)] transition-all flex items-center justify-center gap-2 group hover:scale-[1.02]">
           Request Early Access <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
         </button>
       </div>
@@ -155,9 +198,9 @@
 
     <!-- DASHBOARD MOCKUP (Massive Trust Signal) -->
     <div id="dashboard-preview" class="max-w-6xl mx-auto mt-16 md:mt-20 relative z-10 animate-fade-in-up scroll-mt-24" style="animation-delay: 0.5s;">
-      <div class="rounded-xl border border-white/10 bg-[#0A0F1C] shadow-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col font-sans">
+          <div class="rounded-xl border border-white/10 bg-[#07111F] shadow-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col font-sans">
         <!-- Mac-style window header -->
-        <div class="h-8 md:h-10 bg-[#111827] border-b border-white/5 flex items-center px-4 gap-2 shrink-0">
+        <div class="h-8 md:h-10 bg-[#10203A] border-b border-white/5 flex items-center px-4 gap-2 shrink-0">
           <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-rose-500"></div>
           <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-amber-500"></div>
           <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-emerald-500"></div>
@@ -168,7 +211,7 @@
         <div class="flex flex-col md:flex-row h-auto md:h-[550px] text-left">
           
           <!-- Sidebar -->
-          <div class="w-64 bg-[#0F172A] border-r border-white/5 p-4 flex flex-col gap-2 hidden md:flex shrink-0 overflow-y-auto custom-scrollbar">
+          <div class="w-64 bg-[#0B1728] border-r border-white/5 p-4 flex flex-col gap-2 hidden md:flex shrink-0 overflow-y-auto custom-scrollbar">
             <div class="flex items-center gap-2 px-3 py-3 mb-4 cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
               <div class="w-6 h-6 rounded bg-brand-primary flex items-center justify-center">
                 <i data-lucide="network" class="text-white w-4 h-4"></i>
@@ -177,29 +220,26 @@
               <i data-lucide="chevrons-up-down" class="w-3 h-3 text-slate-500 ml-auto"></i>
             </div>
             
-            <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-brand-primary/10 text-brand-primary font-medium text-sm border border-brand-primary/20">
+            <button id="sidebar-overview" type="button" onclick="switchDashboardTab('student')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 font-medium text-sm transition cursor-pointer">
               <div class="flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview</div>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 font-medium text-sm transition">
-              <div class="flex items-center gap-3"><i data-lucide="users" class="w-4 h-4"></i> Student Graph</div>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 font-medium text-sm transition">
+            </button>
+            <a href="#" id="sidebar-clubs" onclick="switchDashboardTab('clubs'); return false;" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 font-medium text-sm transition">
               <div class="flex items-center gap-3"><i data-lucide="tent" class="w-4 h-4"></i> Clubs & Orgs</div>
             </a>
-            <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 font-medium text-sm transition">
+            <a href="#" id="sidebar-ai" onclick="switchDashboardTab('ai'); return false;" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 font-medium text-sm transition">
               <div class="flex items-center gap-3"><i data-lucide="zap" class="w-4 h-4"></i> AI Insights</div>
               <span class="bg-brand-accent/20 text-brand-accent text-[10px] font-bold px-1.5 py-0.5 rounded">3</span>
             </a>
           </div>
 
           <!-- Main Content -->
-          <div class="flex-1 bg-[#0A0F1C] p-4 md:p-6 overflow-hidden flex flex-col gap-5 md:gap-6">
+          <div class="flex-1 bg-[#07111F] p-4 md:p-6 overflow-hidden flex flex-col gap-5 md:gap-6">
             
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end shrink-0 gap-3">
               <div>
-                <h3 class="text-lg md:text-xl font-semibold text-white">Campus Intelligence</h3>
-                <p class="text-[10px] md:text-xs text-slate-500 mt-1">Real-time macro engagement telemetry</p>
+                <h3 id="dashboard-title" class="text-lg md:text-xl font-semibold text-white">Student Graph</h3>
+                <p id="dashboard-subtitle" class="text-[10px] md:text-xs text-slate-500 mt-1">Network-level engagement trends and student risk telemetry</p>
               </div>
               <div class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-[10px] md:text-xs text-slate-300 flex items-center gap-2 w-fit cursor-pointer hover:bg-white/10 transition-colors">
                 <i data-lucide="calendar" class="w-3 h-3 text-slate-400"></i> <span>Last 30 Days</span> <i data-lucide="chevron-down" class="w-3 h-3"></i>
@@ -209,7 +249,7 @@
             <!-- Top Level KPI Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 shrink-0">
               <!-- Metric 1 -->
-              <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden group cursor-pointer hover:border-emerald-500/30 transition-colors">
+              <div class="bg-[#10203A] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden group cursor-pointer hover:border-emerald-500/30 transition-colors">
                 <div class="absolute -top-4 -right-4 w-16 h-16 md:w-20 md:h-20 bg-emerald-500/10 blur-xl rounded-full group-hover:bg-emerald-500/20 transition-all"></div>
                 <div class="text-slate-400 text-[10px] md:text-xs font-medium mb-1.5 flex items-center gap-1.5"><i data-lucide="activity" class="w-3 md:w-3.5 h-3 md:h-3.5 text-emerald-400"></i> Avg Engagement Score</div>
                 <div class="text-xl md:text-2xl font-bold text-white flex items-end gap-2">
@@ -217,7 +257,7 @@
                 </div>
               </div>
               <!-- Metric 2 -->
-              <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden group cursor-pointer hover:border-brand-primary/30 transition-colors">
+              <div class="bg-[#10203A] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden group cursor-pointer hover:border-brand-primary/30 transition-colors">
                 <div class="absolute -top-4 -right-4 w-16 h-16 md:w-20 md:h-20 bg-brand-primary/10 blur-xl rounded-full group-hover:bg-brand-primary/20 transition-all"></div>
                 <div class="text-slate-400 text-[10px] md:text-xs font-medium mb-1.5 flex items-center gap-1.5"><i data-lucide="users" class="w-3 md:w-3.5 h-3 md:h-3.5 text-brand-primary"></i> Active Students</div>
                 <div class="text-xl md:text-2xl font-bold text-white flex items-end gap-2">
@@ -225,7 +265,7 @@
                 </div>
               </div>
               <!-- Metric 3 -->
-              <div class="bg-[#111827] rounded-xl border border-rose-500/10 p-3 md:p-4 relative overflow-hidden group cursor-pointer hover:border-rose-500/30 transition-colors">
+              <div class="bg-[#10203A] rounded-xl border border-rose-500/10 p-3 md:p-4 relative overflow-hidden group cursor-pointer hover:border-rose-500/30 transition-colors">
                 <div class="absolute -top-4 -right-4 w-16 h-16 md:w-20 md:h-20 bg-rose-500/10 blur-xl rounded-full group-hover:bg-rose-500/20 transition-all"></div>
                 <div class="text-slate-400 text-[10px] md:text-xs font-medium mb-1.5 flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-3 md:w-3.5 h-3 md:h-3.5 text-rose-400"></i> At-Risk Students</div>
                 <div class="text-xl md:text-2xl font-bold text-white flex items-end gap-2">
@@ -238,7 +278,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6 flex-1 min-h-0 pb-2 md:pb-0">
               
               <!-- Left: Student Deep Dive Profile -->
-              <div class="col-span-1 bg-gradient-to-b from-[#111827] to-[#0F172A] rounded-xl border border-white/5 flex flex-col overflow-hidden shadow-inner h-fit lg:h-full">
+              <div class="col-span-1 bg-gradient-to-b from-[#10203A] to-[#0B1728] rounded-xl border border-white/5 flex flex-col overflow-hidden shadow-inner h-fit lg:h-full">
                 <div class="px-3 py-2 md:px-4 md:py-3 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
                   <!-- Interactive Dropdown Trigger -->
                   <div class="flex items-center gap-1.5 cursor-pointer group">
@@ -252,7 +292,7 @@
                   <!-- Header info -->
                   <div class="flex items-center gap-3 mb-4 md:mb-5">
                     <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-brand-primary p-[2px] shrink-0">
-                      <div class="w-full h-full bg-[#111827] rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm tracking-tight border border-[#0F172A]">AS</div>
+                      <div class="w-full h-full bg-[#10203A] rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm tracking-tight border border-[#0B1728]">AS</div>
                     </div>
                     <div class="min-w-0">
                       <div class="text-xs md:text-sm font-bold text-white leading-tight truncate">Ayush</div>
@@ -312,14 +352,15 @@
                 
                 <!-- Tab Headers -->
                 <div class="flex gap-4 md:gap-6 border-b border-white/10 shrink-0 px-1 md:px-2 overflow-x-auto custom-scrollbar">
-                  <button id="tab-overview" class="pb-2 text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-brand-primary border-b-2 border-brand-primary transition-colors focus:outline-none whitespace-nowrap" onclick="switchDashboardTab('overview')">Live Insights</button>
-                  <button id="tab-analytics" class="pb-2 text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b-2 border-transparent hover:text-slate-300 transition-colors focus:outline-none whitespace-nowrap" onclick="switchDashboardTab('analytics')">Macro Analytics</button>
+                  <button id="tab-student" class="pb-2 text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-brand-primary border-b-2 border-brand-primary transition-colors focus:outline-none whitespace-nowrap" onclick="switchDashboardTab('student')">Student Graph</button>
+                  <button id="tab-clubs" class="pb-2 text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b-2 border-transparent hover:text-slate-300 transition-colors focus:outline-none whitespace-nowrap" onclick="switchDashboardTab('clubs')">Clubs & Organisation</button>
+                  <button id="tab-ai" class="pb-2 text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b-2 border-transparent hover:text-slate-300 transition-colors focus:outline-none whitespace-nowrap" onclick="switchDashboardTab('ai')">Live AI Insights</button>
                 </div>
 
-                <!-- Tab 1: Live Insights & Feed -->
-                <div id="content-overview" class="flex flex-col gap-4 flex-1 min-h-[300px] lg:min-h-0 fade-in">
+                <!-- Tab: Live AI Insights -->
+                <div id="content-ai" class="hidden flex-col gap-4 flex-1 min-h-[300px] lg:min-h-0 fade-in">
                   <!-- AI Engine Insight Card -->
-                  <div class="bg-[#111827] rounded-xl border border-brand-accent/30 p-3 md:p-4 relative overflow-hidden shadow-[0_0_30px_rgba(14,165,233,0.05)] hover:border-brand-accent/50 transition-colors cursor-pointer shrink-0">
+                  <div class="bg-[#10203A] rounded-xl border border-brand-accent/30 p-3 md:p-4 relative overflow-hidden shadow-[0_0_30px_rgba(56,189,248,0.08)] hover:border-brand-accent/50 transition-colors cursor-pointer shrink-0">
                     <div class="absolute -right-10 -top-10 w-32 h-32 bg-brand-accent/10 blur-3xl rounded-full"></div>
                     
                     <div class="flex items-center justify-between mb-3 relative z-10">
@@ -331,14 +372,14 @@
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 relative z-10">
-                      <div class="bg-[#0A0F1C] border border-white/5 rounded-lg p-2.5 md:p-3 flex items-start gap-2 md:gap-2.5 hover:bg-[#0F172A] transition-colors">
+                      <div class="bg-[#07111F] border border-white/5 rounded-lg p-2.5 md:p-3 flex items-start gap-2 md:gap-2.5 hover:bg-[#0B1728] transition-colors">
                         <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0 shadow-[0_0_8px_rgba(244,63,94,0.6)]"></div>
                         <div>
                           <div class="text-[11px] md:text-xs font-bold text-slate-300">Retention Risk Detected</div>
                           <div class="text-[10px] md:text-[11px] text-slate-500 mt-0.5 md:mt-1 leading-snug"><span class="text-rose-400 font-medium">23 students</span> showing declining extracurricular engagement.</div>
                         </div>
                       </div>
-                      <div class="bg-[#0A0F1C] border border-white/5 rounded-lg p-2.5 md:p-3 flex items-start gap-2 md:gap-2.5 hover:bg-[#0F172A] transition-colors">
+                      <div class="bg-[#07111F] border border-white/5 rounded-lg p-2.5 md:p-3 flex items-start gap-2 md:gap-2.5 hover:bg-[#0B1728] transition-colors">
                         <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></div>
                         <div>
                           <div class="text-[11px] md:text-xs font-bold text-slate-300">Trend Alert: Tech Clubs</div>
@@ -349,7 +390,7 @@
                   </div>
 
                   <!-- Live Campus Firehose -->
-                  <div class="bg-gradient-to-b from-[#111827] to-[#0F172A] rounded-xl border border-white/5 flex-1 flex flex-col overflow-hidden relative min-h-[200px]">
+                  <div class="bg-gradient-to-b from-[#10203A] to-[#0B1728] rounded-xl border border-white/5 flex-1 flex flex-col overflow-hidden relative min-h-[200px]">
                     <div class="px-3 py-2 md:px-4 md:py-2.5 border-b border-white/5 flex items-center justify-between bg-white/[0.02] shrink-0">
                       <span class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                         <i data-lucide="radio" class="w-3 h-3 text-brand-primary"></i> Live Activity Feed
@@ -384,16 +425,212 @@
                   </div>
                 </div>
 
-                <!-- Tab 2: Macro Analytics Graphs -->
-                <div id="content-analytics" class="hidden flex-col gap-4 flex-1 min-h-[300px] lg:min-h-0 fade-in">
+                <!-- Tab: Clubs & Organisation -->
+                <div id="content-clubs" class="hidden flex-col gap-4 flex-1 min-h-[300px] lg:min-h-0 fade-in overflow-y-auto custom-scrollbar pr-1">
+                  <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-4 shrink-0">
+                    <div class="xl:col-span-2 bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 flex flex-col hover:border-white/10 transition-colors">
+                      <div class="flex items-center justify-between gap-2 mb-2 md:mb-3">
+                        <div>
+                          <div class="text-[11px] md:text-xs font-bold text-slate-300">Top Active Organisations</div>
+                          <div class="text-[9px] md:text-[10px] text-slate-500 mt-1">Live participation volume by society and club team.</div>
+                        </div>
+                        <i data-lucide="bar-chart-3" class="w-4 h-4 text-brand-primary"></i>
+                      </div>
+                      <div class="space-y-2 md:space-y-2.5">
+                        <div class="flex items-center gap-2 text-[9px] md:text-[10px] cursor-pointer group">
+                          <span class="w-12 text-slate-400 group-hover:text-white transition-colors truncate">Coding</span>
+                          <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden flex">
+                            <div class="bg-brand-primary w-[85%] rounded-full group-hover:bg-brand-accent transition-colors"></div>
+                          </div>
+                          <span class="w-7 text-right text-slate-300 font-medium">840</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-[9px] md:text-[10px] cursor-pointer group">
+                          <span class="w-12 text-slate-400 group-hover:text-white transition-colors truncate">FITSOC</span>
+                          <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden flex">
+                            <div class="bg-brand-primary w-[65%] rounded-full group-hover:bg-brand-accent transition-colors"></div>
+                          </div>
+                          <span class="w-7 text-right text-slate-300 font-medium">620</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-[9px] md:text-[10px] cursor-pointer group">
+                          <span class="w-12 text-slate-400 group-hover:text-white transition-colors truncate">Finance</span>
+                          <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden flex">
+                            <div class="bg-brand-primary w-[45%] rounded-full group-hover:bg-brand-accent transition-colors"></div>
+                          </div>
+                          <span class="w-7 text-right text-slate-300 font-medium">450</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-[9px] md:text-[10px] cursor-pointer group">
+                          <span class="w-12 text-slate-400 group-hover:text-white transition-colors truncate">Robotics</span>
+                          <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden flex">
+                            <div class="bg-brand-primary w-[39%] rounded-full group-hover:bg-brand-accent transition-colors"></div>
+                          </div>
+                          <span class="w-7 text-right text-slate-300 font-medium">390</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 hover:border-white/10 transition-colors">
+                      <div class="flex items-center justify-between mb-3">
+                        <div class="text-[11px] md:text-xs font-bold text-slate-300">Org Operations Pulse</div>
+                        <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                      </div>
+                      <div class="space-y-3">
+                        <div>
+                          <div class="flex justify-between text-[9px] md:text-[10px] mb-1"><span class="text-slate-500">Event approvals</span><span class="text-slate-200 font-medium">91%</span></div>
+                          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[91%] bg-emerald-500 rounded-full"></div></div>
+                        </div>
+                        <div>
+                          <div class="flex justify-between text-[9px] md:text-[10px] mb-1"><span class="text-slate-500">Venue utilization</span><span class="text-slate-200 font-medium">74%</span></div>
+                          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[74%] bg-brand-primary rounded-full"></div></div>
+                        </div>
+                        <div>
+                          <div class="flex justify-between text-[9px] md:text-[10px] mb-1"><span class="text-slate-500">Pending reimbursements</span><span class="text-slate-200 font-medium">13%</span></div>
+                          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[13%] bg-rose-500 rounded-full"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden hover:border-brand-accent/30 transition-colors shrink-0">
+                    <div class="flex items-center justify-between gap-3 mb-3 md:mb-4">
+                      <div>
+                        <div class="text-[11px] md:text-xs font-bold text-slate-300">Club Registration Momentum</div>
+                        <div class="text-[9px] md:text-[10px] text-slate-500 mt-1">Weekly growth and conversion for clubs & organisations.</div>
+                      </div>
+                      <div class="text-[9px] md:text-[10px] text-brand-accent font-medium flex items-center gap-1 whitespace-nowrap"><i data-lucide="arrow-up-right" class="w-3 h-3"></i> +19% QoQ</div>
+                    </div>
+                    <div class="relative h-24 md:h-28 w-full overflow-hidden">
+                      <svg class="w-full h-full" viewBox="0 0 100 34" preserveAspectRatio="none">
+                        <line x1="0" y1="8" x2="100" y2="8" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                        <line x1="0" y1="17" x2="100" y2="17" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                        <line x1="0" y1="26" x2="100" y2="26" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                        <polyline points="0,28 14,26 28,24 42,22 56,20 70,16 84,13 100,10" fill="none" stroke="#0EA5E9" stroke-width="1.5" vector-effect="non-scaling-stroke" class="drop-shadow-[0_0_5px_rgba(14,165,233,0.5)]" />
+                        <polyline points="0,31 14,30 28,29 42,26 56,25 70,22 84,18 100,14" fill="none" stroke="#10B981" stroke-width="1.25" vector-effect="non-scaling-stroke" stroke-dasharray="2 2" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab: Student Graph -->
+                <div id="content-student" class="flex flex-col gap-4 flex-1 min-h-[300px] lg:min-h-0 fade-in overflow-y-auto custom-scrollbar pr-1">
                   
+                  <!-- Heatmap + Distribution Row -->
+                  <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-4 shrink-0">
+                    <div class="xl:col-span-2 bg-gradient-to-b from-[#111827] to-[#0F172A] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden hover:border-brand-primary/30 transition-colors">
+                      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3 md:mb-4 relative z-10">
+                        <div>
+                          <div class="text-[11px] md:text-xs font-bold text-slate-300">Campus Engagement Heatmap</div>
+                          <div class="text-[9px] md:text-[10px] text-slate-500 mt-1">Blue to green intensity shows where activity concentrates across the week.</div>
+                        </div>
+                        <div class="flex items-center gap-2 text-[9px] md:text-[10px] text-emerald-400 font-medium whitespace-nowrap">
+                          <i data-lucide="activity" class="w-3 h-3"></i> Peak: Wed 6 PM
+                        </div>
+                      </div>
+
+                      <div class="relative z-10 grid grid-cols-7 gap-1.5 md:gap-2">
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Mon</div>
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Tue</div>
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Wed</div>
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Thu</div>
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Fri</div>
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Sat</div>
+                        <div class="text-[8px] md:text-[9px] text-slate-600 uppercase tracking-[0.2em]">Sun</div>
+
+                        <div class="heatmap-cell heatmap-level-1" title="08:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="08:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="08:00"></div>
+                        <div class="heatmap-cell heatmap-level-1" title="08:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="08:00"></div>
+                        <div class="heatmap-cell heatmap-level-1" title="08:00"></div>
+                        <div class="heatmap-cell heatmap-level-1" title="08:00"></div>
+
+                        <div class="heatmap-cell heatmap-level-2" title="12:00"></div>
+                        <div class="heatmap-cell heatmap-level-3" title="12:00"></div>
+                        <div class="heatmap-cell heatmap-level-4" title="12:00"></div>
+                        <div class="heatmap-cell heatmap-level-3" title="12:00"></div>
+                        <div class="heatmap-cell heatmap-level-3" title="12:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="12:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="12:00"></div>
+
+                        <div class="heatmap-cell heatmap-level-2" title="16:00"></div>
+                        <div class="heatmap-cell heatmap-level-4" title="16:00"></div>
+                        <div class="heatmap-cell heatmap-level-5" title="16:00"></div>
+                        <div class="heatmap-cell heatmap-level-4" title="16:00"></div>
+                        <div class="heatmap-cell heatmap-level-4" title="16:00"></div>
+                        <div class="heatmap-cell heatmap-level-3" title="16:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="16:00"></div>
+
+                        <div class="heatmap-cell heatmap-level-1" title="20:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="20:00"></div>
+                        <div class="heatmap-cell heatmap-level-4" title="20:00"></div>
+                        <div class="heatmap-cell heatmap-level-3" title="20:00"></div>
+                        <div class="heatmap-cell heatmap-level-3" title="20:00"></div>
+                        <div class="heatmap-cell heatmap-level-2" title="20:00"></div>
+                        <div class="heatmap-cell heatmap-level-1" title="20:00"></div>
+                      </div>
+
+                      <div class="relative z-10 mt-3 md:mt-4 flex flex-wrap items-center justify-between gap-2 text-[8px] md:text-[9px] text-slate-500">
+                        <div class="flex items-center gap-1.5 md:gap-2">
+                          <span>Low</span>
+                          <div class="flex items-center gap-1">
+                            <div class="w-3 h-3 rounded-sm bg-brand-primary/10 border border-white/5"></div>
+                            <div class="w-3 h-3 rounded-sm bg-brand-primary/20 border border-white/5"></div>
+                            <div class="w-3 h-3 rounded-sm bg-brand-primary/35 border border-white/5"></div>
+                            <div class="w-3 h-3 rounded-sm bg-brand-accent/50 border border-white/5"></div>
+                            <div class="w-3 h-3 rounded-sm bg-emerald-500/75 border border-white/5"></div>
+                          </div>
+                          <span>High</span>
+                        </div>
+                        <div class="text-slate-400">Evening spikes track event scheduling and student check-ins.</div>
+                      </div>
+                    </div>
+
+                    <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 flex flex-col gap-4 hover:border-brand-accent/30 transition-colors">
+                      <div>
+                        <div class="flex items-center justify-between gap-2 mb-2 md:mb-3">
+                          <div>
+                            <div class="text-[11px] md:text-xs font-bold text-slate-300">Audience Split</div>
+                            <div class="text-[9px] md:text-[10px] text-slate-500 mt-1">Live mix of user attention across the platform.</div>
+                          </div>
+                          <i data-lucide="pie-chart" class="w-4 h-4 text-brand-accent"></i>
+                        </div>
+
+                        <div class="flex justify-center">
+                          <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-full bg-[conic-gradient(#3B82F6_0%_52%,#0EA5E9_52%_76%,#10B981_76%_100%)] shadow-[0_0_30px_rgba(59,130,246,0.12)]">
+                            <div class="absolute inset-5 md:inset-6 rounded-full bg-[#0A0F1C] border border-white/5 flex flex-col items-center justify-center text-center">
+                              <div class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-[0.18em]">Active</div>
+                              <div class="text-lg md:text-xl font-bold text-white leading-none mt-1">78%</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="space-y-2 text-[9px] md:text-[10px]">
+                        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-2.5">
+                          <div class="flex items-center justify-between text-slate-300 mb-1.5"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-primary"></span> Students</span><span class="font-semibold">52%</span></div>
+                          <div class="h-1.5 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[52%] bg-brand-primary rounded-full"></div></div>
+                        </div>
+                        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-2.5">
+                          <div class="flex items-center justify-between text-slate-300 mb-1.5"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-accent"></span> Clubs</span><span class="font-semibold">24%</span></div>
+                          <div class="h-1.5 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[24%] bg-brand-accent rounded-full"></div></div>
+                        </div>
+                        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-2.5">
+                          <div class="flex items-center justify-between text-slate-300 mb-1.5"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Admin Actions</span><span class="font-semibold">24%</span></div>
+                          <div class="h-1.5 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[24%] bg-emerald-500 rounded-full"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Line Graph: Engagement Trend -->
                   <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 relative group cursor-crosshair hover:border-brand-primary/30 transition-colors shrink-0">
                      <div class="flex justify-between items-center mb-2 md:mb-3">
-                        <div class="text-[11px] md:text-xs font-bold text-slate-300">7-Day Campus Engagement Trend</div>
+                        <div>
+                          <div class="text-[11px] md:text-xs font-bold text-slate-300">7-Day Campus Engagement Trend</div>
+                          <div class="text-[9px] md:text-[10px] text-slate-500 mt-1">Daily interaction volume with event-driven spikes.</div>
+                        </div>
                         <div class="text-[9px] md:text-[10px] text-emerald-400 font-medium flex items-center gap-1"><i data-lucide="trending-up" class="w-2.5 h-2.5 md:w-3 md:h-3"></i> +14% Avg</div>
                      </div>
-                     <div class="relative h-16 md:h-20 w-full overflow-hidden">
+                     <div class="relative h-20 md:h-24 w-full overflow-hidden">
                        <svg class="w-full h-full" viewBox="0 0 100 30" preserveAspectRatio="none">
                           <line x1="0" y1="10" x2="100" y2="10" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
                           <line x1="0" y1="20" x2="100" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
@@ -406,15 +643,60 @@
                              </linearGradient>
                           </defs>
                        </svg>
-                       <!-- Interactive Tooltip Overlay -->
                        <div class="absolute inset-0 hidden group-hover:flex items-center justify-center bg-[#0A0F1C]/70 backdrop-blur-[2px] rounded transition-all">
                            <span class="text-[9px] md:text-[10px] font-bold text-brand-primary px-2 py-1 bg-brand-primary/10 rounded border border-brand-primary/30 shadow-lg">Peak Event: Friday Hackathon</span>
                        </div>
                      </div>
                   </div>
 
+                  <!-- Secondary Trend Row -->
+                  <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-4 shrink-0">
+                    <div class="xl:col-span-2 bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 relative overflow-hidden hover:border-brand-accent/30 transition-colors">
+                      <div class="flex items-center justify-between gap-3 mb-3 md:mb-4">
+                        <div>
+                          <div class="text-[11px] md:text-xs font-bold text-slate-300">Admissions Momentum</div>
+                          <div class="text-[9px] md:text-[10px] text-slate-500 mt-1">A secondary line view for applicant inflow versus conversion.</div>
+                        </div>
+                        <div class="text-[9px] md:text-[10px] text-brand-accent font-medium flex items-center gap-1 whitespace-nowrap"><i data-lucide="arrow-up-right" class="w-3 h-3"></i> +22% QoQ</div>
+                      </div>
+                      <div class="relative h-24 md:h-28 w-full overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 100 34" preserveAspectRatio="none">
+                          <line x1="0" y1="8" x2="100" y2="8" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                          <line x1="0" y1="17" x2="100" y2="17" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                          <line x1="0" y1="26" x2="100" y2="26" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                          <polyline points="0,27 14,25 28,24 42,20 56,22 70,16 84,13 100,9" fill="none" stroke="#0EA5E9" stroke-width="1.5" vector-effect="non-scaling-stroke" class="drop-shadow-[0_0_5px_rgba(14,165,233,0.5)]" />
+                          <polyline points="0,30 14,29 28,27 42,25 56,24 70,19 84,16 100,12" fill="none" stroke="#10B981" stroke-width="1.25" vector-effect="non-scaling-stroke" stroke-dasharray="2 2" />
+                        </svg>
+                        <div class="absolute inset-0 hidden group-hover:flex items-center justify-center bg-[#0A0F1C]/60 backdrop-blur-[1px] rounded transition-all">
+                          <span class="text-[9px] md:text-[10px] font-bold text-brand-accent px-2 py-1 bg-brand-accent/10 rounded border border-brand-accent/30 shadow-lg">Conversion tightening as events stack</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 hover:border-white/10 transition-colors">
+                      <div class="flex items-center justify-between mb-3">
+                        <div class="text-[11px] md:text-xs font-bold text-slate-300">Command Pulse</div>
+                        <i data-lucide="bar-chart-3" class="w-4 h-4 text-brand-primary"></i>
+                      </div>
+                      <div class="space-y-3">
+                        <div>
+                          <div class="flex justify-between text-[9px] md:text-[10px] mb-1"><span class="text-slate-500">Approvals</span><span class="text-slate-200 font-medium">92%</span></div>
+                          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[92%] bg-brand-primary rounded-full"></div></div>
+                        </div>
+                        <div>
+                          <div class="flex justify-between text-[9px] md:text-[10px] mb-1"><span class="text-slate-500">Escalations</span><span class="text-slate-200 font-medium">18%</span></div>
+                          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[18%] bg-rose-500 rounded-full"></div></div>
+                        </div>
+                        <div>
+                          <div class="flex justify-between text-[9px] md:text-[10px] mb-1"><span class="text-slate-500">Auto-routes</span><span class="text-slate-200 font-medium">73%</span></div>
+                          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full w-[73%] bg-emerald-500 rounded-full"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Bottom Grid for Bar & Distribution Graphs -->
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 flex-1 min-h-0">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 flex-1 min-h-0 shrink-0">
                     
                     <!-- Bar Graph: Top Clubs -->
                     <div class="bg-[#111827] rounded-xl border border-white/5 p-3 md:p-4 flex flex-col hover:border-white/10 transition-colors">
@@ -836,7 +1118,7 @@
         </div>
         <input type="email" required placeholder="name@university.edu" class="w-full px-4 md:px-5 py-3 md:py-4 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors text-sm md:text-base">
         
-        <button type="submit" class="w-full px-4 md:px-5 py-3.5 md:py-4 text-white font-semibold rounded-lg bg-gradient-to-r from-brand-primary to-blue-600 hover:from-blue-500 hover:to-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all flex items-center justify-center gap-2 group hover:scale-[1.02] text-sm md:text-base">
+        <button type="submit" class="w-full px-4 md:px-5 py-3.5 md:py-4 text-white font-semibold rounded-lg bg-gradient-to-r from-brand-primary to-brand-accent hover:from-blue-500 hover:to-sky-400 shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(56,189,248,0.5)] transition-all flex items-center justify-center gap-2 group hover:scale-[1.02] text-sm md:text-base">
           <span>Request Early Access</span>
           <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
         </button>
@@ -872,7 +1154,7 @@
         <span class="text-white font-bold tracking-tight text-sm md:text-base">SyncQ <span class="text-slate-400 font-medium">Teams</span></span>
       </div>
       <div class="text-xs md:text-sm text-slate-500 text-center">
-        &copy; 2024 SyncQ Teams. All rights reserved. Built for Higher Education.
+        &copy; 2026 SyncQ Technologies. All rights reserved. Built for Smarter Organisations.
       </div>
       <div class="flex gap-4 md:gap-6 text-xs md:text-sm">
         <a href="#" class="text-slate-500 hover:text-white transition-colors">Privacy</a>
@@ -906,33 +1188,64 @@
 
     // Dashboard Tabs Functionality
     function switchDashboardTab(tabName) {
-      const overviewTab = document.getElementById('tab-overview');
-      const analyticsTab = document.getElementById('tab-analytics');
-      const overviewContent = document.getElementById('content-overview');
-      const analyticsContent = document.getElementById('content-analytics');
+      const tabs = {
+        student: document.getElementById('tab-student'),
+        clubs: document.getElementById('tab-clubs'),
+        ai: document.getElementById('tab-ai')
+      };
 
-      if (tabName === 'overview') {
-        overviewTab.classList.add('text-brand-primary', 'border-brand-primary');
-        overviewTab.classList.remove('text-slate-500', 'border-transparent');
-        analyticsTab.classList.add('text-slate-500', 'border-transparent');
-        analyticsTab.classList.remove('text-brand-primary', 'border-brand-primary');
-        
-        overviewContent.classList.remove('hidden');
-        overviewContent.classList.add('flex');
-        analyticsContent.classList.add('hidden');
-        analyticsContent.classList.remove('flex');
-      } else {
-        analyticsTab.classList.add('text-brand-primary', 'border-brand-primary');
-        analyticsTab.classList.remove('text-slate-500', 'border-transparent');
-        overviewTab.classList.add('text-slate-500', 'border-transparent');
-        overviewTab.classList.remove('text-brand-primary', 'border-brand-primary');
-        
-        analyticsContent.classList.remove('hidden');
-        analyticsContent.classList.add('flex');
-        overviewContent.classList.add('hidden');
-        overviewContent.classList.remove('flex');
-      }
+      const content = {
+        student: document.getElementById('content-student'),
+        clubs: document.getElementById('content-clubs'),
+        ai: document.getElementById('content-ai')
+      };
+
+      const sidebar = {
+        student: document.getElementById('sidebar-overview'),
+        clubs: document.getElementById('sidebar-clubs'),
+        ai: document.getElementById('sidebar-ai')
+      };
+
+      const titles = {
+        student: {
+          title: 'Student Graph',
+          subtitle: 'Network-level engagement trends and student risk telemetry'
+        },
+        clubs: {
+          title: 'Clubs & Organisation',
+          subtitle: 'Operational visibility across societies, events, and participation'
+        },
+        ai: {
+          title: 'Live AI Insights',
+          subtitle: 'Real-time model alerts and intervention intelligence'
+        }
+      };
+
+      Object.keys(tabs).forEach((key) => {
+        const isActive = key === tabName;
+
+        tabs[key].classList.toggle('text-brand-primary', isActive);
+        tabs[key].classList.toggle('border-brand-primary', isActive);
+        tabs[key].classList.toggle('text-slate-500', !isActive);
+        tabs[key].classList.toggle('border-transparent', !isActive);
+
+        content[key].classList.toggle('hidden', !isActive);
+        content[key].classList.toggle('flex', isActive);
+
+        sidebar[key].classList.toggle('bg-brand-primary/10', isActive);
+        sidebar[key].classList.toggle('text-brand-primary', isActive);
+        sidebar[key].classList.toggle('border', isActive);
+        sidebar[key].classList.toggle('border-brand-primary/20', isActive);
+        sidebar[key].classList.toggle('text-slate-400', !isActive);
+      });
+
+      const headerTitle = document.getElementById('dashboard-title');
+      const headerSubtitle = document.getElementById('dashboard-subtitle');
+      headerTitle.textContent = titles[tabName].title;
+      headerSubtitle.textContent = titles[tabName].subtitle;
     }
+
+    switchDashboardTab('student');
 
     // Form Handling Simulation
     function handleWaitlistRequest(event) {
