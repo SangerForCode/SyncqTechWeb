@@ -369,21 +369,124 @@
                 <div class="w-8 h-8 rounded-full bg-gold/15 flex items-center justify-center"><i data-lucide="qr-code" class="w-4 h-4 text-gold-dark"></i></div>
               </div>
               <div class="px-5 space-y-2">
-                <div class="flex items-center gap-3 bg-terra/8 rounded-xl p-3 border border-terra/15">
-                  <i data-lucide="map" class="w-4 h-4 text-terra shrink-0"></i>
-                  <div><p class="text-[11px] font-medium text-bark">Venue Map</p><p class="text-[9px] text-bark-lighter">Tap to explore zones</p></div>
+                <div data-attendee-card data-panel="map" class="bg-terra/8 rounded-xl border border-terra/15 cursor-pointer transition-all duration-300">
+                  <div class="flex items-center gap-3 p-3">
+                    <i data-lucide="map" class="w-4 h-4 text-terra shrink-0"></i>
+                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Venue Map</p><p class="text-[9px] text-bark-lighter">Tap to explore zones</p></div>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-terra ml-auto"></i>
+                  </div>
+                  <div data-attendee-panel="map" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
+                    <div class="rounded-lg overflow-hidden" style="height:96px; background:#0F1629;">
+                      <svg viewBox="0 0 260 140" class="w-full h-full">
+                        <rect width="260" height="140" fill="#0F1629"/>
+                        <rect x="20" y="15" width="100" height="50" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+                        <text x="70" y="45" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="Inter">MAIN STAGE</text>
+                        <rect x="140" y="15" width="100" height="50" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+                        <text x="190" y="45" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">FOOD ZONE</text>
+                        <rect x="20" y="80" width="100" height="45" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+                        <text x="70" y="107" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">WORKSHOPS</text>
+                        <rect x="140" y="80" width="100" height="45" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+                        <text x="190" y="107" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">RESTROOMS</text>
+                        <circle cx="70" cy="68" r="5" fill="#C9A84C"/>
+                        <circle cx="190" cy="68" r="5" fill="#C67B5C"/>
+                      </svg>
+                    </div>
+                    <p class="text-[9px] text-bark-lighter mt-2">Live map preview with zone highlights.</p>
+                  </div>
                 </div>
-                <div class="flex items-center gap-3 bg-gold/8 rounded-xl p-3 border border-gold/15">
-                  <i data-lucide="clock" class="w-4 h-4 text-gold-dark shrink-0"></i>
-                  <div><p class="text-[11px] font-medium text-bark">Schedule</p><p class="text-[9px] text-bark-lighter">8 sessions today</p></div>
+                <div data-attendee-card data-panel="schedule" class="bg-gold/8 rounded-xl border border-gold/15 cursor-pointer transition-all duration-300">
+                  <div class="flex items-center gap-3 p-3">
+                    <i data-lucide="clock" class="w-4 h-4 text-gold-dark shrink-0"></i>
+                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Schedule</p><p class="text-[9px] text-bark-lighter">8 sessions today</p></div>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-dark ml-auto"></i>
+                  </div>
+                  <div data-attendee-panel="schedule" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
+                    <div class="space-y-1.5 pb-3">
+                      <div class="flex items-center justify-between text-[9px]"><span class="text-bark">11:30 Food Break</span><span class="text-bark-lighter">South Lawn</span></div>
+                      <div class="flex items-center justify-between text-[9px]"><span class="text-bark">2:00 Guest Keynote</span><span class="text-bark-lighter">Main Stage</span></div>
+                      <div class="flex items-center justify-between text-[9px]"><span class="text-bark">3:30 Panel Discussion</span><span class="text-bark-lighter">Hall A</span></div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center gap-3 bg-tea/8 rounded-xl p-3 border border-tea/15">
-                  <i data-lucide="bell" class="w-4 h-4 text-tea-dark shrink-0"></i>
-                  <div><p class="text-[11px] font-medium text-bark">Announcements</p><p class="text-[9px] text-bark-lighter">3 new alerts</p></div>
+                <div data-attendee-card data-panel="alerts" class="bg-tea/8 rounded-xl border border-tea/15 cursor-pointer transition-all duration-300">
+                  <div class="flex items-center gap-3 p-3">
+                    <i data-lucide="bell" class="w-4 h-4 text-tea-dark shrink-0"></i>
+                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Announcements</p><p class="text-[9px] text-bark-lighter">3 new alerts</p></div>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-tea-dark ml-auto"></i>
+                  </div>
+                  <div data-attendee-panel="alerts" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
+                    <div class="space-y-1.5 pb-3">
+                      <p class="text-[9px] text-bark">Pizza has arrived at the South Lawn.</p>
+                      <p class="text-[9px] text-bark">Keynote moved to 2:15 PM at Main Stage.</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center gap-3 bg-bark/5 rounded-xl p-3 border border-bark/8">
-                  <i data-lucide="share-2" class="w-4 h-4 text-bark-lighter shrink-0"></i>
-                  <div><p class="text-[11px] font-medium text-bark">Share Event</p><p class="text-[9px] text-bark-lighter">QR code and link</p></div>
+                <div data-attendee-card data-panel="network" class="bg-blue-50 rounded-xl border border-blue-200 cursor-pointer transition-all duration-300">
+                  <div class="flex items-center gap-3 p-3">
+                    <i data-lucide="users" class="w-4 h-4 text-blue-700 shrink-0"></i>
+                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Network</p><p class="text-[9px] text-bark-lighter">People near your zone</p></div>
+                    <span class="text-[8px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">Live</span>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-blue-700 ml-auto"></i>
+                  </div>
+                  <div data-attendee-panel="network" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
+                    <div class="space-y-2 pb-3">
+                      <div class="flex items-center justify-between bg-white/80 rounded-lg px-2.5 py-2 border border-blue-100">
+                        <div>
+                          <p class="text-[9px] font-medium text-bark">Ayush Sanger (BITS Goa)</p>
+                          <p class="text-[8px] text-bark-lighter">Near Workshop Hall A</p>
+                        </div>
+                        <span class="text-[8px] text-blue-700">12m</span>
+                      </div>
+                      <div class="flex items-center justify-between bg-white/80 rounded-lg px-2.5 py-2 border border-blue-100">
+                        <div>
+                          <p class="text-[9px] font-medium text-bark">Abhinav Reddy (BITS Goa)</p>
+                          <p class="text-[8px] text-bark-lighter">Near Main Stage</p>
+                        </div>
+                        <span class="text-[8px] text-blue-700">18m</span>
+                      </div>
+                      <p id="attendee-network-live" class="text-[8px] text-blue-700">Updating nearby attendees...</p>
+                    </div>
+                  </div>
+                </div>
+                <div data-attendee-card data-panel="share" class="bg-bark/5 rounded-xl border border-bark/8 cursor-pointer transition-all duration-300">
+                  <div class="flex items-center gap-3 p-3">
+                    <i data-lucide="share-2" class="w-4 h-4 text-bark-lighter shrink-0"></i>
+                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Share Event</p><p class="text-[9px] text-bark-lighter">QR code and link</p></div>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-bark-lighter ml-auto"></i>
+                  </div>
+                  <div data-attendee-panel="share" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
+                    <div class="pb-3">
+                      <div class="mx-auto w-20 h-20 rounded-lg bg-bark p-2.5 flex items-center justify-center">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                          <rect width="100" height="100" fill="#FAF6F0"/>
+                          <rect x="6" y="6" width="24" height="24" fill="none" stroke="#2C1A12" stroke-width="6"/>
+                          <rect x="70" y="6" width="24" height="24" fill="none" stroke="#2C1A12" stroke-width="6"/>
+                          <rect x="6" y="70" width="24" height="24" fill="none" stroke="#2C1A12" stroke-width="6"/>
+                          <rect x="38" y="10" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="50" y="10" width="8" height="8" fill="#C9A84C"/>
+                          <rect x="62" y="10" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="38" y="22" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="50" y="22" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="62" y="22" width="8" height="8" fill="#C9A84C"/>
+                          <rect x="38" y="38" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="50" y="38" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="62" y="38" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="38" y="50" width="8" height="8" fill="#C9A84C"/>
+                          <rect x="50" y="50" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="62" y="50" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="38" y="62" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="50" y="62" width="8" height="8" fill="#C9A84C"/>
+                          <rect x="62" y="62" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="74" y="38" width="8" height="8" fill="#2C1A12"/>
+                          <rect x="86" y="38" width="8" height="8" fill="#C9A84C"/>
+                          <rect x="74" y="50" width="8" height="8" fill="#C9A84C"/>
+                          <rect x="86" y="50" width="8" height="8" fill="#2C1A12"/>
+                        </svg>
+                      </div>
+                      <p class="text-[8px] text-center text-bark-lighter mt-1">syncq.events/tf26</p>
+                      <button onclick="event.preventDefault(); event.stopPropagation(); showToast('Share options coming soon.'); return false;" class="mt-2 w-full text-[10px] bg-bark text-ivory py-2 rounded-full">Share Link</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -442,7 +545,7 @@
                 <div class="pt-8 px-5">
                   <div class="flex items-center gap-2 mb-4">
                     <img src="BITS.png" alt="BITS Logo" class="w-8 h-8 rounded-lg">
-                    <div><p class="font-serif text-sm font-semibold text-bark">Alumini Meet '26</p><p class="text-[9px] text-blue-700">BITS GOA</p></div>
+                    <div><p class="font-serif text-sm font-semibold text-bark">NULLCON '26</p><p class="text-[9px] text-blue-700">BITS GOA</p></div>
                   </div>
                   <div class="w-full h-24 bg-blue-100 rounded-xl mb-3 flex items-center justify-center border border-blue-300">
                     <i data-lucide="map-pin" class="w-8 h-8 text-blue-400"></i>
@@ -994,9 +1097,66 @@
         btnAtt.classList.remove('text-bark-lighter');
         btnOrg.classList.remove('bg-bark', 'text-ivory');
         btnOrg.classList.add('text-bark-lighter');
+        initAttendeeViewPanels();
       }
       lucide.createIcons();
     }
+
+    function initAttendeeViewPanels() {
+      const attendeeView = document.getElementById('view-attendee');
+      if (!attendeeView || attendeeView.dataset.dynamicReady === 'true') return;
+
+      const cards = Array.from(attendeeView.querySelectorAll('[data-attendee-card]'));
+
+      const setCardState = (card, expanded) => {
+        const key = card.getAttribute('data-panel');
+        const panel = card.querySelector(`[data-attendee-panel="${key}"]`);
+        const chevron = card.querySelector('[data-lucide="chevron-down"]');
+        if (!panel) return;
+
+        if (expanded) {
+          panel.classList.remove('max-h-0', 'opacity-0', 'pb-0');
+          panel.classList.add('opacity-100');
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        } else {
+          panel.style.maxHeight = '0px';
+          panel.classList.add('max-h-0', 'opacity-0', 'pb-0');
+          panel.classList.remove('opacity-100');
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+      };
+
+      cards.forEach((card) => {
+        setCardState(card, false);
+        card.addEventListener('click', () => {
+          const key = card.getAttribute('data-panel');
+          const panel = card.querySelector(`[data-attendee-panel="${key}"]`);
+          const isOpen = panel && panel.style.maxHeight && panel.style.maxHeight !== '0px';
+
+          cards.forEach((otherCard) => setCardState(otherCard, false));
+          if (!isOpen) setCardState(card, true);
+        });
+      });
+
+      const liveNode = attendeeView.querySelector('#attendee-network-live');
+      if (liveNode) {
+        const statuses = [
+          'Ayush Sanger is now 10m away near Hall A.',
+          'Abhinav Reddy just checked in at Main Stage.',
+          '2 more attendees are nearby in Food Zone.'
+        ];
+        let statusIndex = 0;
+        setInterval(() => {
+          statusIndex = (statusIndex + 1) % statuses.length;
+          liveNode.textContent = statuses[statusIndex];
+        }, 2800);
+      }
+
+      attendeeView.dataset.dynamicReady = 'true';
+    }
+
+    initAttendeeViewPanels();
 
     // ── White Label Toggle ──
     let wlBranded = false;
