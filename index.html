@@ -67,6 +67,39 @@
     .schedule-item:hover .schedule-details { max-height:80px; opacity:1; margin-top:8px; }
     .phone-shadow { box-shadow: 0 0 80px rgba(201,168,76,0.12), 0 30px 60px rgba(44,26,18,0.18); }
     .glass-card { background:rgba(255,255,255,0.06); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.1); }
+    .floating-nav-shell {
+      background: rgba(250, 246, 240, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 50px rgba(44, 26, 18, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .floating-nav-shell.scrolled {
+      background: rgba(250, 246, 240, 0.88);
+      border-color: rgba(201, 168, 76, 0.16);
+      box-shadow: 0 24px 60px rgba(44, 26, 18, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+    .nav-link {
+      position: relative;
+      color: #8D6E63;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 1rem;
+      width: 0;
+      height: 1px;
+      background: #C9A84C;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #2C1A12;
+    }
+    .nav-link:hover::after {
+      width: calc(100% - 2rem);
+    }
     .btn-pop { transition: transform 0.2s, box-shadow 0.2s; }
     .btn-pop:hover { transform:scale(1.02); }
     .btn-pop:active { transform:scale(0.98); }
@@ -87,31 +120,37 @@
   <div id="toast-container" class="fixed top-24 right-6 z-[10000] flex flex-col gap-3"></div>
 
   <!-- NAVBAR -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-bark/5">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center">
-          <i data-lucide="calendar-check" class="w-5 h-5 text-white"></i>
+  <nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] transition-all duration-500">
+    <div id="navbar-shell" class="floating-nav-shell w-full max-w-full md:w-max md:max-w-max mx-auto rounded-[2rem] md:rounded-full px-3 py-2 overflow-hidden">
+      <div class="flex items-center justify-between gap-2">
+        <a href="#" class="flex items-center gap-2.5 min-w-0 flex-1">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-lg shadow-gold/20 shrink-0">
+            <i data-lucide="calendar-check" class="w-5.5 h-5.5 text-white"></i>
+          </div>
+          <span class="font-serif text-[1.25rem] sm:text-[1.9rem] font-semibold text-bark tracking-tight whitespace-nowrap truncate px-1 sm:px-2 pr-2 sm:pr-4">SyncQ <span class="text-gold">Events</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="#features" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Features</a>
+          <a href="#maps" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Maps</a>
+          <a href="#schedule" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Schedule</a>
+          <a href="#announcements" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Announcements</a>
         </div>
-        <span class="font-serif text-2xl font-semibold text-bark tracking-tight">SyncQ <span class="text-gold">Events</span></span>
-      </a>
-      <div class="hidden lg:flex items-center gap-8">
-        <a href="#features" class="text-sm text-bark-lighter hover:text-bark transition-colors">Features</a>
-        <a href="#maps" class="text-sm text-bark-lighter hover:text-bark transition-colors">Maps</a>
-        <a href="#schedule" class="text-sm text-bark-lighter hover:text-bark transition-colors">Schedule</a>
-        <a href="#announcements" class="text-sm text-bark-lighter hover:text-bark transition-colors">Announcements</a>
-        <a href="#early-access" class="bg-bark text-ivory text-sm font-medium px-5 py-2.5 rounded-full btn-pop hover:shadow-lg hover:shadow-bark/20">Get Early Access</a>
+        <div class="hidden md:flex items-center">
+          <a href="#early-access" class="ml-1 bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:bg-bark-light hover:shadow-lg hover:shadow-bark/20 transition-all duration-300 tracking-[0.16em] uppercase">Get Early Access</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden w-11 h-11 rounded-full text-bark flex items-center justify-center hover:bg-gold/10 transition-colors shrink-0" aria-label="Menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
       </div>
-      <button id="mobile-menu-btn" class="lg:hidden p-2 text-bark" aria-label="Menu">
-        <i data-lucide="menu" class="w-6 h-6"></i>
-      </button>
-    </div>
-    <div id="mobile-menu" class="hidden lg:hidden bg-ivory/95 backdrop-blur-md border-t border-bark/5 px-6 py-4 space-y-3">
-      <a href="#features" class="block text-sm text-bark-lighter py-2">Features</a>
-      <a href="#maps" class="block text-sm text-bark-lighter py-2">Maps</a>
-      <a href="#schedule" class="block text-sm text-bark-lighter py-2">Schedule</a>
-      <a href="#announcements" class="block text-sm text-bark-lighter py-2">Announcements</a>
-      <a href="#early-access" class="block bg-bark text-ivory text-sm font-medium px-5 py-2.5 rounded-full text-center mt-2">Get Early Access</a>
+      <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-1">
+        <div class="border-t border-bark/10 pt-3 space-y-1">
+          <a href="#features" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Features</a>
+          <a href="#maps" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Maps</a>
+          <a href="#schedule" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Schedule</a>
+          <a href="#announcements" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Announcements</a>
+          <a href="#early-access" class="block bg-bark text-ivory text-sm font-medium px-5 py-3 rounded-2xl text-center mt-3 hover:bg-bark-light transition-colors">Get Early Access</a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -1021,25 +1060,35 @@
     });
 
     // ── Navbar Scroll Effect ──
+    let lastScroll = 0;
     window.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
-      if (window.scrollY > 20) {
-        nav.classList.add('bg-ivory/90', 'shadow-lg', 'backdrop-blur-md');
-        nav.classList.remove('border-bark/5');
+      const navShell = document.getElementById('navbar-shell');
+      const currentScroll = window.scrollY;
+
+      if (currentScroll > 24) {
+        navShell.classList.add('scrolled');
       } else {
-        nav.classList.remove('bg-ivory/90', 'shadow-lg', 'backdrop-blur-md');
-        nav.classList.add('border-bark/5');
+        navShell.classList.remove('scrolled');
       }
-    });
+
+      if (currentScroll > 100) {
+        nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
+      } else {
+        nav.style.top = '16px';
+      }
+
+      lastScroll = currentScroll;
+    }, { passive: true });
 
     // ── Mobile Menu ──
+    const mobileMenu = document.getElementById('mobile-menu');
     document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('hidden');
     });
     document.querySelectorAll('#mobile-menu a').forEach(link => {
       link.addEventListener('click', () => {
-        document.getElementById('mobile-menu').classList.add('hidden');
+        mobileMenu.classList.add('hidden');
       });
     });
 

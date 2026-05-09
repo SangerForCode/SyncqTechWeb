@@ -1,394 +1,643 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interactive Event Map Widget</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        /* Widget specific styles */
-        .widget-container {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b1121;
-        }
+      /* Widget specific styles */
+      .widget-container {
+        font-family: "Inter", sans-serif;
+        background-color: #0b1121;
+      }
 
-        .map-grid-bg {
-            background-image: 
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
+      .map-grid-bg {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          );
+        background-size: 40px 40px;
+      }
 
-        .zone-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border-width: 2px;
-            border-style: solid;
-            background-color: #1e293b;
-            border-color: #475569;
-        }
-        
-        .zone-card:hover {
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
-            z-index: 30;
-        }
+      .zone-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        border-width: 2px;
+        border-style: solid;
+        background-color: #1e293b;
+        border-color: #475569;
+      }
 
-        .zone-card.active {
-            box-shadow: inset 0 0 30px rgba(255,255,255,0.1), 0 0 20px rgba(0,0,0,0.6);
-            z-index: 30;
-        }
+      .zone-card:hover {
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+        z-index: 30;
+      }
 
-        /* Wave Animations */
-        @keyframes wave-ripple {
-            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-        .animate-wave-ripple {
-            animation: wave-ripple 2s infinite;
-        }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
+      .zone-card.active {
+        box-shadow:
+          inset 0 0 30px rgba(255, 255, 255, 0.1),
+          0 0 20px rgba(0, 0, 0, 0.6);
+        z-index: 30;
+      }
 
-        /* SVG Path Animation */
-        .route-path {
-            stroke-dasharray: 12;
-            animation: dash 20s linear infinite;
+      /* Wave Animations */
+      @keyframes wave-ripple {
+        0% {
+          box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6);
         }
+        70% {
+          box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+      .animate-wave-ripple {
+        animation: wave-ripple 2s infinite;
+      }
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
 
-        @keyframes dash {
-            to {
-                stroke-dashoffset: -1000;
-            }
-        }
+      /* SVG Path Animation */
+      .route-path {
+        stroke-dasharray: 12;
+        animation: dash 20s linear infinite;
+      }
 
-        /* Menu Item Styles - Dark Mode */
-        .menu-item {
-            transition: all 0.2s ease;
+      @keyframes dash {
+        to {
+          stroke-dashoffset: -1000;
         }
-        .menu-item:hover {
-            background-color: #1e293b; /* slate-800 */
-        }
-        .menu-item.active {
-            background-color: #1e293b;
-            border-color: currentColor;
-        }
-        
-        /* Custom map markers */
-        .marker-main { color: #eab308; background-color: #eab308; } /* Yellow */
-        .marker-food { color: #d97757; background-color: #d97757; } /* Orange */
-        .marker-refreshment { color: #fbbf24; background-color: #fbbf24; } /* Amber */
-        .marker-workshops { color: #60a5fa; background-color: #60a5fa; } /* Blue */
-        .marker-restrooms { color: #86efac; background-color: #86efac; } /* Green */
-        .marker-media { color: #c084fc; background-color: #c084fc; } /* Purple */
-        .marker-speaker { color: #f472b6; background-color: #f472b6; } /* Pink */
+      }
 
-        /* Hide scrollbar for menu */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+      /* Menu Item Styles - Dark Mode */
+      .menu-item {
+        transition: all 0.2s ease;
+      }
+      .menu-item:hover {
+        background-color: #1e293b; /* slate-800 */
+      }
+      .menu-item.active {
+        background-color: #1e293b;
+        border-color: currentColor;
+      }
+
+      /* Custom map markers */
+      .marker-main {
+        color: #eab308;
+        background-color: #eab308;
+      } /* Yellow */
+      .marker-food {
+        color: #d97757;
+        background-color: #d97757;
+      } /* Orange */
+      .marker-refreshment {
+        color: #fbbf24;
+        background-color: #fbbf24;
+      } /* Amber */
+      .marker-workshops {
+        color: #60a5fa;
+        background-color: #60a5fa;
+      } /* Blue */
+      .marker-restrooms {
+        color: #86efac;
+        background-color: #86efac;
+      } /* Green */
+      .marker-media {
+        color: #c084fc;
+        background-color: #c084fc;
+      } /* Purple */
+      .marker-speaker {
+        color: #f472b6;
+        background-color: #f472b6;
+      } /* Pink */
+
+      /* Hide scrollbar for menu */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
     </style>
-</head>
-<body class="m-0 p-0 h-screen w-screen bg-slate-900 flex items-center justify-center p-2 sm:p-4">
-
+  </head>
+  <body class="m-0 p-0 h-screen w-screen bg-[#0b1121] overflow-hidden">
     <!-- FULL WIDGET CONTAINER - Ready to be imported -->
-    <div class="widget-container w-full max-w-7xl h-[95vh] sm:h-[85vh] min-h-[500px] rounded-2xl overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-slate-700 relative text-slate-200">
-        
-        <!-- LEFT: Interactive Map Area -->
-        <div class="relative flex-1 lg:flex-grow h-full overflow-hidden flex items-center justify-center bg-[#0b1121] map-grid-bg p-2 sm:p-4">
-            
-            <!-- Mobile Instruction Tag -->
-            <div class="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 z-40 lg:hidden bg-blue-600/95 backdrop-blur-sm text-white text-[9px] sm:text-xs font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-[0_4px_15px_rgba(37,99,235,0.4)] border border-blue-400 text-center w-max max-w-[90vw] pointer-events-none">
-                Click where you want to go and get directions 👇
-            </div>
-
-            <!-- Fixed Aspect Ratio Map Container for perfect SVG/HTML alignment -->
-            <div class="relative w-full max-w-[1000px]" style="aspect-ratio: 10/7; max-height: 100%;">
-                
-                <!-- SVG Routing Layer -->
-                <svg viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full z-0 pointer-events-none">
-                    
-                    <!-- Base map corridors (Faded) -->
-                    <g stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-dasharray="8 8" fill="none">
-                        <!-- Central Spine -->
-                        <path d="M 500 630 L 500 280" />
-                        <!-- West Corridor -->
-                        <path d="M 500 440 L 270 440" />
-                        <!-- East Corridor (Restrooms) -->
-                        <path d="M 500 380 L 730 380" />
-                        <!-- East Corridor 2 (Refreshment) -->
-                        <path d="M 500 500 L 730 500" />
-                    </g>
-
-                    <!-- Active Route Line -->
-                    <path id="active-route" d="" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" class="route-path drop-shadow-md" style="opacity: 0; transition: opacity 0.3s;" />
-                    
-                    <!-- Moving Navigation Dot -->
-                    <g id="nav-dot" style="display: none;">
-                        <circle r="8" fill="#ffffff" filter="drop-shadow(0 0 6px rgba(255,255,255,0.8))">
-                            <animateMotion id="dot-motion" dur="2.5s" repeatCount="indefinite" path="" />
-                        </circle>
-                    </g>
-                </svg>
-
-                <!-- MAP ZONES (HTML Overlays) -->
-                
-                <!-- Main Plenary (Increased Size) -->
-                <div id="zone-main-stage" onclick="navigate('main-stage')" class="zone-card absolute flex flex-col items-center justify-center text-center p-2 sm:p-4 overflow-hidden" 
-                     style="left: 5%; top: 5%; width: 90%; height: 35%;">
-                    <h3 class="text-white font-bold text-[clamp(0.6rem,2vw,1.2rem)] tracking-widest leading-tight w-full break-words px-1">MAIN PLENARY AUDITORIUM</h3>
-                    <p class="text-slate-400 text-[clamp(0.45rem,1vw,0.75rem)] mt-1 hidden sm:block">Capacity: 2,000</p>
-                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-main"></div>
-                    </div>
-                </div>
-
-                <!-- Networking / Food Zone (Adjusted Size) -->
-                <div id="zone-food-zone" onclick="navigate('food-zone')" class="zone-card absolute flex flex-col items-center justify-center text-center p-2 sm:p-4 overflow-hidden" 
-                     style="left: 32%; top: 45%; width: 36%; height: 20%;">
-                    <h3 class="text-[#f7b99c] font-bold text-[clamp(0.5rem,1.5vw,0.9rem)] tracking-wider leading-tight w-full break-words px-1">NETWORKING FOYER</h3>
-                    <p class="text-[#967162] text-[clamp(0.4rem,1vw,0.65rem)] mt-1 hidden sm:block">Main Food Stations</p>
-                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-food"></div>
-                    </div>
-                </div>
-
-                <!-- Workshop Block (Increased Width) -->
-                <div id="zone-workshops" onclick="navigate('workshops')" class="zone-card absolute flex flex-col items-center justify-center text-center p-2 sm:p-3 overflow-hidden" 
-                     style="left: 5%; top: 45%; width: 22%; height: 35%;">
-                    <div class="flex flex-col items-center justify-center h-full w-full" style="writing-mode: vertical-rl; transform: rotate(180deg);">
-                        <h3 class="text-[#a5c6ff] font-bold text-[clamp(0.55rem,1.5vw,0.9rem)] tracking-wider leading-tight whitespace-nowrap">WORKSHOP HALLS</h3>
-                        <p class="text-[#657da8] text-[clamp(0.45rem,1vw,0.65rem)] mt-1 hidden sm:block whitespace-nowrap">Rooms A & B</p>
-                    </div>
-                    <div class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-workshops"></div>
-                    </div>
-                </div>
-
-                <!-- Refreshment Cafe (NEW ZONE) -->
-                <div id="zone-refreshment" onclick="navigate('refreshment')" class="zone-card absolute flex flex-col items-center justify-center text-center p-1 sm:p-3 overflow-hidden" 
-                     style="left: 73%; top: 65%; width: 22%; height: 13%;">
-                    <h3 class="text-[#fbbf24] font-bold text-[clamp(0.45rem,1.2vw,0.8rem)] tracking-wider leading-tight w-full break-words px-1">REFRESHMENT CAFE</h3>
-                    <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-refreshment"></div>
-                    </div>
-                </div>
-
-                <!-- Restrooms (Increased Width) -->
-                <div id="zone-restrooms" onclick="navigate('restrooms')" class="zone-card absolute flex flex-col items-center justify-center text-center p-1 sm:p-3 overflow-hidden" 
-                     style="left: 73%; top: 45%; width: 22%; height: 19%;">
-                    <h3 class="text-[#a4e8b3] font-bold text-[clamp(0.45rem,1.2vw,0.8rem)] tracking-wider leading-tight w-full break-words px-1">RESTROOMS</h3>
-                    <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-restrooms"></div>
-                    </div>
-                </div>
-
-                <!-- You Are Here Marker -->
-                <div class="absolute flex flex-col items-center justify-center z-20 pointer-events-none animate-float" style="left: calc(50% - 40px); top: 82%; width: 80px;">
-                    <div class="bg-blue-600 rounded-full w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center border-2 border-white animate-wave-ripple relative">
-                        <!-- Aeroplane Icon - Centered Perfectly -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6 text-white transform -rotate-45" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                        </svg>
-                    </div>
-                    <div class="mt-1 sm:mt-2 bg-[#0b1121] text-white text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-slate-600 uppercase tracking-widest whitespace-nowrap shadow-lg">You Are Here</div>
-                </div>
-            </div>
+    <div
+      class="widget-container w-full h-full flex flex-col lg:flex-row relative text-slate-200"
+    >
+      <!-- LEFT: Interactive Map Area -->
+      <div
+        class="relative flex-1 lg:flex-grow h-full overflow-hidden flex items-center justify-center bg-[#0b1121] map-grid-bg p-2 sm:p-4"
+      >
+        <!-- Mobile Instruction Tag -->
+        <div
+          class="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 z-40 lg:hidden bg-blue-600/95 backdrop-blur-sm text-white text-[9px] sm:text-xs font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-[0_4px_15px_rgba(37,99,235,0.4)] border border-blue-400 text-center w-max max-w-[90vw] pointer-events-none"
+        >
+          Click where you want to go and get directions 👇
         </div>
 
-        <!-- RIGHT: Navigation Menu (Integrated Panel) -->
-        <div class="hidden lg:flex w-full lg:w-[380px] h-[45vh] lg:h-full bg-[#0f172a] border-t lg:border-t-0 lg:border-l border-slate-700 flex-col flex-shrink-0 z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.3)]">
-            
-            <!-- Panel Header -->
-            <div class="p-6 border-b border-slate-800 bg-[#131c31]">
-                <div class="flex items-center gap-3 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                    </svg>
-                    <h2 class="text-xl font-bold text-white tracking-wide">Directory</h2>
-                </div>
-                <p class="text-xs text-slate-400">Select a destination from the list or map to generate the fastest route from Registration.</p>
+        <!-- Fixed Aspect Ratio Map Container for perfect SVG/HTML alignment -->
+        <div
+          class="relative w-full max-w-[1000px]"
+          style="aspect-ratio: 10/7; max-height: 100%"
+        >
+          <!-- SVG Routing Layer -->
+          <svg
+            viewBox="0 0 1000 700"
+            preserveAspectRatio="xMidYMid meet"
+            class="absolute inset-0 w-full h-full z-0 pointer-events-none"
+          >
+            <!-- Base map corridors (Faded) -->
+            <g
+              stroke="rgba(255,255,255,0.08)"
+              stroke-width="6"
+              stroke-dasharray="8 8"
+              fill="none"
+            >
+              <!-- Central Spine -->
+              <path d="M 500 630 L 500 280" />
+              <!-- West Corridor -->
+              <path d="M 500 440 L 270 440" />
+              <!-- East Corridor (Restrooms) -->
+              <path d="M 500 380 L 730 380" />
+              <!-- East Corridor 2 (Refreshment) -->
+              <path d="M 500 500 L 730 500" />
+            </g>
+
+            <!-- Active Route Line -->
+            <path
+              id="active-route"
+              d=""
+              fill="none"
+              stroke-width="6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="route-path drop-shadow-md"
+              style="opacity: 0; transition: opacity 0.3s"
+            />
+
+            <!-- Moving Navigation Dot -->
+            <g id="nav-dot" style="display: none">
+              <circle
+                r="8"
+                fill="#ffffff"
+                filter="drop-shadow(0 0 6px rgba(255,255,255,0.8))"
+              >
+                <animateMotion
+                  id="dot-motion"
+                  dur="2.5s"
+                  repeatCount="indefinite"
+                  path=""
+                />
+              </circle>
+            </g>
+          </svg>
+
+          <!-- MAP ZONES (HTML Overlays) -->
+
+          <!-- Main Plenary (Increased Size) -->
+          <div
+            id="zone-main-stage"
+            onclick="navigate('main-stage')"
+            class="zone-card absolute flex flex-col items-center justify-center text-center p-1 sm:p-4 overflow-hidden"
+            style="left: 5%; top: 5%; width: 90%; height: 35%"
+          >
+            <h3
+              class="text-white font-bold text-[8px] sm:text-sm md:text-base lg:text-lg tracking-widest leading-tight w-full break-words px-1"
+            >
+              MAIN PLENARY AUDITORIUM
+            </h3>
+            <p
+              class="text-slate-400 text-[7px] sm:text-xs md:text-sm mt-0.5 sm:mt-1 hidden sm:block"
+            >
+              Capacity: 2,000
+            </p>
+            <div
+              class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center"
+            >
+              <div
+                class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-main"
+              ></div>
             </div>
-            
-            <!-- Scrollable List -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-2 no-scrollbar">
-                
-                <!-- Menu Item -->
-                <div id="menu-main-stage" onclick="navigate('main-stage')" class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50">
-                    <div class="flex items-center gap-4">
-                        <div class="w-3 h-3 rounded-full marker-main shadow-[0_0_8px_currentColor]"></div>
-                        <div>
-                            <h4 class="font-semibold text-white text-sm">Main Plenary</h4>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Keynotes & Major Events</p>
-                        </div>
-                    </div>
-                    <button class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none">Route</button>
-                </div>
+          </div>
 
-                <!-- Menu Item -->
-                <div id="menu-food-zone" onclick="navigate('food-zone')" class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50">
-                    <div class="flex items-center gap-4">
-                        <div class="w-3 h-3 rounded-full marker-food shadow-[0_0_8px_currentColor]"></div>
-                        <div>
-                            <h4 class="font-semibold text-white text-sm">Networking Foyer</h4>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Main Food Stations</p>
-                        </div>
-                    </div>
-                    <button class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none">Route</button>
-                </div>
-
-                <!-- Menu Item (NEW: Refreshment Cafe) -->
-                <div id="menu-refreshment" onclick="navigate('refreshment')" class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50">
-                    <div class="flex items-center gap-4">
-                        <div class="w-3 h-3 rounded-full marker-refreshment shadow-[0_0_8px_currentColor]"></div>
-                        <div>
-                            <h4 class="font-semibold text-white text-sm">Refreshment Cafe</h4>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Quick Snacks & Coffee</p>
-                        </div>
-                    </div>
-                    <button class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none">Route</button>
-                </div>
-
-                <!-- Menu Item -->
-                <div id="menu-workshops" onclick="navigate('workshops')" class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50">
-                    <div class="flex items-center gap-4">
-                        <div class="w-3 h-3 rounded-full marker-workshops shadow-[0_0_8px_currentColor]"></div>
-                        <div>
-                            <h4 class="font-semibold text-white text-sm">Workshop Halls</h4>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Interactive Rooms A & B</p>
-                        </div>
-                    </div>
-                    <button class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none">Route</button>
-                </div>
-
-                <!-- Menu Item -->
-                <div id="menu-restrooms" onclick="navigate('restrooms')" class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50">
-                    <div class="flex items-center gap-4">
-                        <div class="w-3 h-3 rounded-full marker-restrooms shadow-[0_0_8px_currentColor]"></div>
-                        <div>
-                            <h4 class="font-semibold text-white text-sm">Restrooms</h4>
-                            <p class="text-[11px] text-slate-400 mt-0.5">East Wing Facilities</p>
-                        </div>
-                    </div>
-                    <button class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none">Route</button>
-                </div>
-                
-                <!-- Bottom padding for scrolling -->
-                <div class="h-4"></div>
+          <!-- Networking / Food Zone (Adjusted Size) -->
+          <div
+            id="zone-food-zone"
+            onclick="navigate('food-zone')"
+            class="zone-card absolute flex flex-col items-center justify-center text-center p-1 sm:p-4 overflow-hidden"
+            style="left: 32%; top: 45%; width: 36%; height: 20%"
+          >
+            <h3
+              class="text-[#f7b99c] font-bold text-[8px] sm:text-xs md:text-sm tracking-wider leading-tight w-full break-words px-1"
+            >
+              NETWORKING FOYER
+            </h3>
+            <p
+              class="text-[#967162] text-[6px] sm:text-[10px] md:text-xs mt-0.5 sm:mt-1 hidden sm:block"
+            >
+              Main Food Stations
+            </p>
+            <div
+              class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center"
+            >
+              <div
+                class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-food"
+              ></div>
             </div>
-            
-            <!-- Panel Footer -->
-            <div class="p-4 border-t border-slate-800 bg-[#0f172a] text-center">
-                <div class="inline-flex items-center gap-2 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                    Live Routing System
-                </div>
+          </div>
+
+          <!-- Workshop Block (Increased Width) -->
+          <div
+            id="zone-workshops"
+            onclick="navigate('workshops')"
+            class="zone-card absolute flex flex-col items-center justify-center text-center p-1 sm:p-3 overflow-hidden"
+            style="left: 5%; top: 45%; width: 22%; height: 35%"
+          >
+            <div
+              class="flex flex-col items-center justify-center h-full w-full"
+              style="writing-mode: vertical-rl; transform: rotate(180deg)"
+            >
+              <h3
+                class="text-[#a5c6ff] font-bold text-[6px] sm:text-xs md:text-sm tracking-wider leading-tight text-center"
+              >
+                WORKSHOP HALLS
+              </h3>
+              <p
+                class="text-[#657da8] text-[5px] sm:text-[10px] md:text-xs mt-0.5 sm:mt-1 hidden sm:block"
+              >
+                Rooms A & B
+              </p>
             </div>
+            <div
+              class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center"
+            >
+              <div
+                class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-workshops"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Refreshment Cafe (NEW ZONE) -->
+          <div
+            id="zone-refreshment"
+            onclick="navigate('refreshment')"
+            class="zone-card absolute flex flex-col items-center justify-center text-center p-0.5 sm:p-3 overflow-hidden"
+            style="left: 73%; top: 65%; width: 22%; height: 13%"
+          >
+            <h3
+              class="text-[#fbbf24] font-bold text-[6.5px] sm:text-[10px] md:text-xs tracking-wider leading-tight w-full break-words px-0.5 sm:px-1"
+            >
+              REFRESHMENT CAFE
+            </h3>
+            <div
+              class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center"
+            >
+              <div
+                class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-refreshment"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Restrooms (Increased Width) -->
+          <div
+            id="zone-restrooms"
+            onclick="navigate('restrooms')"
+            class="zone-card absolute flex flex-col items-center justify-center text-center p-0.5 sm:p-3 overflow-hidden"
+            style="left: 73%; top: 45%; width: 22%; height: 19%"
+          >
+            <h3
+              class="text-[#a4e8b3] font-bold text-[6.5px] sm:text-[10px] md:text-xs tracking-wider leading-tight w-full break-words px-0.5 sm:px-1"
+            >
+              RESTROOMS
+            </h3>
+            <div
+              class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 sm:w-6 sm:h-6 rounded-sm bg-[#0b1121] border-2 border-inherit flex items-center justify-center"
+            >
+              <div
+                class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full marker-restrooms"
+              ></div>
+            </div>
+          </div>
+
+          <!-- You Are Here Marker -->
+          <div
+            class="absolute flex flex-col items-center justify-center z-20 pointer-events-none animate-float"
+            style="left: calc(50% - 40px); top: 82%; width: 80px"
+          >
+            <div
+              class="bg-blue-600 rounded-full w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center border-2 border-white animate-wave-ripple relative"
+            >
+              <!-- Aeroplane Icon - Centered Perfectly -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 sm:h-6 sm:w-6 text-white transform -rotate-45"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
+                />
+              </svg>
+            </div>
+            <div
+              class="mt-1 sm:mt-2 bg-[#0b1121] text-white text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-slate-600 uppercase tracking-widest whitespace-nowrap shadow-lg"
+            >
+              You Are Here
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- RIGHT: Navigation Menu (Integrated Panel) -->
+      <div
+        class="hidden lg:flex w-full lg:w-[380px] h-[45vh] lg:h-full bg-[#0f172a] border-t lg:border-t-0 lg:border-l border-slate-700 flex-col flex-shrink-0 z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.3)]"
+      >
+        <!-- Panel Header -->
+        <div class="p-6 border-b border-slate-800 bg-[#131c31]">
+          <div class="flex items-center gap-3 mb-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-slate-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+              />
+            </svg>
+            <h2 class="text-xl font-bold text-white tracking-wide">
+              Directory
+            </h2>
+          </div>
+          <p class="text-xs text-slate-400">
+            Select a destination from the list or map to generate the fastest
+            route from Registration.
+          </p>
+        </div>
+
+        <!-- Scrollable List -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-2 no-scrollbar">
+          <!-- Menu Item -->
+          <div
+            id="menu-main-stage"
+            onclick="navigate('main-stage')"
+            class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-3 h-3 rounded-full marker-main shadow-[0_0_8px_currentColor]"
+              ></div>
+              <div>
+                <h4 class="font-semibold text-white text-sm">Main Plenary</h4>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                  Keynotes & Major Events
+                </p>
+              </div>
+            </div>
+            <button
+              class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none"
+            >
+              Route
+            </button>
+          </div>
+
+          <!-- Menu Item -->
+          <div
+            id="menu-food-zone"
+            onclick="navigate('food-zone')"
+            class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-3 h-3 rounded-full marker-food shadow-[0_0_8px_currentColor]"
+              ></div>
+              <div>
+                <h4 class="font-semibold text-white text-sm">
+                  Networking Foyer
+                </h4>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                  Main Food Stations
+                </p>
+              </div>
+            </div>
+            <button
+              class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none"
+            >
+              Route
+            </button>
+          </div>
+
+          <!-- Menu Item (NEW: Refreshment Cafe) -->
+          <div
+            id="menu-refreshment"
+            onclick="navigate('refreshment')"
+            class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-3 h-3 rounded-full marker-refreshment shadow-[0_0_8px_currentColor]"
+              ></div>
+              <div>
+                <h4 class="font-semibold text-white text-sm">
+                  Refreshment Cafe
+                </h4>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                  Quick Snacks & Coffee
+                </p>
+              </div>
+            </div>
+            <button
+              class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none"
+            >
+              Route
+            </button>
+          </div>
+
+          <!-- Menu Item -->
+          <div
+            id="menu-workshops"
+            onclick="navigate('workshops')"
+            class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-3 h-3 rounded-full marker-workshops shadow-[0_0_8px_currentColor]"
+              ></div>
+              <div>
+                <h4 class="font-semibold text-white text-sm">Workshop Halls</h4>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                  Interactive Rooms A & B
+                </p>
+              </div>
+            </div>
+            <button
+              class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none"
+            >
+              Route
+            </button>
+          </div>
+
+          <!-- Menu Item -->
+          <div
+            id="menu-restrooms"
+            onclick="navigate('restrooms')"
+            class="menu-item flex items-center justify-between p-4 rounded-xl border border-transparent cursor-pointer bg-[#1a2642]/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-3 h-3 rounded-full marker-restrooms shadow-[0_0_8px_currentColor]"
+              ></div>
+              <div>
+                <h4 class="font-semibold text-white text-sm">Restrooms</h4>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                  East Wing Facilities
+                </p>
+              </div>
+            </div>
+            <button
+              class="text-xs font-semibold px-3 py-1.5 rounded bg-[#0f172a] text-slate-300 border border-slate-600 transition-colors pointer-events-none"
+            >
+              Route
+            </button>
+          </div>
+
+          <!-- Bottom padding for scrolling -->
+          <div class="h-4"></div>
+        </div>
+
+        <!-- Panel Footer -->
+        <div class="p-4 border-t border-slate-800 bg-[#0f172a] text-center">
+          <div
+            class="inline-flex items-center gap-2 text-[10px] text-slate-500 uppercase tracking-widest font-semibold"
+          >
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            Live Routing System
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // Define route paths mapping perfectly to our complex grid
-        // E (Entrance) = 500, 630
-        const routes = {
-            'main-stage': {
-                path: 'M 500 630 L 500 280',
-                color: '#eab308' 
-            },
-            'food-zone': {
-                path: 'M 500 630 L 500 455',
-                color: '#d97757' 
-            },
-            'refreshment': {
-                path: 'M 500 630 L 500 500 L 730 500',
-                color: '#fbbf24' 
-            },
-            'workshops': {
-                path: 'M 500 630 L 500 440 L 270 440',
-                color: '#60a5fa' 
-            },
-            'restrooms': {
-                path: 'M 500 630 L 500 380 L 730 380',
-                color: '#86efac' 
-            }
-        };
+      // Define route paths mapping perfectly to our complex grid
+      // E (Entrance) = 500, 630
+      const routes = {
+        "main-stage": {
+          path: "M 500 630 L 500 280",
+          color: "#eab308",
+        },
+        "food-zone": {
+          path: "M 500 630 L 500 455",
+          color: "#d97757",
+        },
+        refreshment: {
+          path: "M 500 630 L 500 500 L 730 500",
+          color: "#fbbf24",
+        },
+        workshops: {
+          path: "M 500 630 L 500 440 L 270 440",
+          color: "#60a5fa",
+        },
+        restrooms: {
+          path: "M 500 630 L 500 380 L 730 380",
+          color: "#86efac",
+        },
+      };
 
-        let currentDestination = null;
+      let currentDestination = null;
 
-        function navigate(destinationId) {
-            if (currentDestination === destinationId) return;
-            currentDestination = destinationId;
+      function navigate(destinationId) {
+        if (currentDestination === destinationId) return;
+        currentDestination = destinationId;
 
-            const routeData = routes[destinationId];
+        const routeData = routes[destinationId];
 
-            // 1. Update Map UI Elements (Dim others, highlight active)
-            document.querySelectorAll('.zone-card').forEach(el => {
-                el.classList.remove('active');
-                el.style.borderColor = '#475569';
-                el.style.opacity = '0.5'; 
-            });
-            
-            const activeZone = document.getElementById('zone-' + destinationId);
-            if(activeZone) {
-                activeZone.classList.add('active');
-                activeZone.style.borderColor = routeData.color;
-                activeZone.style.opacity = '1';
-            }
+        // 1. Update Map UI Elements (Dim others, highlight active)
+        document.querySelectorAll(".zone-card").forEach((el) => {
+          el.classList.remove("active");
+          el.style.borderColor = "#475569";
+          el.style.opacity = "0.5";
+        });
 
-            // 2. Update Menu UI Elements
-            document.querySelectorAll('.menu-item').forEach(el => {
-                el.classList.remove('active');
-                el.style.borderColor = 'transparent';
-                const btn = el.querySelector('button');
-                btn.innerText = 'Route';
-                btn.classList.replace('bg-green-600', 'bg-[#0f172a]');
-                btn.classList.replace('text-white', 'text-slate-300');
-                btn.classList.replace('border-green-500', 'border-slate-600');
-            });
-            
-            const activeMenu = document.getElementById('menu-' + destinationId);
-            if(activeMenu) {
-                activeMenu.classList.add('active');
-                activeMenu.style.borderColor = routeData.color;
-                const btn = activeMenu.querySelector('button');
-                btn.innerText = 'Routing...';
-                btn.classList.replace('bg-[#0f172a]', 'bg-green-600');
-                btn.classList.replace('text-slate-300', 'text-white');
-                btn.classList.replace('border-slate-600', 'border-green-500');
-            }
-
-            // 3. Update SVG Path and Animation
-            const routePathElement = document.getElementById('active-route');
-            const dotAnim1 = document.getElementById('dot-motion');
-            const navDotGroup = document.getElementById('nav-dot');
-
-            // Set colors and paths
-            routePathElement.setAttribute('d', routeData.path);
-            routePathElement.setAttribute('stroke', routeData.color);
-            
-            dotAnim1.setAttribute('path', routeData.path);
-            
-            // Set dot colors to match destination
-            const dots = navDotGroup.querySelectorAll('circle');
-            dots[0].setAttribute('fill', routeData.color);
-
-            // Show elements
-            routePathElement.style.opacity = '1';
-            navDotGroup.style.display = 'block';
-            
-            // Restart Animation
-            dotAnim1.beginElement();
+        const activeZone = document.getElementById("zone-" + destinationId);
+        if (activeZone) {
+          activeZone.classList.add("active");
+          activeZone.style.borderColor = routeData.color;
+          activeZone.style.opacity = "1";
         }
+
+        // 2. Update Menu UI Elements
+        document.querySelectorAll(".menu-item").forEach((el) => {
+          el.classList.remove("active");
+          el.style.borderColor = "transparent";
+          const btn = el.querySelector("button");
+          btn.innerText = "Route";
+          btn.classList.replace("bg-green-600", "bg-[#0f172a]");
+          btn.classList.replace("text-white", "text-slate-300");
+          btn.classList.replace("border-green-500", "border-slate-600");
+        });
+
+        const activeMenu = document.getElementById("menu-" + destinationId);
+        if (activeMenu) {
+          activeMenu.classList.add("active");
+          activeMenu.style.borderColor = routeData.color;
+          const btn = activeMenu.querySelector("button");
+          btn.innerText = "Routing...";
+          btn.classList.replace("bg-[#0f172a]", "bg-green-600");
+          btn.classList.replace("text-slate-300", "text-white");
+          btn.classList.replace("border-slate-600", "border-green-500");
+        }
+
+        // 3. Update SVG Path and Animation
+        const routePathElement = document.getElementById("active-route");
+        const dotAnim1 = document.getElementById("dot-motion");
+        const navDotGroup = document.getElementById("nav-dot");
+
+        // Set colors and paths
+        routePathElement.setAttribute("d", routeData.path);
+        routePathElement.setAttribute("stroke", routeData.color);
+
+        dotAnim1.setAttribute("path", routeData.path);
+
+        // Set dot colors to match destination
+        const dots = navDotGroup.querySelectorAll("circle");
+        dots[0].setAttribute("fill", routeData.color);
+
+        // Show elements
+        routePathElement.style.opacity = "1";
+        navDotGroup.style.display = "block";
+
+        // Restart Animation
+        dotAnim1.beginElement();
+      }
     </script>
-</body>
+  </body>
 </html>
