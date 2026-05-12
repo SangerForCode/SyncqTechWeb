@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SyncQ Events - Your Event, Digitized.</title>
-  <link rel="icon" type="image/png" href="image.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -124,8 +124,8 @@
     <div id="navbar-shell" class="floating-nav-shell w-full max-w-full md:w-max md:max-w-max mx-auto rounded-[2rem] md:rounded-full px-3 py-2 overflow-hidden">
       <div class="flex items-center justify-between gap-2">
         <a href="#" class="flex items-center gap-2.5 min-w-0 flex-1">
-          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-lg shadow-gold/20 shrink-0">
-            <i data-lucide="calendar-check" class="w-5.5 h-5.5 text-white"></i>
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-lg shadow-gold/20 shrink-0 overflow-hidden">
+            <img src="logo.png" alt="SyncQ Events logo" class="w-full h-full object-cover" />
           </div>
           <span class="font-serif text-[1.25rem] sm:text-[1.9rem] font-semibold text-bark tracking-tight whitespace-nowrap truncate px-1 sm:px-2 pr-2 sm:pr-4">SyncQ <span class="text-gold">Events</span></span>
         </a>
@@ -138,21 +138,22 @@
         <div class="hidden md:flex items-center">
           <a href="#early-access" class="ml-1 bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:bg-bark-light hover:shadow-lg hover:shadow-bark/20 transition-all duration-300 tracking-[0.16em] uppercase">Get Early Access</a>
         </div>
-        <button id="mobile-menu-btn" class="md:hidden w-11 h-11 rounded-full text-bark flex items-center justify-center hover:bg-gold/10 transition-colors shrink-0" aria-label="Menu">
+        <button id="mobile-menu-btn" class="md:hidden w-11 h-11 rounded-full text-bark flex items-center justify-center hover:bg-gold/10 transition-colors shrink-0" aria-label="Open menu">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
-      <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-1">
-        <div class="border-t border-bark/10 pt-3 space-y-1">
-          <a href="#features" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Features</a>
-          <a href="#maps" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Maps</a>
-          <a href="#schedule" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Schedule</a>
-          <a href="#announcements" class="mobile-link block text-sm text-bark-lighter hover:text-bark rounded-2xl px-4 py-3 transition-colors hover:bg-white/30">Announcements</a>
-          <a href="#early-access" class="block bg-bark text-ivory text-sm font-medium px-5 py-3 rounded-2xl text-center mt-3 hover:bg-bark-light transition-colors">Get Early Access</a>
-        </div>
-      </div>
     </div>
   </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 bg-ivory/96 backdrop-blur-xl px-6 pt-28 pb-8">
+    <div class="flex h-full flex-col items-center justify-center gap-6 text-center">
+      <a href="#features" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Features</a>
+      <a href="#maps" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Maps</a>
+      <a href="#schedule" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Schedule</a>
+      <a href="#announcements" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Announcements</a>
+      <a href="#early-access" class="mt-3 inline-flex items-center justify-center bg-bark text-ivory text-sm font-medium px-8 py-3.5 rounded-full hover:bg-bark-light transition-colors">Get Early Access</a>
+    </div>
+  </div>
 
   <!-- HERO -->
   <section class="min-h-screen flex items-center pt-20 relative overflow-hidden">
@@ -216,7 +217,7 @@
                   <div class="flex items-center justify-between">
                     <div>
                       <p class="text-[10px] text-bark-lighter font-medium">Welcome to</p>
-                      <p class="font-serif text-lg font-semibold text-bark leading-tight">TechFest '26</p>
+                      <p class="font-serif text-lg font-semibold text-bark leading-tight">Technolympics '26</p>
                     </div>
                     <div class="w-8 h-8 rounded-full bg-terra/15 flex items-center justify-center">
                       <i data-lucide="user" class="w-4 h-4 text-terra"></i>
@@ -409,7 +410,7 @@
               <div class="px-5 pt-2 pb-3 flex items-center justify-between">
                 <div>
                   <p class="text-[10px] text-bark-lighter">Your event</p>
-                  <p class="font-serif text-lg font-semibold text-bark">TechFest '26</p>
+                  <p class="font-serif text-lg font-semibold text-bark">Technolympics '26</p>
                 </div>
                 <div class="w-8 h-8 rounded-full bg-gold/15 flex items-center justify-center"><i data-lucide="qr-code" class="w-4 h-4 text-gold-dark"></i></div>
               </div>
@@ -788,7 +789,7 @@
             <div class="relative bg-white p-8 rounded-3xl shadow-2xl shadow-bark/10 border border-bark/5">
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 rounded-xl bg-bark flex items-center justify-center"><i data-lucide="qr-code" class="w-5 h-5 text-gold"></i></div>
-                <div><p class="font-serif text-lg font-semibold text-bark">TechFest '26</p><p class="text-xs text-bark-lighter">Scan to open event page</p></div>
+                <div><p class="font-serif text-lg font-semibold text-bark">Technolympics '26</p><p class="text-xs text-bark-lighter">Scan to open event page</p></div>
               </div>
               <div class="w-56 h-56 mx-auto bg-bark rounded-2xl p-4 flex items-center justify-center">
                 <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -848,8 +849,8 @@
           <div class="flex items-center gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 fill-gold text-gold"></i><i data-lucide="star" class="w-4 h-4 fill-gold text-gold"></i><i data-lucide="star" class="w-4 h-4 fill-gold text-gold"></i><i data-lucide="star" class="w-4 h-4 fill-gold text-gold"></i><i data-lucide="star" class="w-4 h-4 fill-gold text-gold"></i></div>
           <p class="text-sm text-bark-lighter leading-relaxed mb-6">"SyncQ Events transformed how we run our annual tech fest. 3,200+ attendees, zero confusion about venues or schedules."</p>
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-full bg-terra/15 flex items-center justify-center text-sm font-medium text-terra-dark">PS</div>
-            <div><p class="text-sm font-medium text-bark">Priya Sharma</p><p class="text-xs text-bark-lighter">TechFest Coordinator</p></div>
+            <div class="w-10 h-10 rounded-full bg-terra/15 flex items-center justify-center text-sm font-medium text-terra-dark">A</div>
+            <div><p class="text-sm font-medium text-bark">Aman</p><p class="text-xs text-bark-lighter">Fitsoc Goa Coordinator</p></div>
           </div>
           <div class="flex gap-3 pt-4 border-t border-bark/5">
             <div class="text-center flex-1"><p class="text-lg font-semibold text-bark">3.2K+</p><p class="text-[10px] text-bark-lighter">Attendees</p></div>
@@ -972,18 +973,18 @@
         <div>
           <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Company</p>
           <ul class="space-y-2.5">
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this feature.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">SyncQ OS</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this feature.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">About Us</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this feature.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Careers</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">SyncQ OS</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">About Us</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Careers</a></li>
             <li><a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="text-sm text-white/40 hover:text-gold transition-colors">Contact us on LinkedIn</a></li>
           </ul>
         </div>
         <div>
           <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Legal</p>
           <ul class="space-y-2.5">
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this feature.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Privacy Policy</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this feature.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Terms of Service</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this feature.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Cookie Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Privacy Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Terms of Service</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Cookie Policy</a></li>
           </ul>
         </div>
       </div>
@@ -1061,10 +1062,16 @@
 
     // ── Navbar Scroll Effect ──
     let lastScroll = 0;
+    let isMobileMenuOpen = false;
     window.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
       const navShell = document.getElementById('navbar-shell');
       const currentScroll = window.scrollY;
+
+      if (isMobileMenuOpen) {
+        nav.style.top = '16px';
+        return;
+      }
 
       if (currentScroll > 24) {
         navShell.classList.add('scrolled');
@@ -1083,12 +1090,25 @@
 
     // ── Mobile Menu ──
     const mobileMenu = document.getElementById('mobile-menu');
-    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const setMobileMenuState = (isOpen) => {
+      isMobileMenuOpen = isOpen;
+      mobileMenu.classList.toggle('hidden', !isOpen);
+      document.body.classList.toggle('overflow-hidden', isOpen);
+      mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      mobileMenuBtn.innerHTML = isOpen
+        ? '<i data-lucide="x" class="w-5 h-5"></i>'
+        : '<i data-lucide="menu" class="w-5 h-5"></i>';
+      document.getElementById('navbar').style.top = '16px';
+      lucide.createIcons();
+    };
+
+    mobileMenuBtn.addEventListener('click', () => {
+      setMobileMenuState(!isMobileMenuOpen);
     });
     document.querySelectorAll('#mobile-menu a').forEach(link => {
       link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
+        setMobileMenuState(false);
       });
     });
 
