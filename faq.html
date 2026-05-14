@@ -107,6 +107,188 @@
     .faq-item.open .faq-chevron {
       transform: rotate(180deg);
     }
+    .mobile-faq-index-button {
+      display: none;
+    }
+    .mobile-faq-index-shell::before,
+    .mobile-faq-index-button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    @media (max-width: 1023px) {
+      #faq-content .grid {
+        display: block;
+      }
+      #faq-content .reveal.reveal-delay-1 {
+        opacity: 1;
+        transform: none;
+      }
+      .mobile-faq-index-shell {
+        position: static;
+        width: 0;
+        height: 0;
+        margin: 0;
+        overflow: visible;
+        z-index: 45;
+      }
+      .mobile-faq-index-shell.reveal,
+      .mobile-faq-index-shell.reveal.revealed {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .mobile-faq-index-shell .glass-card {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        width: 4.5rem;
+        max-height: 4.5rem;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+          radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.45), transparent 42%),
+          rgba(250, 246, 240, 0.22);
+        box-shadow:
+          0 18px 40px rgba(44, 26, 18, 0.14),
+          inset 0 1px 1px rgba(255, 255, 255, 0.5),
+          inset 0 -8px 20px rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(24px) saturate(150%);
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        transition:
+          width 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+          max-height 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+          border-radius 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.45s ease,
+          transform 0.45s ease,
+          background-color 0.45s ease;
+        will-change: width, max-height, border-radius, transform;
+      }
+      .mobile-faq-index-shell .glass-card::before {
+        background:
+          radial-gradient(circle at 28% 20%, rgba(255, 255, 255, 0.52), transparent 32%),
+          radial-gradient(circle at 78% 78%, rgba(201, 168, 76, 0.2), transparent 26%);
+        opacity: 0.95;
+      }
+      .mobile-faq-index-shell[data-state="teaser"] .glass-card {
+        width: 9.75rem;
+        max-height: 4.5rem;
+        border-radius: 9999px;
+        transform: translateY(-1px) scale(1.01);
+      }
+      .mobile-faq-index-shell[data-state="open"] .glass-card {
+        width: min(18rem, calc(100vw - 2rem));
+        max-height: min(70vh, 34rem);
+        border-radius: 1.6rem;
+        box-shadow:
+          0 24px 60px rgba(44, 26, 18, 0.18),
+          inset 0 1px 1px rgba(255, 255, 255, 0.55),
+          inset 0 -12px 24px rgba(255, 255, 255, 0.08);
+        transform: translateY(-2px) scale(1.01);
+      }
+      .mobile-faq-index-button {
+        position: relative;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
+        min-height: 4.5rem;
+        padding: 0.8rem;
+        color: #2C1A12;
+        border-radius: inherit;
+        transition:
+          padding 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+          gap 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.3s ease,
+          background-color 0.3s ease;
+      }
+      .mobile-faq-index-button::before {
+        background:
+          linear-gradient(130deg, rgba(255, 255, 255, 0.38), transparent 55%),
+          radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.24), transparent 30%);
+        opacity: 0.9;
+      }
+      .mobile-faq-index-button:active {
+        transform: scale(0.96);
+      }
+      .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-button {
+        justify-content: center;
+        padding: 0.8rem;
+      }
+      .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-copy,
+      .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-chevron {
+        display: none;
+      }
+      .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-icon {
+        box-shadow:
+          0 10px 24px rgba(201, 168, 76, 0.18),
+          inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      }
+      .mobile-faq-index-shell[data-state="teaser"] .mobile-faq-index-button {
+        justify-content: flex-start;
+        padding: 0.8rem 1rem 0.8rem 0.8rem;
+      }
+      .mobile-faq-index-shell[data-state="teaser"] .mobile-faq-index-copy {
+        display: flex;
+      }
+      .mobile-faq-index-shell[data-state="teaser"] .mobile-faq-index-chevron {
+        display: none;
+      }
+      .mobile-faq-index-shell[data-state="open"] .mobile-faq-index-button {
+        border-bottom: 1px solid rgba(44, 26, 18, 0.08);
+      }
+      .mobile-faq-index-shell[data-state="open"] .mobile-faq-index-copy,
+      .mobile-faq-index-shell[data-state="open"] .mobile-faq-index-chevron {
+        display: flex;
+      }
+      .mobile-faq-index-shell[data-state="open"] #faq-nav a + a {
+        margin-top: 0.5rem;
+      }
+      .mobile-faq-index-shell[data-state="open"] #faq-nav {
+        max-height: min(60vh, 28rem);
+        padding: 0 1rem 1rem;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .mobile-faq-index-copy {
+        align-items: center;
+        min-width: 0;
+        white-space: nowrap;
+        opacity: 1;
+        transform: translateX(0);
+        transition:
+          opacity 0.32s ease,
+          transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .mobile-faq-index-chevron {
+        transition: opacity 0.3s ease;
+      }
+      #faq-nav {
+        display: block;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 1rem 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition:
+          max-height 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.28s ease,
+          transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+          padding 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    }
+    @media (min-width: 1024px) {
+      .mobile-faq-index-button {
+        display: none !important;
+      }
+    }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #FAF6F0; }
     ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); border-radius: 3px; }
@@ -118,7 +300,7 @@
       <div class="flex items-center justify-between gap-2">
         <a href="index.html" class="flex items-center gap-2.5 min-w-0 flex-1">
           <div class="w-11 h-11 flex items-center justify-center shrink-0 overflow-hidden">
-            <img src="logo.png" alt="SyncQ Events logo" class="w-full h-full object-contain">
+            <img src="logo2.png" alt="SyncQ Events logo" class="w-full h-full object-contain">
           </div>
           <span class="font-serif text-[1.25rem] sm:text-[1.9rem] font-semibold text-bark tracking-tight whitespace-nowrap truncate px-1 sm:px-2 pr-2 sm:pr-4">SyncQ <span class="text-gold">Events</span></span>
         </a>
@@ -162,7 +344,7 @@
           Questions, answered in the <span class="font-semibold text-terra">SyncQ way.</span>
         </h1>
         <p class="mt-6 text-lg md:text-xl text-bark-lighter leading-relaxed max-w-2xl font-light">
-          Everything below is pulled directly from our FAQ dataset and ordered by priority so the most important answers show up first.
+          Everything below is pulled directly from our FAQ dataset and organized so the most important answers show up first.
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
           <a href="#faq-content" class="bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
@@ -183,13 +365,33 @@
   <section id="faq-content" class="py-24 lg:py-32">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid lg:grid-cols-[300px_minmax(0,1fr)] gap-10 items-start">
-        <aside class="reveal lg:sticky lg:top-28">
+        <aside id="faq-index-shell" class="reveal lg:sticky lg:top-28 mobile-faq-index-shell" data-state="icon">
           <div class="glass-card rounded-[2rem] p-6 shadow-lg shadow-bark/5">
-            <p class="text-xs font-medium tracking-widest uppercase text-gold-dark">Sections</p>
-            <div id="faq-nav" class="mt-5 space-y-2"></div>
+            <button
+              id="faq-index-toggle"
+              class="mobile-faq-index-button"
+              type="button"
+              aria-expanded="false"
+              aria-controls="faq-nav"
+            >
+              <span class="flex items-center gap-3 min-w-0">
+                <span class="mobile-faq-index-icon inline-flex w-10 h-10 rounded-full bg-gold/15 text-gold-dark items-center justify-center shrink-0">
+                  <i data-lucide="layers-3" class="w-4 h-4"></i>
+                </span>
+                <span class="mobile-faq-index-copy min-w-0 text-left">
+                  <span class="block text-xs font-medium tracking-[0.2em] uppercase text-gold-dark">Index</span>
+                  <!-- <span class="mobile-faq-index-subcopy block text-[0.7rem] text-bark-lighter leading-tight"></span> -->
+                </span>
+              </span>
+              <span class="mobile-faq-index-chevron items-center justify-center">
+                <i data-lucide="chevron-up" class="w-4 h-4 text-bark-lighter shrink-0 transition-transform duration-300"></i>
+              </span>
+            </button>
+            <p class="hidden lg:block text-xs font-medium tracking-widest uppercase text-gold-dark">Sections</p>
+            <div id="faq-nav" class="mt-5 space-y-2 max-lg:grid max-lg:grid-cols-1"></div>
           </div>
         </aside>
-        <div class="reveal reveal-delay-1">
+        <div class="reveal reveal-delay-1 min-w-0">
           <div id="faq-sections" class="space-y-10"></div>
           <div id="faq-loading" class="rounded-[2rem] border border-bark/8 bg-ivory-dark/70 p-8 text-center text-bark-lighter">
             Loading FAQ content...
@@ -209,7 +411,7 @@
         <div class="col-span-2 md:col-span-1">
           <a href="index.html" class="flex items-center gap-2.5 mb-4">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center overflow-hidden">
-              <img src="logo.png" alt="SyncQ Events logo" class="w-full h-full object-cover">
+              <img src="favicon.png" alt="SyncQ Events logo" class="w-full h-full object-cover">
             </div>
             <span class="font-serif text-xl font-semibold text-ivory">SyncQ<span class="text-gold">Events</span></span>
           </a>
@@ -249,7 +451,7 @@
           <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">FAQ Data</p>
           <ul class="space-y-2.5">
             <li class="text-sm text-white/40">JSON-driven rendering</li>
-            <li class="text-sm text-white/40">Sorted by question priority</li>
+            <li class="text-sm text-white/40">Structured by section</li>
             <li class="text-sm text-white/40">Grouped by section</li>
           </ul>
         </div>
@@ -275,10 +477,18 @@
   </footer>
 
   <script>
-    lucide.createIcons();
+    const refreshIcons = () => {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    };
+
+    refreshIcons();
 
     let lastScroll = 0;
     let isMobileMenuOpen = false;
+    let faqIndexState = 'icon';
+    let faqIndexTimer = null;
 
     window.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
@@ -317,7 +527,7 @@
         ? '<i data-lucide="x" class="w-5 h-5"></i>'
         : '<i data-lucide="menu" class="w-5 h-5"></i>';
       document.getElementById('navbar').style.top = '16px';
-      lucide.createIcons();
+      refreshIcons();
     };
 
     mobileMenuBtn.addEventListener('click', () => {
@@ -330,15 +540,88 @@
       });
     });
 
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    const faqIndexShell = document.getElementById('faq-index-shell');
+    const faqIndexToggle = document.getElementById('faq-index-toggle');
+    const syncFaqIndexState = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      faqIndexShell.dataset.state = isDesktop ? 'desktop' : faqIndexState;
+      faqIndexToggle.setAttribute('aria-expanded', isDesktop ? 'true' : String(faqIndexState === 'open'));
+      const chevron = faqIndexToggle.querySelector('[data-lucide="chevron-up"], [data-lucide="chevron-down"]');
+      if (chevron) {
+        chevron.style.transform = isDesktop || faqIndexState === 'open' ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
+    };
 
-    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+    const clearFaqIndexTimer = () => {
+      clearTimeout(faqIndexTimer);
+      faqIndexTimer = null;
+    };
+
+    const scheduleFaqIndexTeaser = () => {
+      clearFaqIndexTimer();
+      if (window.innerWidth >= 1024) {
+        return;
+      }
+      faqIndexState = 'teaser';
+      syncFaqIndexState();
+      faqIndexTimer = window.setTimeout(() => {
+        faqIndexState = 'icon';
+        syncFaqIndexState();
+      }, 4000);
+    };
+
+    faqIndexToggle.addEventListener('click', () => {
+      if (window.innerWidth >= 1024) {
+        return;
+      }
+      clearFaqIndexTimer();
+      faqIndexState = faqIndexState === 'open' ? 'icon' : 'open';
+      syncFaqIndexState();
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        clearFaqIndexTimer();
+        faqIndexState = 'icon';
+      } else if (faqIndexState === 'desktop') {
+        faqIndexState = 'icon';
+        scheduleFaqIndexTeaser();
+      }
+      syncFaqIndexState();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (window.innerWidth >= 1024 || faqIndexState !== 'open') {
+        return;
+      }
+      if (!faqIndexShell.contains(event.target)) {
+        faqIndexState = 'icon';
+        syncFaqIndexState();
+      }
+    });
+
+    if (window.innerWidth < 1024) {
+      scheduleFaqIndexTeaser();
+    } else {
+      syncFaqIndexState();
+    }
+
+    const revealElements = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+    } else {
+      revealElements.forEach((el) => el.classList.add('revealed'));
+    }
 
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener('click', function(e) {
@@ -363,8 +646,8 @@
       item.className = 'faq-item rounded-[1.75rem] border border-bark/8 bg-white/60 shadow-lg shadow-bark/5 overflow-hidden';
       item.innerHTML = `
         <button class="w-full text-left px-6 py-5 md:px-7 md:py-6 flex items-start gap-4" type="button" aria-expanded="false">
-          <div class="shrink-0 mt-0.5 w-9 h-9 rounded-full bg-gold/15 text-gold-dark flex items-center justify-center text-xs font-semibold">
-            ${String(question.priority ?? questionIndex + 1).padStart(2, '0')}
+          <div class="shrink-0 mt-0.5 w-9 h-9 rounded-full bg-gold/15 text-gold-dark flex items-center justify-center">
+            <span class="text-[0.72rem] font-semibold tracking-[0.16em]">${String(questionIndex + 1).padStart(2, '0')}</span>
           </div>
           <div class="min-w-0 flex-1">
             <p class="text-lg md:text-xl font-medium text-bark leading-snug">${question.question}</p>
@@ -420,15 +703,18 @@
       }));
 
       orderedSections.forEach((section, sectionIndex) => {
-        const topPriority = section.questions.length ? section.questions[0].priority : 'NA';
-
         const navLink = document.createElement('a');
         navLink.href = `#${section.sectionId}`;
-        navLink.className = 'block rounded-2xl border border-bark/8 bg-white/40 px-4 py-3 hover:bg-white/70 transition-colors';
+        navLink.className = 'block rounded-2xl border border-bark/8 bg-white/40 px-4 py-4 hover:bg-white/70 transition-colors';
         navLink.innerHTML = `
           <p class="text-sm font-medium text-bark">${section.sectionTitle}</p>
-          <p class="mt-1 text-xs text-bark-lighter">Starts at priority ${topPriority}</p>
         `;
+        navLink.addEventListener('click', () => {
+          if (window.innerWidth < 1024) {
+            faqIndexState = 'icon';
+            syncFaqIndexState();
+          }
+        });
         navRoot.appendChild(navLink);
 
         const sectionNode = document.createElement('section');
@@ -436,7 +722,6 @@
         sectionNode.className = 'scroll-mt-28';
         sectionNode.innerHTML = `
           <div class="mb-6">
-            <span class="text-xs font-medium tracking-widest uppercase text-terra">Section ${String(sectionIndex + 1).padStart(2, '0')}</span>
             <h2 class="mt-3 font-serif text-3xl md:text-4xl font-light text-bark tracking-tight">${section.sectionTitle}</h2>
             <p class="mt-3 text-bark-lighter max-w-2xl font-light">${section.sectionSubtitle || ''}</p>
           </div>
@@ -453,7 +738,7 @@
         sectionsRoot.appendChild(sectionNode);
       });
 
-      lucide.createIcons();
+      refreshIcons();
     }
 
     fetch('FAQ.json')
