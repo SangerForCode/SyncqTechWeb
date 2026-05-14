@@ -1,0 +1,511 @@
+{
+  "structure": {
+    "faqSections": [
+      {
+        "sectionTitle": "string",
+        "sectionSubtitle": "string",
+        "sectionId": "string",
+        "questions": [
+          {
+            "id": "number",
+            "priority": "number",
+            "question": "string",
+            "answer": "string"
+          }
+        ]
+      }
+    ]
+  },
+  "faqSections": [
+    {
+      "sectionTitle": "Why SyncQ?",
+      "sectionSubtitle": "The core value proposition and biggest conversion drivers.",
+      "sectionId": "why-syncq",
+      "questions": [
+        {
+          "id": 60,
+          "priority": 1,
+          "question": "What makes SyncQ different from traditional event platforms?",
+          "answer": "Unlike traditional event platforms focused only on registrations or ticketing, SyncQ is built as a real-time digital operating system for live events. It combines instant QR onboarding, no-install access, interactive maps, live schedules, announcements, crowd analytics, AI-powered venue digitization, and white-label branding into a single platform designed for modern high-scale events."
+        },
+        {
+          "id": 3,
+          "priority": 2,
+          "question": "Do attendees need to install an app?",
+          "answer": "No. SyncQ is completely no-install. Attendees simply scan a QR code or open a link to access the event instantly in their browser."
+        },
+        {
+          "id": 61,
+          "priority": 3,
+          "question": "How quickly can I launch my first app?",
+          "answer": "You can launch your first interactive event app in under 5 minutes."
+        },
+        {
+          "id": 50,
+          "priority": 4,
+          "question": "Can non-technical organizers use SyncQ?",
+          "answer": "Yes. The setup process is designed to feel as simple as filling out a form."
+        },
+        {
+          "id": 65,
+          "priority": 5,
+          "question": "Can SyncQ handle 5,000+ attendees?",
+          "answer": "Yes. SyncQ is designed to support large-scale events with thousands of attendees."
+        },
+        {
+          "id": 1,
+          "priority": 6,
+          "question": "What types of events can use SyncQ Events?",
+          "answer": "SyncQ Events is designed for college fests, conferences, hackathons, corporate events, weddings, cultural festivals, exhibitions, and any large-scale event requiring schedules, announcements, maps, and real-time coordination."
+        },
+        {
+          "id": 69,
+          "priority": 7,
+          "question": "Will this work on phones without installing an app?",
+          "answer": "Yes. SyncQ works directly from the browser without installation."
+        },
+        {
+          "id": 63,
+          "priority": 8,
+          "question": "Can I use my own branding?",
+          "answer": "Yes. SyncQ supports custom branding including colors, splash screens, and QR branding."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Event Experience",
+      "sectionSubtitle": "What attendees and organizers experience in real time.",
+      "sectionId": "event-experience",
+      "questions": [
+        {
+          "id": 15,
+          "priority": 9,
+          "question": "Can schedules update in real time?",
+          "answer": "Yes. Organizers can update schedules live during the event."
+        },
+        {
+          "id": 64,
+          "priority": 10,
+          "question": "What if my event schedule changes live?",
+          "answer": "Schedules can be updated instantly and attendees are automatically notified in real time."
+        },
+        {
+          "id": 16,
+          "priority": 11,
+          "question": "Do attendees get notified automatically about session changes?",
+          "answer": "Yes. Attendees receive automatic live notifications for schedule or venue updates."
+        },
+        {
+          "id": 20,
+          "priority": 12,
+          "question": "How are announcements delivered?",
+          "answer": "Announcements are delivered through browser push notifications, in-app alerts, and live notification banners. SMS and email support are being developed."
+        },
+        {
+          "id": 22,
+          "priority": 13,
+          "question": "Can announcements target specific attendee groups?",
+          "answer": "Yes. Organizers can target announcements to specific attendee cohorts such as VIPs, volunteers, or workshop attendees."
+        },
+        {
+          "id": 11,
+          "priority": 14,
+          "question": "Can maps show live crowd density and capacity?",
+          "answer": "Yes. SyncQ supports live crowd-density and venue-capacity insights."
+        },
+        {
+          "id": 12,
+          "priority": 15,
+          "question": "Can attendees navigate between locations?",
+          "answer": "Yes. Attendees can navigate between stages, halls, workshops, food zones, and other mapped areas."
+        },
+        {
+          "id": 18,
+          "priority": 16,
+          "question": "Can sessions include speaker bios, files, and links?",
+          "answer": "Yes. Sessions can include speaker bios, PDFs, images, files, links, and additional resources."
+        },
+        {
+          "id": 6,
+          "priority": 17,
+          "question": "Can attendees save schedules and reminders personally?",
+          "answer": "Yes. Attendees can bookmark sessions, save schedules, and receive reminders for upcoming events."
+        },
+        {
+          "id": 17,
+          "priority": 18,
+          "question": "Can attendees bookmark sessions?",
+          "answer": "Yes. Attendees can bookmark sessions and save reminders."
+        },
+        {
+          "id": 19,
+          "priority": 19,
+          "question": "Is calendar integration available?",
+          "answer": "Yes. SyncQ supports calendar integrations."
+        },
+        {
+          "id": 8,
+          "priority": 20,
+          "question": "Is multilingual support available?",
+          "answer": "Yes. SyncQ supports multilingual functionality."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Organizer Power & Analytics",
+      "sectionSubtitle": "Operational intelligence and live event management.",
+      "sectionId": "organizer-power-analytics",
+      "questions": [
+        {
+          "id": 34,
+          "priority": 21,
+          "question": "What analytics do organizers get?",
+          "answer": "Organizers receive analytics including registrations, attendance, footfall tracking, crowd density, engagement, venue occupancy, and session popularity."
+        },
+        {
+          "id": 36,
+          "priority": 22,
+          "question": "Can organizers track footfall, popular events, engagement, and announcement performance?",
+          "answer": "Yes. SyncQ provides real-time insights into crowd movement, popular sessions, engagement levels, and announcement reach."
+        },
+        {
+          "id": 35,
+          "priority": 23,
+          "question": "Are analytics available in real time?",
+          "answer": "Yes. Analytics and engagement metrics are updated live during events."
+        },
+        {
+          "id": 54,
+          "priority": 24,
+          "question": "What future features are planned?",
+          "answer": "Upcoming features include live polls, sponsor booths, live streaming, AI-powered recommendations, advanced analytics, networking, and gamification."
+        },
+        {
+          "id": 9,
+          "priority": 25,
+          "question": "How are venue maps uploaded?",
+          "answer": "Organizers upload venue images or layouts and SyncQ's AI system converts them into interactive digital maps."
+        },
+        {
+          "id": 38,
+          "priority": 26,
+          "question": "How many attendees can SyncQ support simultaneously?",
+          "answer": "SyncQ is designed to support large-scale events with thousands of simultaneous attendees."
+        },
+        {
+          "id": 37,
+          "priority": 27,
+          "question": "Can reports be exported after the event?",
+          "answer": "Yes. Aggregate analytics reports can be exported after the event."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Branding & White Labeling",
+      "sectionSubtitle": "Make the platform feel fully yours.",
+      "sectionId": "branding-whitelabel",
+      "questions": [
+        {
+          "id": 25,
+          "priority": 28,
+          "question": "What branding elements are customizable?",
+          "answer": "Brand colors, splash screens, QR branding, and event identity customization are supported."
+        },
+        {
+          "id": 27,
+          "priority": 29,
+          "question": "Can organizers use custom domains or subdomains?",
+          "answer": "Yes. Custom domains and subdomains are available depending on the selected plan."
+        },
+        {
+          "id": 26,
+          "priority": 30,
+          "question": "Will Powered by SyncQ branding appear?",
+          "answer": "Depending on the selected plan, subtle Powered by SyncQ branding may appear."
+        },
+        {
+          "id": 28,
+          "priority": 31,
+          "question": "Can each event under one organization have different branding?",
+          "answer": "Not currently, but this feature is planned for future versions."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Setup & Workflow",
+      "sectionSubtitle": "Simple setup for organizers of any scale.",
+      "sectionId": "setup-workflow",
+      "questions": [
+        {
+          "id": 49,
+          "priority": 32,
+          "question": "How long does setup usually take?",
+          "answer": "Setup typically takes less than 5–10 minutes depending on event complexity."
+        },
+        {
+          "id": 68,
+          "priority": 33,
+          "question": "How difficult is setup?",
+          "answer": "Setup is extremely simple and designed even for non-technical organizers."
+        },
+        {
+          "id": 4,
+          "priority": 34,
+          "question": "Can organizers create multiple events under one account?",
+          "answer": "Yes. Organizers can manage multiple events under one account depending on their selected plan."
+        },
+        {
+          "id": 52,
+          "priority": 35,
+          "question": "Are there different admin roles and permissions?",
+          "answer": "Yes. SyncQ supports multiple admin roles and permission levels."
+        },
+        {
+          "id": 53,
+          "priority": 36,
+          "question": "Can multiple organizers collaborate live?",
+          "answer": "Yes. Multiple organizers can collaborate together on event management."
+        },
+        {
+          "id": 51,
+          "priority": 37,
+          "question": "Is there a dashboard for volunteers and staff?",
+          "answer": "Currently organizer access is prioritized, but additional staff permissions are being expanded."
+        },
+        {
+          "id": 58,
+          "priority": 38,
+          "question": "Do you provide onboarding support for large events?",
+          "answer": "Yes. Dedicated onboarding and setup support is available for large events."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Pricing & Plans",
+      "sectionSubtitle": "Flexible access for organizations and campuses.",
+      "sectionId": "pricing-plans",
+      "questions": [
+        {
+          "id": 67,
+          "priority": 39,
+          "question": "Can I try SyncQ before committing?",
+          "answer": "Yes. Trial access and demo experiences will be available."
+        },
+        {
+          "id": 46,
+          "priority": 40,
+          "question": "Is pricing subscription-based or per event?",
+          "answer": "Both subscription-based and per-event pricing models are available."
+        },
+        {
+          "id": 66,
+          "priority": 41,
+          "question": "Is SyncQ free for student organizations?",
+          "answer": "Selected student organizations may receive free early-access plans and discounted pricing."
+        },
+        {
+          "id": 48,
+          "priority": 42,
+          "question": "Do student organizations get discounts?",
+          "answer": "Yes. Student organizations and campus communities can receive discounted pricing."
+        },
+        {
+          "id": 44,
+          "priority": 43,
+          "question": "Is there a free tier?",
+          "answer": "Currently there is no public free tier available."
+        },
+        {
+          "id": 45,
+          "priority": 44,
+          "question": "What happens after early access ends?",
+          "answer": "After early access, organizers will be able to create events through their accounts and access organizer tools after selecting a plan."
+        },
+        {
+          "id": 47,
+          "priority": 45,
+          "question": "Are there attendee limits in free plans?",
+          "answer": "Yes. Limits may apply depending on the selected plan."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Reliability & Security",
+      "sectionSubtitle": "Enterprise-level reliability and attendee protection.",
+      "sectionId": "reliability-security",
+      "questions": [
+        {
+          "id": 41,
+          "priority": 46,
+          "question": "Is attendee data secure and encrypted?",
+          "answer": "Yes. Attendee data is securely stored and encrypted using industry-standard security practices."
+        },
+        {
+          "id": 7,
+          "priority": 47,
+          "question": "Does the platform work offline if internet connectivity is weak?",
+          "answer": "Yes. Basic event information remains temporarily available offline and syncs automatically once connectivity is restored."
+        },
+        {
+          "id": 40,
+          "priority": 48,
+          "question": "What happens if internet connectivity drops during the event?",
+          "answer": "Event data is temporarily stored locally and automatically synced once internet connectivity returns."
+        },
+        {
+          "id": 43,
+          "priority": 49,
+          "question": "Which browsers and devices are supported?",
+          "answer": "SyncQ supports modern browsers including Chrome, Safari, Edge, and Firefox across phones, tablets, and desktops."
+        },
+        {
+          "id": 42,
+          "priority": 50,
+          "question": "Is SyncQ GDPR compliant?",
+          "answer": "GDPR compliance and additional privacy standards are currently being implemented."
+        },
+        {
+          "id": 39,
+          "priority": 51,
+          "question": "Is there scaling and rate-limiting protection?",
+          "answer": "Backend rate limiting exists for infrastructure protection, but there are no attendee-facing limits."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Advanced Features",
+      "sectionSubtitle": "Maps, sessions, and event intelligence.",
+      "sectionId": "advanced-features",
+      "questions": [
+        {
+          "id": 10,
+          "priority": 52,
+          "question": "Can organizers update maps live during the event?",
+          "answer": "Live map updates are currently being developed and will be supported in future releases."
+        },
+        {
+          "id": 13,
+          "priority": 53,
+          "question": "Does indoor navigation work?",
+          "answer": "Indoor navigation depends on venue size, layout complexity, and device GPS or network conditions."
+        },
+        {
+          "id": 14,
+          "priority": 54,
+          "question": "Can organizers create parallel tracks and workshops?",
+          "answer": "Yes. SyncQ supports multiple simultaneous tracks and workshops depending on the selected plan."
+        },
+        {
+          "id": 21,
+          "priority": 55,
+          "question": "Do users need notification permissions enabled?",
+          "answer": "Yes. Users are prompted to enable notifications for real-time event updates."
+        },
+        {
+          "id": 24,
+          "priority": 56,
+          "question": "Can organizers schedule announcements beforehand?",
+          "answer": "Yes. Announcements can be scheduled in advance or sent instantly during the event."
+        },
+        {
+          "id": 23,
+          "priority": 57,
+          "question": "Is there an emergency alert mode?",
+          "answer": "Not currently, but emergency alert functionality is planned for future releases."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Registration & Integrations",
+      "sectionSubtitle": "Check-ins, integrations, and attendee management.",
+      "sectionId": "registration-integrations",
+      "questions": [
+        {
+          "id": 30,
+          "priority": 58,
+          "question": "Can QR-based check-ins be done through the platform?",
+          "answer": "Yes. QR-based attendee check-ins are fully supported."
+        },
+        {
+          "id": 29,
+          "priority": 59,
+          "question": "Does SyncQ support ticketing and registrations?",
+          "answer": "Currently SyncQ focuses on the live event experience. Ticketing and registration features may be added in future versions."
+        },
+        {
+          "id": 31,
+          "priority": 60,
+          "question": "Are attendee analytics included?",
+          "answer": "Yes. Organizers receive attendee analytics and event insights."
+        },
+        {
+          "id": 32,
+          "priority": 61,
+          "question": "Can organizers export attendee data?",
+          "answer": "Aggregate event data can be exported, but individual attendee information is not shared for privacy reasons."
+        },
+        {
+          "id": 33,
+          "priority": 62,
+          "question": "Does SyncQ integrate with existing registration systems?",
+          "answer": "Integration support is currently being developed."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Platform & Ecosystem",
+      "sectionSubtitle": "The long-term vision of SyncQ.",
+      "sectionId": "platform-ecosystem",
+      "questions": [
+        {
+          "id": 55,
+          "priority": 63,
+          "question": "Will SyncQ expand beyond event management?",
+          "answer": "Currently SyncQ is focused on building the best possible event operating system."
+        },
+        {
+          "id": 56,
+          "priority": 64,
+          "question": "Is SyncQ connected to the larger SyncQ OS ecosystem?",
+          "answer": "Yes. SyncQ Events is part of the broader SyncQ OS ecosystem."
+        },
+        {
+          "id": 57,
+          "priority": 65,
+          "question": "What types of organizations are already interested in SyncQ?",
+          "answer": "The waitlist includes student organizations, entrepreneurship communities, university event committees, conference organizers, wedding planners, and businesses conducting large-scale events."
+        },
+        {
+          "id": 59,
+          "priority": 66,
+          "question": "Is customer support available during live events?",
+          "answer": "Yes. Live support details are available directly on the website."
+        },
+        {
+          "id": 5,
+          "priority": 67,
+          "question": "Is the platform web-only or will there be a native app later?",
+          "answer": "Currently SyncQ is web-based to maintain a no-install experience. Organizer apps may be introduced in the future."
+        },
+        {
+          "id": 2,
+          "priority": 68,
+          "question": "Do attendees need to create an account?",
+          "answer": "No lengthy signup is required. Attendees can access the event using their phone number and basic details."
+        },
+        {
+          "id": 62,
+          "priority": 69,
+          "question": "Do attendees need to download anything?",
+          "answer": "No downloads are required. Attendees simply scan a QR code or open a link."
+        },
+        {
+          "id": 70,
+          "priority": 70,
+          "question": "Can I use SyncQ for college fests, hackathons, conferences, and weddings?",
+          "answer": "Absolutely. SyncQ is designed for all kinds of large-scale events and gatherings."
+        }
+      ]
+    }
+  ]
+}

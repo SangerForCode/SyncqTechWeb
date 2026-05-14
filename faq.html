@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SyncQ Events FAQ</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tea': '#A8C5A0',
+            'tea-light': '#C5DDB8',
+            'tea-dark': '#7FA375',
+            'ivory': '#FAF6F0',
+            'ivory-dark': '#F0EAE0',
+            'terra': '#C67B5C',
+            'terra-light': '#D99A7E',
+            'terra-dark': '#A65E3F',
+            'bark': '#2C1A12',
+            'bark-light': '#5D4037',
+            'bark-lighter': '#8D6E63',
+            'gold': '#C9A84C',
+            'gold-light': '#E0C878',
+            'gold-dark': '#A68A30',
+          },
+          fontFamily: {
+            'serif': ['"Cormorant Garamond"', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+    .paper-grain::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #2C1A12 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      opacity: 0.018;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .floating-nav-shell {
+      background: rgba(250, 246, 240, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 50px rgba(44, 26, 18, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .floating-nav-shell.scrolled {
+      background: rgba(250, 246, 240, 0.88);
+      border-color: rgba(201, 168, 76, 0.16);
+      box-shadow: 0 24px 60px rgba(44, 26, 18, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+    .nav-link {
+      position: relative;
+      color: #8D6E63;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 1rem;
+      width: 0;
+      height: 1px;
+      background: #C9A84C;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #2C1A12;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: calc(100% - 2rem);
+    }
+    .btn-pop { transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-pop:hover { transform: scale(1.02); }
+    .btn-pop:active { transform: scale(0.98); }
+    .reveal { opacity: 0; transform: translateY(36px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .glass-card { background: rgba(255,255,255,0.55); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.6); }
+    .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent); }
+    .faq-answer {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s ease;
+    }
+    .faq-answer > div {
+      overflow: hidden;
+    }
+    .faq-item.open .faq-answer {
+      grid-template-rows: 1fr;
+    }
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #FAF6F0; }
+    ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-ivory text-bark paper-grain overflow-x-hidden">
+  <nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] transition-all duration-500">
+    <div id="navbar-shell" class="floating-nav-shell w-full max-w-full md:w-max md:max-w-max mx-auto rounded-[2rem] md:rounded-full px-3 py-2 overflow-hidden">
+      <div class="flex items-center justify-between gap-2">
+        <a href="index.html" class="flex items-center gap-2.5 min-w-0 flex-1">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-lg shadow-gold/20 shrink-0 overflow-hidden">
+            <img src="logo.png" alt="SyncQ Events logo" class="w-full h-full object-cover">
+          </div>
+          <span class="font-serif text-[1.25rem] sm:text-[1.9rem] font-semibold text-bark tracking-tight whitespace-nowrap truncate px-1 sm:px-2 pr-2 sm:pr-4">SyncQ <span class="text-gold">Events</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html#features" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Features</a>
+          <a href="index.html#maps" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Maps</a>
+          <a href="index.html#schedule" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Schedule</a>
+          <a href="faq.html" class="nav-link active text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">FAQ</a>
+        </div>
+        <div class="hidden md:flex items-center">
+          <a href="index.html#early-access" class="ml-1 bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:bg-bark-light hover:shadow-lg hover:shadow-bark/20 transition-all duration-300 tracking-[0.16em] uppercase">Get Early Access</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden w-11 h-11 rounded-full text-bark flex items-center justify-center hover:bg-gold/10 transition-colors shrink-0" aria-label="Open menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 bg-ivory/96 backdrop-blur-xl px-6 pt-28 pb-8">
+    <div class="flex h-full flex-col items-center justify-center gap-6 text-center">
+      <a href="index.html#features" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Features</a>
+      <a href="index.html#maps" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Maps</a>
+      <a href="index.html#schedule" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Schedule</a>
+      <a href="faq.html" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">FAQ</a>
+      <a href="index.html#early-access" class="mt-3 inline-flex items-center justify-center bg-bark text-ivory text-sm font-medium px-8 py-3.5 rounded-full hover:bg-bark-light transition-colors">Get Early Access</a>
+    </div>
+  </div>
+
+  <section class="min-h-[72vh] flex items-center pt-24 relative overflow-hidden">
+    <div class="absolute top-28 left-10 w-72 h-72 bg-tea/15 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-16 right-16 w-96 h-96 bg-gold/10 rounded-full blur-[120px]"></div>
+    <div class="absolute inset-x-0 top-1/3 mx-auto w-[640px] h-[640px] bg-terra/6 rounded-full blur-[160px]"></div>
+    <div class="max-w-7xl mx-auto px-6 w-full py-16">
+      <div class="max-w-4xl reveal">
+        <span class="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-gold-dark bg-gold/10 px-4 py-2 rounded-full border border-gold/20">
+          <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
+          Knowledge Base
+        </span>
+        <h1 class="mt-6 font-serif text-5xl md:text-6xl lg:text-7xl font-light text-bark leading-[1.05] tracking-tight">
+          Questions, answered in the <span class="font-semibold text-terra">SyncQ way.</span>
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-bark-lighter leading-relaxed max-w-2xl font-light">
+          Everything below is pulled directly from our FAQ dataset and ordered by priority so the most important answers show up first.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#faq-content" class="bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
+            Browse FAQ
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          </a>
+          <a href="index.html#early-access" class="text-sm font-medium text-bark-lighter hover:text-bark transition-colors flex items-center gap-2 px-4 py-4">
+            <i data-lucide="sparkles" class="w-5 h-5 text-gold"></i>
+            Join the waitlist
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider max-w-4xl mx-auto"></div>
+
+  <section id="faq-content" class="py-24 lg:py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-[300px_minmax(0,1fr)] gap-10 items-start">
+        <aside class="reveal lg:sticky lg:top-28">
+          <div class="glass-card rounded-[2rem] p-6 shadow-lg shadow-bark/5">
+            <p class="text-xs font-medium tracking-widest uppercase text-gold-dark">Sections</p>
+            <div id="faq-nav" class="mt-5 space-y-2"></div>
+          </div>
+        </aside>
+        <div class="reveal reveal-delay-1">
+          <div id="faq-sections" class="space-y-10"></div>
+          <div id="faq-loading" class="rounded-[2rem] border border-bark/8 bg-ivory-dark/70 p-8 text-center text-bark-lighter">
+            Loading FAQ content...
+          </div>
+          <div id="faq-error" class="hidden rounded-[2rem] border border-terra/15 bg-terra/8 p-8 text-center">
+            <p class="font-medium text-bark">FAQ content could not be loaded.</p>
+            <p class="mt-2 text-sm text-bark-lighter">Make sure <code>FAQ.json</code> is available beside this page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-bark py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+        <div class="col-span-2 md:col-span-1">
+          <a href="index.html" class="flex items-center gap-2.5 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center overflow-hidden">
+              <img src="logo.png" alt="SyncQ Events logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-serif text-xl font-semibold text-ivory">SyncQ<span class="text-gold">Events</span></span>
+          </a>
+          <p class="text-sm text-white/40 leading-relaxed">Part of the SyncQ OS ecosystem. The operating system for student organizations.</p>
+          <div class="mt-4 flex items-center gap-3">
+            <a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="inline-flex w-9 h-9 rounded-full bg-white/5 items-center justify-center hover:bg-white/10 transition-colors" aria-label="LinkedIn">
+              <svg class="w-4 h-4 text-white/50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12.51 8.796v1.697a3.738 3.738 0 0 1 3.288-1.684c3.455 0 4.202 2.16 4.202 4.97V19.5h-3.2v-5.072c0-1.21-.244-2.766-2.128-2.766-1.827 0-2.139 1.317-2.139 2.676V19.5h-3.19V8.796h3.168ZM7.2 6.106a1.61 1.61 0 0 1-.988 1.483 1.595 1.595 0 0 1-1.743-.348A1.607 1.607 0 0 1 5.6 4.5a1.601 1.601 0 0 1 1.6 1.606Z" clip-rule="evenodd"></path>
+                <path d="M7.2 8.809H4V19.5h3.2V8.809Z"></path>
+              </svg>
+            </a>
+            <a href="mailto:info@syncqtech.com" class="inline-flex w-9 h-9 rounded-full bg-white/5 items-center justify-center hover:bg-white/10 transition-colors" aria-label="Mail Us">
+              <svg class="w-4 h-4 text-white/50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17 6h-2V5h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2h-.541A5.965 5.965 0 0 1 14 10v4a1 1 0 1 1-2 0v-4c0-2.206-1.794-4-4-4-.075 0-.148.012-.22.028C7.686 6.022 7.596 6 7.5 6A4.505 4.505 0 0 0 3 10.5V16a1 1 0 0 0 1 1h7v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3h5a1 1 0 0 0 1-1v-6c0-2.206-1.794-4-4-4Zm-9 8.5H7a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2Z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Product</p>
+          <ul class="space-y-2.5">
+            <li><a href="index.html#features" class="text-sm text-white/40 hover:text-gold transition-colors">Features</a></li>
+            <li><a href="index.html#maps" class="text-sm text-white/40 hover:text-gold transition-colors">Interactive Maps</a></li>
+            <li><a href="index.html#schedule" class="text-sm text-white/40 hover:text-gold transition-colors">Dynamic Schedule</a></li>
+            <li><a href="faq.html" class="text-sm text-white/40 hover:text-gold transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Company</p>
+          <ul class="space-y-2.5">
+            <li><a href="index.html" class="text-sm text-white/40 hover:text-gold transition-colors">Home</a></li>
+            <li><a href="index.html#early-access" class="text-sm text-white/40 hover:text-gold transition-colors">Waitlist</a></li>
+            <li><a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="text-sm text-white/40 hover:text-gold transition-colors">Contact us on LinkedIn</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">FAQ Data</p>
+          <ul class="space-y-2.5">
+            <li class="text-sm text-white/40">JSON-driven rendering</li>
+            <li class="text-sm text-white/40">Sorted by question priority</li>
+            <li class="text-sm text-white/40">Grouped by section</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-white/30">2026 SyncQ Technologies. All rights reserved.</p>
+        <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+          <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">Home</span>
+          </a>
+          <a href="#faq-content" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <i data-lucide="circle-help" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">FAQ</span>
+          </a>
+          <a href="index.html#early-access" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">Waitlist</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    let lastScroll = 0;
+    let isMobileMenuOpen = false;
+
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      const navShell = document.getElementById('navbar-shell');
+      const currentScroll = window.scrollY;
+
+      if (isMobileMenuOpen) {
+        nav.style.top = '16px';
+        return;
+      }
+
+      if (currentScroll > 24) {
+        navShell.classList.add('scrolled');
+      } else {
+        navShell.classList.remove('scrolled');
+      }
+
+      if (currentScroll > 100) {
+        nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
+      } else {
+        nav.style.top = '16px';
+      }
+
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+
+    const setMobileMenuState = (isOpen) => {
+      isMobileMenuOpen = isOpen;
+      mobileMenu.classList.toggle('hidden', !isOpen);
+      document.body.classList.toggle('overflow-hidden', isOpen);
+      mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      mobileMenuBtn.innerHTML = isOpen
+        ? '<i data-lucide="x" class="w-5 h-5"></i>'
+        : '<i data-lucide="menu" class="w-5 h-5"></i>';
+      document.getElementById('navbar').style.top = '16px';
+      lucide.createIcons();
+    };
+
+    mobileMenuBtn.addEventListener('click', () => {
+      setMobileMenuState(!isMobileMenuOpen);
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach((link) => {
+      link.addEventListener('click', () => {
+        setMobileMenuState(false);
+      });
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    function sortSectionQuestions(section) {
+      return [...(section.questions || [])].sort((a, b) => {
+        const left = Number.isFinite(a.priority) ? a.priority : Number.MAX_SAFE_INTEGER;
+        const right = Number.isFinite(b.priority) ? b.priority : Number.MAX_SAFE_INTEGER;
+        return left - right;
+      });
+    }
+
+    function createQuestionMarkup(question, sectionIndex, questionIndex) {
+      const item = document.createElement('article');
+      item.className = 'faq-item rounded-[1.75rem] border border-bark/8 bg-white/60 shadow-lg shadow-bark/5 overflow-hidden';
+      item.innerHTML = `
+        <button class="w-full text-left px-6 py-5 md:px-7 md:py-6 flex items-start gap-4" type="button" aria-expanded="false">
+          <div class="shrink-0 mt-0.5 w-9 h-9 rounded-full bg-gold/15 text-gold-dark flex items-center justify-center text-xs font-semibold">
+            ${String(question.priority ?? questionIndex + 1).padStart(2, '0')}
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-lg md:text-xl font-medium text-bark leading-snug">${question.question}</p>
+          </div>
+          <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-bark-lighter shrink-0 transition-transform duration-300"></i>
+        </button>
+        <div class="faq-answer">
+          <div>
+            <div class="px-6 pb-6 md:px-7 md:pb-7 pl-[5.5rem]">
+              <div class="h-px bg-gradient-to-r from-gold/25 to-transparent mb-5"></div>
+              <p class="text-sm md:text-base text-bark-lighter leading-relaxed">${question.answer}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const button = item.querySelector('button');
+      const shouldOpenByDefault = sectionIndex === 0 && questionIndex === 0;
+      if (shouldOpenByDefault) {
+        item.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
+      }
+
+      button.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        item.classList.toggle('open', !isOpen);
+        button.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      return item;
+    }
+
+    function renderFAQ(data) {
+      const sections = Array.isArray(data?.faqSections) ? data.faqSections : [];
+      const navRoot = document.getElementById('faq-nav');
+      const sectionsRoot = document.getElementById('faq-sections');
+      const loading = document.getElementById('faq-loading');
+      const error = document.getElementById('faq-error');
+
+      loading.classList.add('hidden');
+      error.classList.add('hidden');
+      navRoot.innerHTML = '';
+      sectionsRoot.innerHTML = '';
+
+      if (!sections.length) {
+        error.classList.remove('hidden');
+        return;
+      }
+
+      const orderedSections = sections.map((section) => ({
+        ...section,
+        questions: sortSectionQuestions(section)
+      }));
+
+      orderedSections.forEach((section, sectionIndex) => {
+        const topPriority = section.questions.length ? section.questions[0].priority : 'NA';
+
+        const navLink = document.createElement('a');
+        navLink.href = `#${section.sectionId}`;
+        navLink.className = 'block rounded-2xl border border-bark/8 bg-white/40 px-4 py-3 hover:bg-white/70 transition-colors';
+        navLink.innerHTML = `
+          <p class="text-sm font-medium text-bark">${section.sectionTitle}</p>
+          <p class="mt-1 text-xs text-bark-lighter">Starts at priority ${topPriority}</p>
+        `;
+        navRoot.appendChild(navLink);
+
+        const sectionNode = document.createElement('section');
+        sectionNode.id = section.sectionId;
+        sectionNode.className = 'scroll-mt-28';
+        sectionNode.innerHTML = `
+          <div class="mb-6">
+            <span class="text-xs font-medium tracking-widest uppercase text-terra">Section ${String(sectionIndex + 1).padStart(2, '0')}</span>
+            <h2 class="mt-3 font-serif text-3xl md:text-4xl font-light text-bark tracking-tight">${section.sectionTitle}</h2>
+            <p class="mt-3 text-bark-lighter max-w-2xl font-light">${section.sectionSubtitle || ''}</p>
+          </div>
+        `;
+
+        const questionsWrap = document.createElement('div');
+        questionsWrap.className = 'space-y-4';
+
+        section.questions.forEach((question, questionIndex) => {
+          questionsWrap.appendChild(createQuestionMarkup(question, sectionIndex, questionIndex));
+        });
+
+        sectionNode.appendChild(questionsWrap);
+        sectionsRoot.appendChild(sectionNode);
+      });
+
+      lucide.createIcons();
+    }
+
+    fetch('FAQ.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to load FAQ.json');
+        }
+        return response.json();
+      })
+      .then(renderFAQ)
+      .catch((error) => {
+        console.error(error);
+        document.getElementById('faq-loading').classList.add('hidden');
+        document.getElementById('faq-error').classList.remove('hidden');
+      });
+  </script>
+</body>
+</html>
