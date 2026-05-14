@@ -63,6 +63,10 @@
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
+    @keyframes menu-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes menu-fade-out { 0% { opacity: 1; } 100% { opacity: 0; } }
+    #mobile-menu { animation: menu-fade-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #mobile-menu.hidden { display: none !important; }
     .schedule-details { max-height:0; opacity:0; overflow:hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; margin-top:0; }
     .schedule-item:hover .schedule-details { max-height:80px; opacity:1; margin-top:8px; }
     .phone-shadow { box-shadow: 0 0 80px rgba(201,168,76,0.12), 0 30px 60px rgba(44,26,18,0.18); }
@@ -146,14 +150,16 @@
     </div>
   </nav>
 
-  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 bg-ivory/96 backdrop-blur-xl px-6 pt-28 pb-8">
-    <div class="flex h-full flex-col items-center justify-center gap-6 text-center">
-      <a href="#features" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Features</a>
-      <a href="#maps" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Maps</a>
-      <a href="#schedule" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Schedule</a>
-      <a href="#announcements" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Announcements</a>
-      <a href="faq.html" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">FAQ</a>
-      <a href="#early-access" class="mt-3 inline-flex items-center justify-center bg-bark text-ivory text-sm font-medium px-8 py-3.5 rounded-full hover:bg-bark-light transition-colors">Get Early Access</a>
+  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 bg-ivory px-6 py-8">
+    <div class="flex min-h-full w-full items-center justify-center">
+      <div class="flex w-full max-w-xs flex-col items-center justify-center gap-6 text-center">
+        <a href="#features" class="mobile-link w-full font-serif text-4xl text-bark hover:text-terra transition-colors">Features</a>
+        <a href="#maps" class="mobile-link w-full font-serif text-4xl text-bark hover:text-terra transition-colors">Maps</a>
+        <a href="#schedule" class="mobile-link w-full font-serif text-4xl text-bark hover:text-terra transition-colors">Schedule</a>
+        <a href="#announcements" class="mobile-link w-full font-serif text-4xl text-bark hover:text-terra transition-colors">Announcements</a>
+        <a href="faq.html" class="mobile-link w-full font-serif text-4xl text-bark hover:text-terra transition-colors">FAQ</a>
+        <a href="#early-access" class="mt-3 inline-flex w-full items-center justify-center bg-bark text-ivory text-sm font-medium px-8 py-3.5 rounded-full hover:bg-bark-light transition-colors">Get Early Access</a>
+      </div>
     </div>
   </div>
 

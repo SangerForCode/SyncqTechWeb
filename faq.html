@@ -87,6 +87,8 @@
     .btn-pop { transition: transform 0.2s, box-shadow 0.2s; }
     .btn-pop:hover { transform: scale(1.02); }
     .btn-pop:active { transform: scale(0.98); }
+    @keyframes index-pop { 0% { transform: scale(0.92) translateY(8px); opacity: 0; } 50% { transform: scale(1.08); } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+    @keyframes index-shrink { 0% { transform: scale(1) translateY(0); opacity: 1; } 100% { transform: scale(0.92) translateY(8px); opacity: 0; } }
     .reveal { opacity: 0; transform: translateY(36px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
     .reveal.revealed { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
@@ -126,12 +128,14 @@
         transform: none;
       }
       .mobile-faq-index-shell {
-        position: static;
-        width: 0;
-        height: 0;
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        width: auto;
+        height: auto;
         margin: 0;
         overflow: visible;
-        z-index: 45;
+        z-index: 50;
       }
       .mobile-faq-index-shell.reveal,
       .mobile-faq-index-shell.reveal.revealed {
@@ -140,9 +144,6 @@
         transition: none;
       }
       .mobile-faq-index-shell .glass-card {
-        position: fixed;
-        right: 1rem;
-        bottom: 1rem;
         width: 4.5rem;
         max-height: 4.5rem;
         padding: 0;
@@ -178,7 +179,7 @@
         width: 9.75rem;
         max-height: 4.5rem;
         border-radius: 9999px;
-        transform: translateY(-1px) scale(1.01);
+        animation: index-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       }
       .mobile-faq-index-shell[data-state="open"] .glass-card {
         width: min(18rem, calc(100vw - 2rem));
@@ -189,6 +190,8 @@
           inset 0 1px 1px rgba(255, 255, 255, 0.55),
           inset 0 -12px 24px rgba(255, 255, 255, 0.08);
         transform: translateY(-2px) scale(1.01);
+        display: flex;
+        flex-direction: column;
       }
       .mobile-faq-index-button {
         position: relative;
@@ -220,9 +223,18 @@
         justify-content: center;
         padding: 0.8rem;
       }
-      .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-copy,
+      .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-copy {
+        display: none;
+        opacity: 0;
+      }
       .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-chevron {
         display: none;
+        opacity: 0;
+      }
+      .mobile-faq-index-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       .mobile-faq-index-shell[data-state="icon"] .mobile-faq-index-icon {
         box-shadow:
@@ -241,6 +253,9 @@
       }
       .mobile-faq-index-shell[data-state="open"] .mobile-faq-index-button {
         border-bottom: 1px solid rgba(44, 26, 18, 0.08);
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 1rem 0.8rem;
       }
       .mobile-faq-index-shell[data-state="open"] .mobile-faq-index-copy,
       .mobile-faq-index-shell[data-state="open"] .mobile-faq-index-chevron {
@@ -255,6 +270,7 @@
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
+        overflow-y: auto;
       }
       .mobile-faq-index-copy {
         align-items: center;
@@ -263,8 +279,8 @@
         opacity: 1;
         transform: translateX(0);
         transition:
-          opacity 0.32s ease,
-          transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+          opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
       }
       .mobile-faq-index-chevron {
         transition: opacity 0.3s ease;
@@ -273,7 +289,7 @@
         display: block;
         opacity: 0;
         max-height: 0;
-        overflow: hidden;
+        overflow-y: hidden;
         padding: 0 1rem 0;
         transform: translateY(10px);
         pointer-events: none;
@@ -340,8 +356,8 @@
           <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
           Knowledge Base
         </span>
-        <h1 class="mt-6 font-serif text-5xl md:text-6xl lg:text-7xl font-light text-bark leading-[1.05] tracking-tight">
-          Questions, answered in the <span class="font-semibold text-terra">SyncQ way.</span>
+        <h1 class="mt-6 font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-bark leading-[1.05] tracking-tight">
+          Questions, answered<br><span class="font-semibold text-terra">in the SyncQ way.</span>
         </h1>
         <p class="mt-6 text-lg md:text-xl text-bark-lighter leading-relaxed max-w-2xl font-light">
           Everything below is pulled directly from our FAQ dataset and organized so the most important answers show up first.
