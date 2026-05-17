@@ -635,7 +635,10 @@
   <script>
   (function(){
     // Track whether the user has manually interacted to disable auto behaviors
+    // Flags are section-scoped so a manual interaction only disables that section's auto behavior
     let userInteracted = { whiteLabel: false, viewToggle: false };
+    // suppressUserMark is used to avoid marking an auto-triggered click as a manual interaction
+    let suppressUserMark = { viewToggle: false };
 
     // White-label auto-apply
     const wlSection = document.getElementById('white-label-section');
@@ -695,7 +698,7 @@
       observer.observe(wlSection);
 
       // any user interaction in the section cancels auto and gives control
-      ['pointerdown','touchstart','click','mousemove'].forEach(ev=>{
+      ['pointerdown','touchstart','click'].forEach(ev=>{
         wlSection.addEventListener(ev, ()=>{ userInteracted.whiteLabel = true; if(wlTimer){ clearTimeout(wlTimer); wlTimer = null; } });
       });
     }
@@ -707,8 +710,20 @@
     const viewAtt = document.getElementById('view-attendee');
     let hoverTimer = null;
 
+    function triggerAttendeeAutoSwitch(){
+      if(btnAtt){
+        suppressUserMark.viewToggle = true;
+        btnAtt.click();
+        // clear suppress shortly after the click handler runs
+        setTimeout(()=>{ suppressUserMark.viewToggle = false; }, 50);
+      } else {
+        switchView('attendee');
+      }
+    }
+
     function switchView(to){
-      userInteracted.viewToggle = true; // user now has control
+      // only mark as user interaction when this was a real user action
+      if(!suppressUserMark.viewToggle){ userInteracted.viewToggle = true; }
       if(to === 'attendee'){
         if(viewOrg) viewOrg.classList.add('hidden');
         if(viewAtt) viewAtt.classList.remove('hidden');
@@ -727,7 +742,7 @@
       if(userInteracted.viewToggle) return;
       if(hoverTimer) clearTimeout(hoverTimer);
       const isTouch = (e && (e.pointerType === 'touch' || e.type.startsWith('touch')));
-      hoverTimer = setTimeout(()=>{ if(btnAtt) btnAtt.click(); else switchView('attendee'); }, 2000);
+      hoverTimer = setTimeout(triggerAttendeeAutoSwitch, 2000);
       if(isTouch){
         const cancel = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } window.removeEventListener('pointerup', cancel); window.removeEventListener('pointercancel', cancel); window.removeEventListener('pointermove', cancel); };
         window.addEventListener('pointerup', cancel);
@@ -752,7 +767,10 @@
           entries.forEach(entry=>{
             if(entry.isIntersecting && !userInteracted.viewToggle){
               if(featuresTimer) clearTimeout(featuresTimer);
-              featuresTimer = setTimeout(()=>{ if(btnAtt) btnAtt.click(); else switchView('attendee'); featuresTimer = null; }, 2500);
+              featuresTimer = setTimeout(()=>{
+                triggerAttendeeAutoSwitch();
+                featuresTimer = null;
+              }, 2500);
             } else {
               if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; }
             }
@@ -1060,17 +1078,26 @@
       </div>
       <div class="reveal bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5">
         <form id="early-access-form" class="space-y-5">
-          <div>
-            <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Full Name</label>
-            <input id="full-name" type="text" required placeholder="Priya Sharma" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">First Name</label>
+              <input id="first-name" type="text" required placeholder="John" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Last Name</label>
+              <input id="last-name" type="text" required placeholder="Doe" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+            </div>
           </div>
           <div>
             <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Phone Number</label>
-            <input id="phone-number" type="tel" required placeholder="9876543210" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+            <div class="grid grid-cols-[96px_1fr] gap-3">
+              <input id="country-code" type="tel" required value="+91" placeholder="+91" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-3 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <input id="phone-number" type="tel" required placeholder="9876543210" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+            </div>
           </div>
           <div>
             <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Email Address</label>
-            <input id="email-address" type="email" required placeholder="priya@email.com" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+            <input id="email-address" type="email" required placeholder="name@email.com" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
           </div>
           <button id="submit-btn" type="submit" class="w-full bg-bark text-ivory text-base font-medium py-4 rounded-xl btn-pop hover:shadow-lg hover:shadow-bark/20 flex items-center justify-center gap-2 mt-2">
             <i data-lucide="send" class="w-4 h-4"></i> Request Early Access
@@ -1178,10 +1205,18 @@
       e.preventDefault();
       btn.disabled = true;
       btn.innerText = 'Syncing...';
+      const firstName = document.querySelector('#first-name').value.trim();
+      const lastName = document.querySelector('#last-name').value.trim();
+      const countryCode = document.querySelector('#country-code').value.trim() || '+91';
+      const phone = document.querySelector('#phone-number').value.trim();
       const payload = {
-        fullName: document.querySelector('#full-name').value,
-        phone: document.querySelector('#phone-number').value,
-        email: document.querySelector('#email-address').value
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`.trim(),
+        countryCode,
+        phone,
+        fullPhone: `${countryCode}${phone}`,
+        email: document.querySelector('#email-address').value.trim()
       };
       fetch(scriptURL, {
         method: 'POST',
@@ -1206,19 +1241,20 @@
       });
     });
 
+    const addAnotherEntryWrapper = document.querySelector('#add-another-entry-wrapper');
     addAnotherEntryBtn.addEventListener('click', () => {
       successState.classList.add('hidden');
-      document.querySelector('#add-another-entry-wrapper').classList.add('hidden');
+      addAnotherEntryWrapper.classList.add('hidden');
       form.classList.remove('hidden');
       form.reset();
     });
 
     // ── Navbar Scroll Effect ──
+    const nav = document.getElementById('navbar');
+    const navShell = document.getElementById('navbar-shell');
     let lastScroll = 0;
     let isMobileMenuOpen = false;
     window.addEventListener('scroll', () => {
-      const nav = document.getElementById('navbar');
-      const navShell = document.getElementById('navbar-shell');
       const currentScroll = window.scrollY;
 
       if (isMobileMenuOpen) {
@@ -1252,7 +1288,7 @@
       mobileMenuBtn.innerHTML = isOpen
         ? '<i data-lucide="x" class="w-5 h-5"></i>'
         : '<i data-lucide="menu" class="w-5 h-5"></i>';
-      document.getElementById('navbar').style.top = '16px';
+      nav.style.top = '16px';
       lucide.createIcons();
     };
 
@@ -1276,34 +1312,35 @@
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
     // ── View Toggle ──
+    const organizerView = document.getElementById('view-organizer');
+    const attendeeView = document.getElementById('view-attendee');
+    const organizerToggleBtn = document.getElementById('toggle-organizer');
+    const attendeeToggleBtn = document.getElementById('toggle-attendee');
+    const attendeeNewBadge = document.getElementById('attendee-new-badge');
+
+    function setToggleButtonState(activeBtn, inactiveBtn) {
+      activeBtn.classList.add('bg-bark', 'text-ivory', 'active');
+      activeBtn.classList.remove('text-bark-lighter', 'inactive');
+      inactiveBtn.classList.remove('bg-bark', 'text-ivory', 'active');
+      inactiveBtn.classList.add('text-bark-lighter', 'inactive');
+    }
+
     function switchView(view) {
-      const organizer = document.getElementById('view-organizer');
-      const attendee = document.getElementById('view-attendee');
-      const btnOrg = document.getElementById('toggle-organizer');
-      const btnAtt = document.getElementById('toggle-attendee');
-      const newBadge = document.getElementById('attendee-new-badge');
       if (view === 'organizer') {
-        organizer.classList.remove('hidden');
-        attendee.classList.add('hidden');
-        btnOrg.classList.add('bg-bark', 'text-ivory', 'active');
-        btnOrg.classList.remove('text-bark-lighter', 'inactive');
-        btnAtt.classList.remove('bg-bark', 'text-ivory', 'active');
-        btnAtt.classList.add('text-bark-lighter', 'inactive');
+        organizerView.classList.remove('hidden');
+        attendeeView.classList.add('hidden');
+        setToggleButtonState(organizerToggleBtn, attendeeToggleBtn);
       } else {
-        organizer.classList.add('hidden');
-        attendee.classList.remove('hidden');
-        btnAtt.classList.add('bg-bark', 'text-ivory', 'active');
-        btnAtt.classList.remove('text-bark-lighter', 'inactive');
-        btnOrg.classList.remove('bg-bark', 'text-ivory', 'active');
-        btnOrg.classList.add('text-bark-lighter', 'inactive');
-        if (newBadge) newBadge.classList.add('hidden');
+        organizerView.classList.add('hidden');
+        attendeeView.classList.remove('hidden');
+        setToggleButtonState(attendeeToggleBtn, organizerToggleBtn);
+        if (attendeeNewBadge) attendeeNewBadge.classList.add('hidden');
         initAttendeeViewPanels();
       }
       lucide.createIcons();
     }
 
     function initAttendeeViewPanels() {
-      const attendeeView = document.getElementById('view-attendee');
       if (!attendeeView || attendeeView.dataset.dynamicReady === 'true') return;
 
       const cards = Array.from(attendeeView.querySelectorAll('[data-attendee-card]'));
@@ -1385,28 +1422,6 @@
         lucide.createIcons();
       }
     }
-
-    // ── Map Pin Clicks ──
-    const mapData = {
-      'main-stage': { title: 'Main Stage', detail: 'Currently hosting: Opening Ceremony | Capacity: 2,000 | 78% full', badge: 'Live Now', badgeColor: 'bg-gold/20 text-gold' },
-      'food-zone': { title: 'Food Zone — South Lawn', detail: '8 stalls active | 85% capacity | Next restock in 20 min', badge: 'Busy', badgeColor: 'bg-terra/20 text-terra-light' },
-      'restrooms': { title: 'Restrooms — East Wing', detail: 'All facilities available | Clean status | 3 additional units near Workshops', badge: 'Open', badgeColor: 'bg-tea/20 text-tea-dark' }
-    };
-    document.querySelectorAll('.map-pin').forEach(pin => {
-      pin.addEventListener('click', () => {
-        const zone = pin.dataset.zone;
-        const data = mapData[zone];
-        const info = document.getElementById('map-info');
-        document.getElementById('map-info-title').textContent = data.title;
-        document.getElementById('map-info-detail').textContent = data.detail;
-        const badge = document.getElementById('map-info-badge');
-        badge.textContent = data.badge;
-        badge.className = 'px-3 py-1 rounded-full text-[11px] font-medium ' + data.badgeColor;
-        badge.classList.remove('hidden');
-        info.classList.remove('opacity-0', 'translate-y-2');
-        info.classList.add('opacity-100', 'translate-y-0');
-      });
-    });
 
     // ── Toast Notifications ──
     function showToast(message) {
