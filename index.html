@@ -557,7 +557,7 @@
   <div class="gold-divider max-w-4xl mx-auto"></div>
 
   <!-- WHITE-LABEL -->
-  <section class="py-24 lg:py-32 bg-ivory-dark/50">
+  <section id="white-label-section" class="py-24 lg:py-32 bg-ivory-dark/50">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
         <div class="reveal">
@@ -631,6 +631,147 @@
       </div>
     </div>
   </section>
+
+  <script>
+  (function(){
+    // Track whether the user has manually interacted to disable auto behaviors
+    let userInteracted = { whiteLabel: false, viewToggle: false };
+
+    // White-label auto-apply
+    const wlSection = document.getElementById('white-label-section');
+    const wlBtn = document.getElementById('wl-toggle-btn');
+    const wlBranded = document.getElementById('wl-branded');
+    const wlUnbranded = document.getElementById('wl-unbranded');
+    let wlTimer = null;
+
+    function applyBranding(auto = false){
+      if(auto && userInteracted.whiteLabel) return; // don't override a user's choice
+      if(!wlBranded || !wlUnbranded) return;
+      wlBranded.style.opacity = '1';
+      wlBranded.style.transform = 'translateX(0)';
+      wlBranded.style.pointerEvents = 'auto';
+      wlUnbranded.style.opacity = '0';
+      wlUnbranded.style.transform = 'translateX(-8px)';
+      wlUnbranded.style.pointerEvents = 'none';
+      wlBtn.classList.add('applied');
+      wlBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-gold"></i> Branding Applied';
+      if(window.lucide) window.lucide.replace();
+    }
+
+    function toggleWhiteLabel(){
+      if(!wlBranded || !wlUnbranded) return;
+      const brandedShown = (wlBranded.style.opacity === '1');
+      if(!brandedShown){
+        applyBranding(false);
+      } else {
+        // revert to unbranded
+        wlBranded.style.opacity = '';
+        wlBranded.style.transform = '';
+        wlBranded.style.pointerEvents = 'none';
+        wlUnbranded.style.opacity = '';
+        wlUnbranded.style.transform = '';
+        wlUnbranded.style.pointerEvents = '';
+        wlBtn.classList.remove('applied');
+        wlBtn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4 text-gold"></i> Apply Branding';
+        if(window.lucide) window.lucide.replace();
+      }
+      // mark as user interaction so auto won't override
+      userInteracted.whiteLabel = true;
+    }
+    window.toggleWhiteLabel = toggleWhiteLabel;
+
+    if(wlSection){
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting && !userInteracted.whiteLabel){
+            // start 2s timer to auto-apply
+            if(wlTimer) clearTimeout(wlTimer);
+            wlTimer = setTimeout(()=> applyBranding(true), 2000);
+          } else {
+            if(wlTimer){ clearTimeout(wlTimer); wlTimer = null; }
+          }
+        });
+      }, { threshold: 0.45 });
+      observer.observe(wlSection);
+
+      // any user interaction in the section cancels auto and gives control
+      ['pointerdown','touchstart','click','mousemove'].forEach(ev=>{
+        wlSection.addEventListener(ev, ()=>{ userInteracted.whiteLabel = true; if(wlTimer){ clearTimeout(wlTimer); wlTimer = null; } });
+      });
+    }
+
+    // View toggle and attendee hover/long-press
+    const btnAtt = document.getElementById('toggle-attendee');
+    const btnOrg = document.getElementById('toggle-organizer');
+    const viewOrg = document.getElementById('view-organizer');
+    const viewAtt = document.getElementById('view-attendee');
+    let hoverTimer = null;
+
+    function switchView(to){
+      userInteracted.viewToggle = true; // user now has control
+      if(to === 'attendee'){
+        if(viewOrg) viewOrg.classList.add('hidden');
+        if(viewAtt) viewAtt.classList.remove('hidden');
+        if(btnOrg) { btnOrg.classList.remove('active'); btnOrg.classList.add('inactive'); }
+        if(btnAtt) { btnAtt.classList.add('active'); btnAtt.classList.remove('inactive'); }
+      } else {
+        if(viewAtt) viewAtt.classList.add('hidden');
+        if(viewOrg) viewOrg.classList.remove('hidden');
+        if(btnAtt) { btnAtt.classList.remove('active'); btnAtt.classList.add('inactive'); }
+        if(btnOrg) { btnOrg.classList.add('active'); btnOrg.classList.remove('inactive'); }
+      }
+    }
+    window.switchView = function(v){ switchView(v); };
+
+    function startHoverTimer(e){
+      if(userInteracted.viewToggle) return;
+      if(hoverTimer) clearTimeout(hoverTimer);
+      const isTouch = (e && (e.pointerType === 'touch' || e.type.startsWith('touch')));
+      hoverTimer = setTimeout(()=>{ if(btnAtt) btnAtt.click(); else switchView('attendee'); }, 2000);
+      if(isTouch){
+        const cancel = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } window.removeEventListener('pointerup', cancel); window.removeEventListener('pointercancel', cancel); window.removeEventListener('pointermove', cancel); };
+        window.addEventListener('pointerup', cancel);
+        window.addEventListener('pointercancel', cancel);
+        window.addEventListener('pointermove', cancel);
+      }
+    }
+    function cancelHoverTimer(){ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } }
+
+    if(btnAtt){
+      btnAtt.addEventListener('pointerenter', startHoverTimer);
+      btnAtt.addEventListener('pointerleave', cancelHoverTimer);
+      btnAtt.addEventListener('pointerdown', startHoverTimer);
+      btnAtt.addEventListener('pointerup', cancelHoverTimer);
+      btnAtt.addEventListener('pointercancel', cancelHoverTimer);
+      // any interaction inside features section disables auto and hands control to user
+      const featuresSection = document.getElementById('features');
+      if(featuresSection){
+        // visibility-based auto-switch to attendee after 2.5s when section appears
+        let featuresTimer = null;
+        const featuresObserver = new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting && !userInteracted.viewToggle){
+              if(featuresTimer) clearTimeout(featuresTimer);
+              featuresTimer = setTimeout(()=>{ if(btnAtt) btnAtt.click(); else switchView('attendee'); featuresTimer = null; }, 2500);
+            } else {
+              if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; }
+            }
+          });
+        }, { threshold: 0.5, rootMargin: '0px 0px -20% 0px' });
+        featuresObserver.observe(featuresSection);
+
+        // cancel auto-switch on explicit interactions (no mousemove to avoid accidental cancels)
+        ['pointerdown','touchstart','click'].forEach(ev=>{
+          featuresSection.addEventListener(ev, ()=>{ userInteracted.viewToggle = true; if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; } });
+        });
+      }
+    }
+
+    // ensure icons refresh
+    document.addEventListener('DOMContentLoaded', ()=>{ if(window.lucide) window.lucide.replace(); });
+
+  })();
+  </script>
 
   <div class="gold-divider max-w-4xl mx-auto"></div>
 
