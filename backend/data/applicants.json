@@ -1,0 +1,60 @@
+[
+  {
+    "id": "app_1779311463910_jf5gedr",
+    "fullName": "ayush",
+    "email": "a@a.com",
+    "phoneCountryCode": "+91",
+    "phone": "91283912231",
+    "college": "bits",
+    "yearOfStudy": "3rd Year",
+    "degree": "msc asda",
+    "linkedinUrl": "linkedin.com/nigga",
+    "portfolioUrl": "",
+    "role": "Frontend Developer Intern",
+    "skills": [
+      "akhsvd"
+    ],
+    "whyJoin": "asdkjgbhaskjdnajkbdjkhaj\nasdsdalndkljsnadka skldnaskjdlnaskjnd kjasnd kjasn kad jd jsjndnaskkdkl wnljh ja dl kdajd",
+    "resumeFileUrl": "https://syncq-hiring-system.s3.ap-south-1.amazonaws.com/resumes/resume-1779311427906-55.pdf",
+    "status": "applied",
+    "createdAt": "2026-05-20T21:11:03.910Z"
+  },
+  {
+    "id": "app_1779312717389_0jdhsq2",
+    "fullName": "hardik sahu",
+    "email": "sangerforbusiness@gmail.com",
+    "phoneCountryCode": "+91",
+    "phone": "31912379827",
+    "college": "BITS",
+    "yearOfStudy": "2nd Year",
+    "degree": "B.e cs",
+    "linkedinUrl": "linkedin.com/lund",
+    "portfolioUrl": "",
+    "role": "Product Strategy",
+    "skills": [],
+    "whyJoin": "adsmasm dkloasmdoASdoj nasiodna saasda oasdoao uhabsduhabsudhbasuhd uahsduiashdu8iasbud asuhb duias udh aush duhas du auhauh uh",
+    "resumeFileUrl": "https://syncq-hiring-system.s3.ap-south-1.amazonaws.com/resumes/social-media/hardik-sahu-product-strategy-2026-05-20-1779312696949.pdf",
+    "status": "applied",
+    "createdAt": "2026-05-20T21:31:57.389Z"
+  },
+  {
+    "id": "app_1779313209624_ceyjowo",
+    "fullName": "ayush sanger",
+    "email": "sangerforbusiness@gmail.com",
+    "phoneCountryCode": "India",
+    "phone": "08505875016",
+    "college": "asdas",
+    "yearOfStudy": "4th Year",
+    "degree": "asdas",
+    "linkedinUrl": "linkedin.com/chutiya",
+    "portfolioUrl": "",
+    "role": "Sales & Marketing",
+    "skills": [
+      "gay"
+    ],
+    "whyJoin": "i am askdbnaskbdjahsbdjhasbdjh asd asda jdhasd jas djah sdjasdjhasbdjasdhbasjd asjhd asd asjd ashdja sdj ajskdbnaskbdjahsbdjhasbdjh asd asda jdhasd jas djah sdjasdjhasbdjasdhbasjd asjhd asd asjd ashdja sdj ajskdbnaskbdjahsbdjhasbdjh asd asda jdhasd jas djah sdjasdjhasbdjasdhbasjd asjhd asd asjd ashdja sdj aj",
+    "resumeFileUrl": "https://syncq-hiring-system.s3.ap-south-1.amazonaws.com/resumes/sales/resume-ayush-sanger-sales-and-marketing.pdf",
+    "status": "applied",
+    "createdAt": "2026-05-20T21:40:09.624Z"
+  }
+]

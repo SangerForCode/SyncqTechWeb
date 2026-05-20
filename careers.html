@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers at SyncQ Events</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tea': '#A8C5A0',
+            'tea-light': '#C5DDB8',
+            'tea-dark': '#7FA375',
+            'ivory': '#FAF6F0',
+            'ivory-dark': '#F0EAE0',
+            'terra': '#C67B5C',
+            'terra-light': '#D99A7E',
+            'terra-dark': '#A65E3F',
+            'bark': '#2C1A12',
+            'bark-light': '#5D4037',
+            'bark-lighter': '#8D6E63',
+            'gold': '#C9A84C',
+            'gold-light': '#E0C878',
+            'gold-dark': '#A68A30',
+          },
+          fontFamily: {
+            'serif': ['"Cormorant Garamond"', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+    .paper-grain::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #2C1A12 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      opacity: 0.018;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .floating-nav-shell {
+      background: rgba(250, 246, 240, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 50px rgba(44, 26, 18, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .floating-nav-shell.scrolled {
+      background: rgba(250, 246, 240, 0.88);
+      border-color: rgba(201, 168, 76, 0.16);
+      box-shadow: 0 24px 60px rgba(44, 26, 18, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+    .nav-link {
+      position: relative;
+      color: #8D6E63;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 1rem;
+      width: 0;
+      height: 1px;
+      background: #C9A84C;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #2C1A12;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: calc(100% - 2rem);
+    }
+    .btn-pop { transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-pop:hover { transform: scale(1.02); }
+    .btn-pop:active { transform: scale(0.98); }
+    
+    .reveal { opacity: 0; transform: translateY(36px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    
+    .glass-card { background: rgba(255,255,255,0.55); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.6); }
+    .bento-role-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+      max-width: 62rem;
+      margin: 0 auto;
+    }
+    .bento-role-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-role-card::after {
+      content: '';
+      position: absolute;
+      inset: auto -20% -45% auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, rgba(201, 168, 76, 0) 70%);
+      pointer-events: none;
+    }
+    @media (min-width: 768px) {
+      .bento-role-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent); }
+    
+    .toast-enter { transform: translateX(120%); }
+    .toast-show { transform: translateX(0); }
+    
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #FAF6F0; }
+    ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); border-radius: 3px; }
+    
+    /* Shake animation for errors */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake { animation: shake 0.4s ease-in-out; }
+    
+    /* Shimmer effect for loaders */
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+    .shimmer::after {
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      transform: translateX(-100%);
+      background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: shimmer 2s infinite;
+      content: '';
+    }
+  </style>
+</head>
+<body class="bg-ivory text-bark paper-grain overflow-x-hidden">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-24 right-6 z-[10000] flex flex-col gap-3"></div>
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] transition-all duration-500">
+    <div id="navbar-shell" class="floating-nav-shell w-full max-w-full md:w-max md:max-w-max mx-auto rounded-[2rem] md:rounded-full px-3 py-2 overflow-hidden">
+      <div class="flex items-center justify-between gap-2">
+        <a href="index.html" class="flex items-center gap-2.5 min-w-0 flex-1">
+          <div class="w-11 h-11 flex items-center justify-center shrink-0 overflow-hidden">
+            <img src="logo2.png" alt="SyncQ Events logo" class="w-full h-full object-contain">
+          </div>
+          <span class="font-serif text-[1.25rem] sm:text-[1.9rem] font-semibold text-bark tracking-tight whitespace-nowrap truncate px-1 sm:px-2 pr-2 sm:pr-4">SyncQ <span class="text-gold">Events</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html#features" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Features</a>
+          <a href="index.html#maps" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Maps</a>
+          <a href="index.html#schedule" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Schedule</a>
+          <a href="faq.html" class="nav-link text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">FAQ</a>
+          <a href="careers.html" class="nav-link active text-sm font-medium px-4 py-2.5 rounded-full tracking-[0.16em] uppercase">Careers</a>
+        </div>
+        <div class="hidden md:flex items-center">
+          <a href="index.html#early-access" class="ml-1 bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:bg-bark-light hover:shadow-lg hover:shadow-bark/20 transition-all duration-300 tracking-[0.16em] uppercase">Get Early Access</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden w-11 h-11 rounded-full text-bark flex items-center justify-center hover:bg-gold/10 transition-colors shrink-0" aria-label="Open menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 bg-ivory/96 backdrop-blur-xl px-6 pt-28 pb-8">
+    <div class="flex h-full flex-col items-center justify-center gap-6 text-center">
+      <a href="index.html#features" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Features</a>
+      <a href="index.html#maps" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Maps</a>
+      <a href="index.html#schedule" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Schedule</a>
+      <a href="faq.html" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">FAQ</a>
+      <a href="careers.html" class="mobile-link font-serif text-4xl text-bark hover:text-terra transition-colors">Careers</a>
+      <a href="index.html#early-access" class="mt-3 inline-flex w-full items-center justify-center bg-bark text-ivory text-sm font-medium px-8 py-3.5 rounded-full hover:bg-bark-light transition-colors">Get Early Access</a>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="min-h-[60vh] flex items-center pt-24 relative overflow-hidden">
+    <div class="absolute top-28 left-10 w-72 h-72 bg-tea/15 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-16 right-16 w-96 h-96 bg-gold/10 rounded-full blur-[120px]"></div>
+    <div class="absolute inset-x-0 top-1/3 mx-auto w-[640px] h-[640px] bg-terra/6 rounded-full blur-[160px]"></div>
+    <div class="max-w-7xl mx-auto px-6 w-full py-16 text-center">
+      <div class="max-w-3xl mx-auto reveal">
+        <span class="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-gold-dark bg-gold/10 px-4 py-2 rounded-full border border-gold/20">
+          <span class="w-1.5 h-1.5 bg-gold rounded-full animate-pulse"></span>
+          We are Hiring
+        </span>
+        <h1 class="mt-6 font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-bark leading-[1.05] tracking-tight">
+          Join Our Team of<br><span class="font-semibold text-terra">Young Builders.</span>
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-bark-lighter leading-relaxed max-w-2xl mx-auto font-light">
+          Are you a passionate student, designer, developer, or marketer? We're looking for ambitious minds to shape the future of student event organization. Let's create something extraordinary together.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href="#open-roles" class="bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
+            Explore Open Roles
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          </a>
+          <a href="#apply-form-section" class="inline-flex items-center gap-2 text-sm font-medium text-bark-lighter hover:text-bark bg-white/40 border border-bark/10 hover:bg-white/80 transition-colors px-6 py-4 rounded-full">
+            <i data-lucide="edit-3" class="w-4 h-4 text-gold"></i>
+            Apply Directly
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider max-w-4xl mx-auto"></div>
+
+  <!-- OPEN ROLES SECTION -->
+  <section id="open-roles" class="py-14 lg:py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 reveal">
+        <span class="text-xs font-medium tracking-widest uppercase text-gold-dark">Opportunities</span>
+        <h2 class="font-serif text-4xl md:text-5xl font-light text-bark mt-4 tracking-tight">Open Positions for <span class="font-semibold text-terra">Builders & Creators</span></h2>
+        <p class="text-bark-lighter mt-4 max-w-xl mx-auto font-light">Select a role to view the details and start your application.</p>
+      </div>
+
+      <div class="bento-role-grid reveal reveal-delay-1">
+        
+        <!-- Role 1: Sales & Marketing -->
+        <div class="bento-role-card glass-card rounded-[1.5rem] p-4 md:p-5 hover:shadow-xl hover:shadow-bark/5 transition-all duration-300 flex flex-col justify-between group border border-bark/5 hover:border-gold/30">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] bg-tea/20 text-tea-dark font-medium px-3 py-1 rounded-full uppercase tracking-wider">Growth • Intern</span>
+              <span class="text-[10px] text-bark-lighter flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Remote</span>
+            </div>
+            <h3 class="font-serif text-2xl font-medium text-bark mb-3 group-hover:text-terra transition-colors">Sales & Marketing</h3>
+            <p class="text-xs text-bark-lighter mb-4 leading-relaxed font-light">
+              Support outreach, partnerships, and campaign execution to help SyncQ Events grow across campuses and organizer communities.
+            </p>
+            <ul class="text-xs text-bark-light space-y-2 mb-6 font-light">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Clear communication and outreach confidence</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Interest in growth, promotions, and partnerships</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Comfortable tracking leads and follow-ups</li>
+            </ul>
+          </div>
+          <button onclick="prefillRole('Sales & Marketing')" class="w-full text-center py-3 bg-bark text-ivory hover:bg-bark-light transition-all rounded-xl text-xs font-semibold uppercase tracking-wider btn-pop">
+            Apply For This Role
+          </button>
+        </div>
+
+        <!-- Role 2: Product Strategy -->
+        <div class="bento-role-card glass-card rounded-[1.5rem] p-4 md:p-5 hover:shadow-xl hover:shadow-bark/5 transition-all duration-300 flex flex-col justify-between group border border-bark/5 hover:border-gold/30">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] bg-gold/20 text-gold-dark font-medium px-3 py-1 rounded-full uppercase tracking-wider">Planning • Intern</span>
+              <span class="text-[10px] text-bark-lighter flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Remote</span>
+            </div>
+            <h3 class="font-serif text-2xl font-medium text-bark mb-3 group-hover:text-terra transition-colors">Product Strategy</h3>
+            <p class="text-xs text-bark-lighter mb-4 leading-relaxed font-light">
+              Shape roadmap decisions through market research, user insights, and structured thinking around what SyncQ should build next.
+            </p>
+            <ul class="text-xs text-bark-light space-y-2 mb-6 font-light">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Strong analytical thinking and curiosity</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Interest in research, planning, and prioritization</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Ability to turn ideas into practical decisions</li>
+            </ul>
+          </div>
+          <button onclick="prefillRole('Product Strategy')" class="w-full text-center py-3 bg-bark text-ivory hover:bg-bark-light transition-all rounded-xl text-xs font-semibold uppercase tracking-wider btn-pop">
+            Apply For This Role
+          </button>
+        </div>
+
+        <!-- Role 3: Legal Intern -->
+        <div class="bento-role-card glass-card rounded-[1.5rem] p-4 md:p-5 hover:shadow-xl hover:shadow-bark/5 transition-all duration-300 flex flex-col justify-between group border border-bark/5 hover:border-gold/30">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] bg-terra/20 text-terra-dark font-medium px-3 py-1 rounded-full uppercase tracking-wider">Operations • Intern</span>
+              <span class="text-[10px] text-bark-lighter flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Remote</span>
+            </div>
+            <h3 class="font-serif text-2xl font-medium text-bark mb-3 group-hover:text-terra transition-colors">Legal Intern</h3>
+            <p class="text-xs text-bark-lighter mb-4 leading-relaxed font-light">
+              Assist with contracts, compliance, and policy documentation while helping keep internal operations organized and consistent.
+            </p>
+            <ul class="text-xs text-bark-light space-y-2 mb-6 font-light">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Strong attention to detail and structure</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Interest in legal, compliance, or policy work</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Comfortable organizing written material</li>
+            </ul>
+          </div>
+          <button onclick="prefillRole('Legal Intern')" class="w-full text-center py-3 bg-bark text-ivory hover:bg-bark-light transition-all rounded-xl text-xs font-semibold uppercase tracking-wider btn-pop">
+            Apply For This Role
+          </button>
+        </div>
+
+        <!-- Role 4: UI/UX -->
+        <div class="bento-role-card glass-card rounded-[1.5rem] p-4 md:p-5 hover:shadow-xl hover:shadow-bark/5 transition-all duration-300 flex flex-col justify-between group border border-bark/5 hover:border-gold/30">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] bg-gold/20 text-gold-dark font-medium px-3 py-1 rounded-full uppercase tracking-wider">Design • Intern</span>
+              <span class="text-[10px] text-bark-lighter flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Remote</span>
+            </div>
+            <h3 class="font-serif text-2xl font-medium text-bark mb-3 group-hover:text-terra transition-colors">UI/UX</h3>
+            <p class="text-xs text-bark-lighter mb-4 leading-relaxed font-light">
+              Design intuitive experiences for students and organizers. Build wireframes, flows, and polished screens that feel modern and premium.
+            </p>
+            <ul class="text-xs text-bark-light space-y-2 mb-6 font-light">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Portfolio or examples of interface design</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Comfort with Figma, wireframes, and design thinking</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark shrink-0"></i> Strong taste for clarity, spacing, and flow</li>
+            </ul>
+          </div>
+          <button onclick="prefillRole('UI/UX')" class="w-full text-center py-3 bg-bark text-ivory hover:bg-bark-light transition-all rounded-xl text-xs font-semibold uppercase tracking-wider btn-pop">
+            Apply For This Role
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider max-w-4xl mx-auto"></div>
+
+  <!-- APPLICATION FORM SECTION -->
+  <section id="apply-form-section" class="py-20 lg:py-28 relative">
+    <!-- Decorative background blurs -->
+    <div class="absolute top-1/4 right-0 w-80 h-80 bg-tea/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 left-0 w-80 h-80 bg-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-6">
+      
+      <!-- Normal Form View -->
+      <div id="application-form-container" class="glass-card rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-bark/10 border border-white/60 relative overflow-hidden transition-all duration-500">
+        
+        <div class="mb-10 text-center md:text-left">
+          <span class="text-xs font-medium tracking-widest uppercase text-gold-dark">Application Form</span>
+          <h2 class="font-serif text-3xl md:text-4xl font-medium text-bark mt-2">Submit Your Details</h2>
+          <p class="text-bark-lighter mt-2 text-sm font-light">Tell us who you are, what you build, and why you want to co-create with us.</p>
+        </div>
+
+        <form id="careers-apply-form" class="space-y-6" novalidate>
+          
+          <!-- Grid Block: Name, Email, Phone -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="flex flex-col">
+              <label for="full-name" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                Full Name <span class="text-terra">*</span>
+              </label>
+              <input id="full-name" type="text" required placeholder="Jane Doe"
+                class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <p id="error-full-name" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+            <div class="flex flex-col">
+              <label for="email" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                Email Address <span class="text-terra">*</span>
+              </label>
+              <input id="email" type="email" required placeholder="jane@example.com"
+                class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <p id="error-email" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+          </div>
+
+          <!-- Grid Block: Phone, College -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="flex flex-col">
+              <label for="phone" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                Phone Number <span class="text-terra">*</span>
+              </label>
+              <div class="flex gap-2">
+                <input id="country-code" type="text" value="+91" placeholder="+91"
+                  class="w-16 bg-white/70 border border-bark/10 rounded-xl px-3 py-3.5 text-sm text-bark text-center placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+                <input id="phone" type="tel" required placeholder="9876543210"
+                  class="flex-1 bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              </div>
+              <p id="error-phone" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+            <div class="flex flex-col">
+              <label for="college" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                College / University Name <span class="text-terra">*</span>
+              </label>
+              <input id="college" type="text" required placeholder="BITS Pilani (Goa Campus)"
+                class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <p id="error-college" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+          </div>
+
+          <!-- Grid Block: Current Year, Degree/Branch -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="flex flex-col">
+              <label for="year-of-study" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                Current Year of Study <span class="text-terra">*</span>
+              </label>
+              <div class="relative">
+                <select id="year-of-study" required
+                  class="w-full appearance-none bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+                  <option value="" disabled selected>Select year of study</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                  <option value="5th Year / Dual Degree">5th Year / Dual Degree</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                  <option value="Recent Graduate">Recent Graduate</option>
+                </select>
+                <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-bark-lighter">
+                  <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+              </div>
+              <p id="error-year-of-study" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+            <div class="flex flex-col">
+              <label for="degree" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                Degree / Branch <span class="text-terra">*</span>
+              </label>
+              <input id="degree" type="text" required placeholder="B.E. Computer Science"
+                class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <p id="error-degree" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+          </div>
+
+          <!-- Grid Block: LinkedIn, GitHub -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="flex flex-col">
+              <label for="linkedin" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                LinkedIn Profile URL <span class="text-terra">*</span>
+              </label>
+              <input id="linkedin" type="url" required placeholder="https://linkedin.com/in/username"
+                class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <p id="error-linkedin" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+            <div class="flex flex-col">
+              <label for="github" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+                GitHub / Portfolio URL <span class="text-bark-lighter font-light">(Optional)</span>
+              </label>
+              <input id="github" type="url" placeholder="https://github.com/username or portfolio URL"
+                class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+              <p id="error-github" class="text-[11px] text-terra mt-1.5 hidden"></p>
+            </div>
+          </div>
+
+          <!-- Dropdown: Role Applying For -->
+          <div class="flex flex-col">
+            <label for="role-applying" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+              Role Applying For <span class="text-terra">*</span>
+            </label>
+            <div class="relative">
+              <select id="role-applying" required
+                class="w-full appearance-none bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+                <option value="" disabled selected>Choose a position</option>
+                <option value="Sales & Marketing">Sales & Marketing</option>
+                <option value="Product Strategy">Product Strategy</option>
+                <option value="Legal Intern">Legal Intern</option>
+                <option value="UI/UX">UI/UX</option>
+              </select>
+              <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-bark-lighter">
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <p id="error-role-applying" class="text-[11px] text-terra mt-1.5 hidden"></p>
+          </div>
+
+          <!-- Interactive Skills Tag Input -->
+          <div class="flex flex-col">
+            <label class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+              Skills (Tags) <span class="text-bark-lighter font-light">(Optional)</span>
+            </label>
+            <div class="bg-white/70 border border-bark/10 rounded-xl p-3 min-h-[50px] flex flex-wrap gap-2 items-center focus-within:ring-2 focus-within:ring-gold/30 focus-within:border-gold/50 transition-all">
+              <!-- Rendered tags container -->
+              <span id="skills-tags-container" class="flex flex-wrap gap-2"></span>
+              
+              <!-- Input field -->
+              <input id="skill-input" type="text" placeholder="Type a skill and press Enter..."
+                class="flex-1 bg-transparent min-w-[150px] text-sm text-bark outline-none placeholder-bark-lighter/40 py-1">
+            </div>
+            
+            <!-- Quick tags -->
+            <div class="mt-2 flex flex-wrap gap-1.5 items-center">
+              <span class="text-[10px] text-bark-lighter mr-1">Popular:</span>
+              <button type="button" onclick="addQuickSkill('HTML5')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">HTML5</button>
+              <button type="button" onclick="addQuickSkill('Tailwind')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">Tailwind</button>
+              <button type="button" onclick="addQuickSkill('JavaScript')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">JavaScript</button>
+              <button type="button" onclick="addQuickSkill('React')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">React</button>
+              <button type="button" onclick="addQuickSkill('Node.js')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">Node.js</button>
+              <button type="button" onclick="addQuickSkill('Figma')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">Figma</button>
+              <button type="button" onclick="addQuickSkill('Python')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">Python</button>
+              <button type="button" onclick="addQuickSkill('Copywriting')" class="text-[10px] bg-bark/5 hover:bg-gold/15 text-bark hover:text-gold-dark px-2 py-0.5 rounded transition-all">Copywriting</button>
+            </div>
+            <p id="error-skills" class="text-[11px] text-terra mt-1.5 hidden"></p>
+          </div>
+
+          <!-- Why Join Us Textarea -->
+          <div class="flex flex-col">
+            <label for="why-join" class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+              Why do you want to join us? <span class="text-terra">*</span>
+            </label>
+            <textarea id="why-join" rows="4" required placeholder="Write a short response (minimum 50 characters) on what drives you to join SyncQ Events..."
+              class="w-full bg-white/70 border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all"></textarea>
+            <p id="error-why-join" class="text-[11px] text-terra mt-1.5 hidden"></p>
+          </div>
+
+          <!-- Drag and Drop Resume Section -->
+          <div class="flex flex-col">
+            <label class="text-xs font-semibold uppercase tracking-wider text-bark mb-2 flex items-center gap-1">
+              Upload Resume / CV <span class="text-terra">*</span>
+            </label>
+            
+            <div id="drop-zone" class="border-2 border-dashed border-bark/10 hover:border-gold/40 rounded-2xl p-8 bg-white/50 text-center cursor-pointer transition-all duration-300 relative">
+              
+              <input type="file" id="resume-input" accept=".pdf,.docx" class="hidden">
+              
+              <!-- State 1: Empty state -->
+              <div id="upload-state-empty" class="flex flex-col items-center justify-center space-y-3">
+                <div class="w-12 h-12 rounded-full bg-gold/15 text-gold-dark flex items-center justify-center shrink-0">
+                  <i data-lucide="file-up" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-bark"><span class="text-gold-dark hover:underline">Click to upload</span> or drag and drop your file here</p>
+                  <p class="text-[11px] text-bark-lighter mt-1">Accepts PDF or DOCX (Max size: 5MB)</p>
+                </div>
+              </div>
+
+              <!-- State 2: Uploading / Loading state -->
+              <div id="upload-state-loading" class="hidden flex-col items-center justify-center space-y-4">
+                <div class="w-12 h-12 rounded-full bg-tea/15 text-tea-dark flex items-center justify-center shrink-0 animate-bounce">
+                  <i data-lucide="refresh-cw" class="w-6 h-6 animate-spin"></i>
+                </div>
+                <div class="w-full max-w-xs">
+                  <p id="upload-loading-text" class="text-xs font-semibold text-bark mb-1.5">Uploading Resume...</p>
+                  <div class="w-full h-1.5 bg-bark/5 rounded-full overflow-hidden relative">
+                    <div id="upload-progress-bar" class="h-full bg-tea transition-all duration-200" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- State 3: Done state -->
+              <div id="upload-state-done" class="hidden flex-col items-center justify-center space-y-3">
+                <div class="w-12 h-12 rounded-full bg-tea/15 text-tea-dark flex items-center justify-center shrink-0">
+                  <i data-lucide="check-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <p id="uploaded-filename" class="text-sm font-semibold text-bark truncate max-w-sm"></p>
+                  <p id="uploaded-filesize" class="text-[10px] text-bark-lighter mt-0.5"></p>
+                </div>
+                <button type="button" id="remove-resume-btn" class="text-xs text-terra hover:text-terra-dark font-medium transition-colors flex items-center gap-1.5 bg-terra/10 px-4 py-1.5 rounded-full mt-2 mx-auto">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove Resume
+                </button>
+              </div>
+
+            </div>
+            <p id="error-resume" class="text-[11px] text-terra mt-1.5 hidden"></p>
+          </div>
+
+          <!-- Submit Button -->
+          <button id="submit-btn" type="submit"
+            class="w-full bg-bark text-ivory text-base font-medium py-4 rounded-xl btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center justify-center gap-2 mt-4 transition-all">
+            <i data-lucide="send" class="w-4 h-4"></i> Submit Application
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Confirmation state after successful submission -->
+      <div id="success-confirmation" class="hidden glass-card rounded-[2.5rem] p-12 text-center shadow-2xl shadow-bark/10 border border-white/60 relative overflow-hidden transition-all duration-500 min-h-[450px] flex flex-col items-center justify-center space-y-6">
+        <div class="absolute top-0 left-0 w-48 h-48 bg-tea/15 rounded-full blur-[80px]"></div>
+        <div class="absolute bottom-0 right-0 w-48 h-48 bg-gold/10 rounded-full blur-[80px]"></div>
+
+        <div class="w-20 h-20 rounded-full bg-tea/15 text-tea-dark flex items-center justify-center shadow-lg border border-tea/20">
+          <i data-lucide="shield-check" class="w-10 h-10"></i>
+        </div>
+        
+        <div class="space-y-3">
+          <h2 class="font-serif text-4xl font-semibold text-bark">Application submitted successfully!</h2>
+          <p class="text-bark-lighter max-w-md mx-auto text-base font-light">
+            Thank you for applying to join the SyncQ Events team. We are excited to review your portfolio and we'll get back to you soon.
+          </p>
+        </div>
+
+        <div class="pt-4 flex flex-wrap gap-4 justify-center">
+          <a href="index.html" class="bg-bark text-ivory text-sm font-medium px-8 py-3.5 rounded-full btn-pop hover:shadow-lg transition-all flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Return Home
+          </a>
+          <button onclick="resetApplicationForm()" class="text-sm font-medium text-bark hover:text-terra border border-bark/10 bg-white/40 px-6 py-3.5 rounded-full transition-all">
+            Submit Another Application
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-bark py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+        <div class="col-span-2 md:col-span-1">
+          <a href="index.html" class="flex items-center gap-2.5 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center overflow-hidden">
+              <img src="favicon.png" alt="SyncQ logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-serif text-xl font-semibold text-ivory">SyncQ<span class="text-gold">Events</span></span>
+          </a>
+          <p class="text-sm text-white/40 leading-relaxed">Part of the SyncQ OS ecosystem. The operating system for student organizations.</p>
+          <div class="mt-4 flex items-center gap-3">
+            <a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="inline-flex w-9 h-9 rounded-full bg-white/5 items-center justify-center hover:bg-white/10 transition-colors" aria-label="LinkedIn">
+              <svg class="w-4 h-4 text-white/50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12.51 8.796v1.697a3.738 3.738 0 0 1 3.288-1.684c3.455 0 4.202 2.16 4.202 4.97V19.5h-3.2v-5.072c0-1.21-.244-2.766-2.128-2.766-1.827 0-2.139 1.317-2.139 2.676V19.5h-3.19V8.796h3.168ZM7.2 6.106a1.61 1.61 0 0 1-.988 1.483 1.595 1.595 0 0 1-1.743-.348A1.607 1.607 0 0 1 5.6 4.5a1.601 1.601 0 0 1 1.6 1.606Z" clip-rule="evenodd"/>
+                <path d="M7.2 8.809H4V19.5h3.2V8.809Z"/>
+              </svg>
+            </a>
+            <a href="mailto:info@syncqtech.com" class="inline-flex w-9 h-9 rounded-full bg-white/5 items-center justify-center hover:bg-white/10 transition-colors" aria-label="Mail Us">
+              <svg class="w-4 h-4 text-white/50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 6h-2V5h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2h-.541A5.965 5.965 0 0 1 14 10v4a1 1 0 1 1-2 0v-4c0-2.206-1.794-4-4-4-.075 0-.148.012-.22.028C7.686 6.022 7.596 6 7.5 6A4.505 4.505 0 0 0 3 10.5V16a1 1 0 0 0 1 1h7v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3h5a1 1 0 0 0 1-1v-6c0-2.206-1.794-4-4-4Zm-9 8.5H7a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Product</p>
+          <ul class="space-y-2.5">
+            <li><a href="index.html#features" class="text-sm text-white/40 hover:text-gold transition-colors">Features</a></li>
+            <li><a href="index.html#maps" class="text-sm text-white/40 hover:text-gold transition-colors">Interactive Maps</a></li>
+            <li><a href="index.html#schedule" class="text-sm text-white/40 hover:text-gold transition-colors">Dynamic Schedule</a></li>
+            <li><a href="faq.html" class="text-sm text-white/40 hover:text-gold transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Company</p>
+          <ul class="space-y-2.5">
+            <li><a href="index.html" class="text-sm text-white/40 hover:text-gold transition-colors">Home</a></li>
+            <li><a href="careers.html" class="text-sm text-white/40 hover:text-gold transition-colors">Careers</a></li>
+            <li><a href="index.html#early-access" class="text-sm text-white/40 hover:text-gold transition-colors">Waitlist</a></li>
+            <li><a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="text-sm text-white/40 hover:text-gold transition-colors">Contact us on LinkedIn</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Legal</p>
+          <ul class="space-y-2.5">
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon!'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Privacy Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon!'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Terms of Service</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon!'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-white/30">2026 SyncQ Technologies. All rights reserved.</p>
+        <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+          <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">Home</span>
+          </a>
+          <a href="faq.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <i data-lucide="circle-help" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">FAQ</span>
+          </a>
+          <a href="careers.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <i data-lucide="briefcase" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">Careers</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // ── API INTEGRATION CONFIGURATION ──
+    // Placeholders are configured here so that connecting to your backend is as simple as replacing the URLs.
+    const API_CONFIG = {
+      RESUME_UPLOAD_ENDPOINT: "http://localhost:5000/api/careers/upload-resume",
+      FORM_SUBMISSION_ENDPOINT: "http://localhost:5000/api/careers/submit",
+      MOCK_MODE: false
+    };
+
+    // Global application state
+    const applicationState = {
+      skills: [],
+      resumeFile: null,
+      resumeUrl: "",
+      isUploadingResume: false,
+      isSubmittingForm: false
+    };
+
+    // Initialize Lucide icons
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+      setupSkillsTags();
+      setupResumeUpload();
+      setupNavbar();
+      setupFormValidation();
+    });
+
+    // ── Navbar & Mobile Menu ──
+    const setupNavbar = () => {
+      const nav = document.getElementById('navbar');
+      const navShell = document.getElementById('navbar-shell');
+      let lastScroll = 0;
+      let isMobileMenuOpen = false;
+
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+        if (isMobileMenuOpen) {
+          nav.style.top = '16px';
+          return;
+        }
+        if (currentScroll > 24) {
+          navShell.classList.add('scrolled');
+        } else {
+          navShell.classList.remove('scrolled');
+        }
+        if (currentScroll > 100) {
+          nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
+        } else {
+          nav.style.top = '16px';
+        }
+        lastScroll = currentScroll;
+      }, { passive: true });
+
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      
+      const setMobileMenuState = (isOpen) => {
+        isMobileMenuOpen = isOpen;
+        mobileMenu.classList.toggle('hidden', !isOpen);
+        document.body.classList.toggle('overflow-hidden', isOpen);
+        mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+        mobileMenuBtn.innerHTML = isOpen
+          ? '<i data-lucide="x" class="w-5 h-5"></i>'
+          : '<i data-lucide="menu" class="w-5 h-5"></i>';
+        nav.style.top = '16px';
+        if (window.lucide) window.lucide.createIcons();
+      };
+
+      mobileMenuBtn.addEventListener('click', () => {
+        setMobileMenuState(!isMobileMenuOpen);
+      });
+      document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+          setMobileMenuState(false);
+        });
+      });
+
+      // ── Scroll Reveal ──
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      } else {
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('revealed'));
+      }
+    };
+
+    // ── Prefill Role Dropdown and Scroll ──
+    function prefillRole(roleName) {
+      const select = document.getElementById('role-applying');
+      if (select) {
+        select.value = roleName;
+        // Trigger style check or validation check
+        const errorEl = document.getElementById('error-role-applying');
+        if (errorEl) errorEl.classList.add('hidden');
+        select.classList.remove('border-terra', 'ring-terra/30');
+      }
+      
+      const formSection = document.getElementById('apply-form-section');
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      showToast(`Selected position: ${roleName}`);
+    }
+
+    // ── Interactive Skills Tag System ──
+    const setupSkillsTags = () => {
+      const container = document.getElementById('skills-tags-container');
+      const input = document.getElementById('skill-input');
+      const errorEl = document.getElementById('error-skills');
+
+      const renderTags = () => {
+        container.innerHTML = "";
+        applicationState.skills.forEach((skill, index) => {
+          const tag = document.createElement('span');
+          tag.className = "inline-flex items-center gap-1.5 text-xs bg-gold/15 text-gold-dark font-medium px-3 py-1.5 rounded-full border border-gold/20";
+          tag.innerHTML = `
+            <span>${skill}</span>
+            <button type="button" class="hover:text-terra font-bold outline-none" onclick="removeSkill(${index})">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          `;
+          container.appendChild(tag);
+        });
+        
+        // Error message is not needed since skills are optional
+        errorEl.classList.add('hidden');
+      };
+
+      const addSkill = (val) => {
+        const clean = val.trim();
+        if (clean === "") return;
+        
+        // Check duplicate
+        if (applicationState.skills.some(s => s.toLowerCase() === clean.toLowerCase())) {
+          showToast("Skill is already added!", "warning");
+          return;
+        }
+        
+        applicationState.skills.push(clean);
+        renderTags();
+        input.value = "";
+      };
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addSkill(input.value);
+        } else if (e.key === ',' || e.key === 'Tab') {
+          if (input.value.trim() !== "") {
+            e.preventDefault();
+            addSkill(input.value);
+          }
+        }
+      });
+
+      // Also support lose focus tag addition
+      input.addEventListener('blur', () => {
+        addSkill(input.value);
+      });
+
+      window.removeSkill = (index) => {
+        applicationState.skills.splice(index, 1);
+        renderTags();
+      };
+
+      window.addQuickSkill = (skill) => {
+        addSkill(skill);
+      };
+    };
+
+    // ── Resume Drag and Drop + Upload UI ──
+    const setupResumeUpload = () => {
+      const dropZone = document.getElementById('drop-zone');
+      const input = document.getElementById('resume-input');
+      const emptyState = document.getElementById('upload-state-empty');
+      const loadingState = document.getElementById('upload-state-loading');
+      const doneState = document.getElementById('upload-state-done');
+      const filenameText = document.getElementById('uploaded-filename');
+      const filesizeText = document.getElementById('uploaded-filesize');
+      const removeBtn = document.getElementById('remove-resume-btn');
+      const progressBar = document.getElementById('upload-progress-bar');
+      const loadingText = document.getElementById('upload-loading-text');
+      const errorEl = document.getElementById('error-resume');
+
+      // Click to open file explorer
+      dropZone.addEventListener('click', (e) => {
+        // Prevent click trigger if delete button is hit
+        if (removeBtn.contains(e.target) || e.target === removeBtn) {
+          return;
+        }
+        input.click();
+      });
+
+      // Handle drag states
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add('border-gold', 'bg-gold/5');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('border-gold', 'bg-gold/5');
+        }, false);
+      });
+
+      // Handle drop
+      dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files && files.length > 0) {
+          handleFile(files[0]);
+        }
+      });
+
+      // File input selection
+      input.addEventListener('change', () => {
+        if (input.files && input.files.length > 0) {
+          handleFile(input.files[0]);
+        }
+      });
+
+      // File verification & uploading simulator
+      const handleFile = (file) => {
+        errorEl.classList.add('hidden');
+        dropZone.classList.remove('border-terra', 'bg-terra/5');
+
+        // Validation 1: Allowed Types (PDF and DOCX)
+        const allowedExtensions = /(\.pdf|\.docx)$/i;
+        const fileExt = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+        if (!allowedExtensions.exec(fileExt)) {
+          showInputValidationError(errorEl, "Invalid file format. Please upload only PDF or DOCX files.");
+          dropZone.classList.add('border-terra', 'bg-terra/5');
+          return;
+        }
+
+        // Validation 2: File Size Max 5MB (5 * 1024 * 1024 bytes)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+          showInputValidationError(errorEl, `File is too large (${(file.size / (1024*1024)).toFixed(2)}MB). Max size permitted is 5MB.`);
+          dropZone.classList.add('border-terra', 'bg-terra/5');
+          return;
+        }
+
+        applicationState.resumeFile = file;
+        uploadResume(file);
+      };
+
+      // Simulated / Actual Upload
+      const uploadResume = async (file) => {
+        applicationState.isUploadingResume = true;
+        
+        // UI Transitions
+        emptyState.classList.add('hidden');
+        doneState.classList.add('hidden');
+        loadingState.classList.remove('hidden');
+        progressBar.style.width = "0%";
+        loadingText.textContent = "Uploading Resume: 0%";
+
+        if (API_CONFIG.MOCK_MODE) {
+          // Rich interactive uploading animation
+          let progress = 0;
+          const interval = setInterval(() => {
+            progress += 10;
+            progressBar.style.width = `${progress}%`;
+            loadingText.textContent = `Uploading Resume: ${progress}%`;
+            
+            if (progress >= 100) {
+              clearInterval(interval);
+              setTimeout(() => {
+                completeUploadState(file, "https://storage.syncqtech.com/resumes/mock-uploaded-file-" + Date.now() + file.name);
+              }, 300);
+            }
+          }, 150);
+        } else {
+          // Actual AJAX resume uploading
+          try {
+            const formData = new FormData();
+            formData.append("resume", file);
+            formData.append("applicantName", document.getElementById('full-name').value.trim() || "applicant");
+            formData.append("role", document.getElementById('role-applying').value || "general");
+
+            // Fetch with custom progress (mocking intermediate states as Fetch doesn't support upload progress out of the box without XHR, but we keep it modular)
+            progressBar.style.width = "40%";
+            loadingText.textContent = "Uploading Resume: 40%";
+
+            const response = await fetch(API_CONFIG.RESUME_UPLOAD_ENDPOINT, {
+              method: 'POST',
+              body: formData
+            });
+
+            progressBar.style.width = "85%";
+            loadingText.textContent = "Processing details: 85%";
+
+            if (!response.ok) {
+              throw new Error("Resume upload failed. Server rejected file.");
+            }
+
+            const data = await response.json();
+            progressBar.style.width = "100%";
+            loadingText.textContent = "Complete!";
+            
+            completeUploadState(
+              file,
+              data.resumeUrl || data.fileUrl || data.path || "https://storage.syncqtech.com/resumes/" + file.name,
+              data.fileName || file.name
+            );
+          } catch (error) {
+            console.error("Upload error:", error);
+            // Revert state
+            applicationState.isUploadingResume = false;
+            applicationState.resumeFile = null;
+            applicationState.resumeUrl = "";
+            
+            loadingState.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            showInputValidationError(errorEl, "Connection error: Could not upload resume. Please try again.");
+            showToast("Failed to upload resume. Please check your connection.", "error");
+          }
+        }
+      };
+
+      const completeUploadState = (file, fileUrl, storedFileName) => {
+        applicationState.isUploadingResume = false;
+        applicationState.resumeUrl = fileUrl;
+
+        // Render Done UI
+        loadingState.classList.add('hidden');
+        doneState.classList.remove('hidden');
+        filenameText.textContent = storedFileName || file.name;
+        filesizeText.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+        
+        showToast("Resume uploaded successfully!", "success");
+        if (window.lucide) window.lucide.createIcons();
+      };
+
+      // Remove resume handler
+      removeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        applicationState.resumeFile = null;
+        applicationState.resumeUrl = "";
+        
+        doneState.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        input.value = ""; // Clear file selector
+        
+        showToast("Resume removed.");
+      });
+    };
+
+    // ── Input Validations ──
+    const showInputValidationError = (element, message) => {
+      element.textContent = message;
+      element.classList.remove('hidden');
+    };
+
+    const hideInputValidationError = (element) => {
+      element.classList.add('hidden');
+    };
+
+    const validateField = (id, validationFn, errorMessage) => {
+      const input = document.getElementById(id);
+      const errorEl = document.getElementById(`error-${id}`);
+      if (!input || !errorEl) return true;
+
+      const isValid = validationFn(input.value.trim());
+      if (!isValid) {
+        showInputValidationError(errorEl, errorMessage);
+        input.classList.add('border-terra', 'ring-2', 'ring-terra/20');
+        input.classList.remove('border-bark/10', 'focus:ring-gold/30', 'focus:border-gold/50');
+        return false;
+      } else {
+        hideInputValidationError(errorEl);
+        input.classList.remove('border-terra', 'ring-2', 'ring-terra/20');
+        input.classList.add('border-bark/10');
+        return true;
+      }
+    };
+
+    const setupFormValidation = () => {
+      // Add real-time visual clearing of validation border on keystroke
+      const fields = ['full-name', 'email', 'phone', 'college', 'degree', 'linkedin', 'github', 'why-join', 'role-applying', 'year-of-study'];
+      fields.forEach(fieldId => {
+        const el = document.getElementById(fieldId);
+        if (el) {
+          el.addEventListener('input', () => {
+            el.classList.remove('border-terra', 'ring-2', 'ring-terra/20');
+            el.classList.add('border-bark/10');
+            const errorEl = document.getElementById(`error-${fieldId}`);
+            if (errorEl) errorEl.classList.add('hidden');
+          });
+          el.addEventListener('change', () => {
+            el.classList.remove('border-terra', 'ring-2', 'ring-terra/20');
+            el.classList.add('border-bark/10');
+            const errorEl = document.getElementById(`error-${fieldId}`);
+            if (errorEl) errorEl.classList.add('hidden');
+          });
+        }
+      });
+    };
+
+    // ── Toast Notifications ──
+    function showToast(message, type = "success") {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast-enter flex items-center gap-3 bg-bark text-ivory text-sm px-5 py-3.5 rounded-xl shadow-xl shadow-bark/20 transition-transform duration-300 max-w-sm border border-white/5';
+      
+      let icon = '<i data-lucide="check-circle" class="w-4 h-4 text-tea shrink-0"></i>';
+      if (type === "error") {
+        icon = '<i data-lucide="alert-circle" class="w-4 h-4 text-terra shrink-0"></i>';
+      } else if (type === "warning") {
+        icon = '<i data-lucide="alert-triangle" class="w-4 h-4 text-gold shrink-0"></i>';
+      }
+      
+      toast.innerHTML = `${icon}<span>${message}</span>`;
+      container.appendChild(toast);
+      
+      if (window.lucide) window.lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { 
+          toast.classList.remove('toast-enter'); 
+          toast.classList.add('toast-show'); 
+        });
+      });
+
+      setTimeout(() => {
+        toast.classList.remove('toast-show');
+        toast.classList.add('toast-enter');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // ── Application Form Submission ──
+    const form = document.getElementById('careers-apply-form');
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (applicationState.isSubmittingForm || applicationState.isUploadingResume) {
+        showToast("Please wait for operations to complete.", "warning");
+        return;
+      }
+
+      // ── Step 1: Run Thorough Field Validations ──
+      let isFormValid = true;
+
+      // Validate Full Name
+      isFormValid = validateField('full-name', 
+        val => val.length >= 2, 
+        "Full Name must be at least 2 characters long."
+      ) && isFormValid;
+
+      // Validate Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      isFormValid = validateField('email', 
+        val => emailRegex.test(val), 
+        "Please enter a valid email address."
+      ) && isFormValid;
+
+      // Validate Phone (10 digits minimum)
+      const phoneRegex = /^\d{8,14}$/;
+      isFormValid = validateField('phone', 
+        val => phoneRegex.test(val), 
+        "Please enter a valid phone number (8 to 14 digits, numbers only)."
+      ) && isFormValid;
+
+      // Validate College
+      isFormValid = validateField('college', 
+        val => val.length >= 3, 
+        "Please specify your college or university name."
+      ) && isFormValid;
+
+      // Validate Study Year dropdown
+      isFormValid = validateField('year-of-study', 
+        val => val !== "", 
+        "Please select your current year of study."
+      ) && isFormValid;
+
+      // Validate Degree
+      isFormValid = validateField('degree', 
+        val => val.length >= 2, 
+        "Please specify your degree and specialization."
+      ) && isFormValid;
+
+      // Validate LinkedIn
+      const urlRegex = /^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/i;
+      isFormValid = validateField('linkedin', 
+        val => urlRegex.test(val), 
+        "Please enter a valid LinkedIn profile link (e.g. linkedin.com/in/...)"
+      ) && isFormValid;
+
+      // Validate GitHub/Portfolio (Optional)
+      isFormValid = validateField('github', 
+        val => val === "" || val.startsWith('http://') || val.startsWith('https://') || val.length >= 4, 
+        "Please enter a valid URL or link to your portfolio/github."
+      ) && isFormValid;
+
+      // Validate Role dropdown
+      isFormValid = validateField('role-applying', 
+        val => val !== "", 
+        "Please select a role to apply for."
+      ) && isFormValid;
+
+      // Skills are optional now
+      const skillsErrorEl = document.getElementById('error-skills');
+      if (skillsErrorEl) {
+        hideInputValidationError(skillsErrorEl);
+      }
+
+      // Validate Why Join (Minimum 50 chars)
+      isFormValid = validateField('why-join', 
+        val => val.length >= 50, 
+        "Please share your thoughts in detail (minimum 50 characters)."
+      ) && isFormValid;
+
+      // Validate Resume (Must be uploaded already)
+      const resumeErrorEl = document.getElementById('error-resume');
+      const dropZone = document.getElementById('drop-zone');
+      if (!applicationState.resumeUrl) {
+        showInputValidationError(resumeErrorEl, "Your resume/CV is required. Please drag and drop your file.");
+        dropZone.classList.add('border-terra', 'bg-terra/5');
+        isFormValid = false;
+      } else {
+        hideInputValidationError(resumeErrorEl);
+      }
+
+      // Exit early if form is invalid, trigger subtle shake animation on container
+      if (!isFormValid) {
+        const formCard = document.getElementById('application-form-container');
+        formCard.classList.add('animate-shake');
+        setTimeout(() => formCard.classList.remove('animate-shake'), 400);
+        showToast("Please fix the validation errors in the form.", "error");
+        return;
+      }
+
+      // ── Step 2: Form submission ──
+      submitApplication();
+    });
+
+    const submitApplication = async () => {
+      const submitBtn = document.getElementById('submit-btn');
+      const defaultButtonHTML = submitBtn.innerHTML;
+
+      applicationState.isSubmittingForm = true;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 animate-spin shrink-0"></i> Submitting Application...';
+      if (window.lucide) window.lucide.createIcons();
+
+      const applicantPayload = {
+        fullName: document.getElementById('full-name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phoneCountryCode: document.getElementById('country-code').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        college: document.getElementById('college').value.trim(),
+        yearOfStudy: document.getElementById('year-of-study').value,
+        degree: document.getElementById('degree').value.trim(),
+        linkedinUrl: document.getElementById('linkedin').value.trim(),
+        portfolioUrl: document.getElementById('github').value.trim(),
+        role: document.getElementById('role-applying').value,
+        skills: applicationState.skills,
+        whyJoin: document.getElementById('why-join').value.trim(),
+        resumeFileUrl: applicationState.resumeUrl
+      };
+
+      console.log("Submitting Careers Application payload:", applicantPayload);
+
+      if (API_CONFIG.MOCK_MODE) {
+        // Mock network delay (1.5 seconds)
+        setTimeout(() => {
+          showToast("Application submitted successfully!", "success");
+          
+          // Switch UI layout to success confirmation state
+          document.getElementById('application-form-container').classList.add('hidden');
+          const successState = document.getElementById('success-confirmation');
+          successState.classList.remove('hidden');
+          successState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+          // Reset button state
+          applicationState.isSubmittingForm = false;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = defaultButtonHTML;
+          if (window.lucide) window.lucide.createIcons();
+        }, 1500);
+      } else {
+        // Actual HTTP fetch submission
+        try {
+          const response = await fetch(API_CONFIG.FORM_SUBMISSION_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(applicantPayload)
+          });
+
+          if (!response.ok) {
+            throw new Error("Server error. Submission failed.");
+          }
+
+          showToast("Application submitted successfully!", "success");
+          
+          // Switch UI to success confirmation state
+          document.getElementById('application-form-container').classList.add('hidden');
+          const successState = document.getElementById('success-confirmation');
+          successState.classList.remove('hidden');
+          successState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        } catch (error) {
+          console.error("Submission error:", error);
+          showToast("Submission failed. Server rejected application. Please try again later.", "error");
+        } finally {
+          applicationState.isSubmittingForm = false;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = defaultButtonHTML;
+          if (window.lucide) window.lucide.createIcons();
+        }
+      }
+    };
+
+    // Reset page to allow multiple submissions
+    window.resetApplicationForm = () => {
+      form.reset();
+      
+      // Clear skills state
+      applicationState.skills = [];
+      document.getElementById('skills-tags-container').innerHTML = "";
+      
+      // Clear file upload state
+      applicationState.resumeFile = null;
+      applicationState.resumeUrl = "";
+      document.getElementById('resume-input').value = "";
+      document.getElementById('upload-state-done').classList.add('hidden');
+      document.getElementById('upload-state-empty').classList.remove('hidden');
+
+      // Swap viewports back
+      document.getElementById('success-confirmation').classList.add('hidden');
+      document.getElementById('application-form-container').classList.remove('hidden');
+      
+      const formSection = document.getElementById('apply-form-section');
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      
+      showToast("Form reset. Ready for new submission.");
+    };
+
+    // Helper: standard smooth scroll for anchors
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
