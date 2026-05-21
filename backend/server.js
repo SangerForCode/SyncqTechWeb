@@ -12,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve the frontend from the dedicated folder.
+app.use(express.static(path.join(__dirname, "../frontend")));
+
 // Serve local resumes statically (fallback system)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
