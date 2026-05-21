@@ -69,16 +69,16 @@ router.post("/careers/upload-resume", upload.single("resume"), async (req, res) 
 
     // 1. Attempt AWS S3 Upload
     try {
-      if (process.env.MY_AWS_BUCKET_NAME && process.env.MY_AWS_ACCESS_KEY) {
+      if (process.env.AWS_S3_BUCKET && process.env.AWS_ACCESS_KEY_ID) {
         const uploadParams = {
-          Bucket: process.env.MY_AWS_BUCKET_NAME,
+          Bucket: process.env.AWS_S3_BUCKET,
           Key: `resumes/${roleFolder}/${fileName}`,
           Body: file.buffer,
           ContentType: file.mimetype,
         };
 
         await s3.send(new PutObjectCommand(uploadParams));
-        fileUrl = `https://${process.env.MY_AWS_BUCKET_NAME}.s3.${process.env.MY_AWS_region}.amazonaws.com/resumes/${roleFolder}/${fileName}`;
+        fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/resumes/${roleFolder}/${fileName}`;
         s3Successful = true;
         console.log(`[S3] Successfully uploaded resume: ${fileName}`);
       } else {
