@@ -156,6 +156,30 @@
       animation: shimmer 2s infinite;
       content: '';
     }
+
+    @keyframes upload-indeterminate {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(280%); }
+    }
+    .upload-progress-indeterminate {
+      width: 35%;
+      animation: upload-indeterminate 1s ease-in-out infinite;
+    }
+    @keyframes upload-track-shift {
+      0% { background-position: 0 0; }
+      100% { background-position: 48px 0; }
+    }
+    .upload-progress-track {
+      background-image: repeating-linear-gradient(
+        135deg,
+        rgba(141, 110, 99, 0.08) 0,
+        rgba(141, 110, 99, 0.08) 10px,
+        rgba(141, 110, 99, 0.03) 10px,
+        rgba(141, 110, 99, 0.03) 20px
+      );
+      background-size: 48px 100%;
+      animation: upload-track-shift 1.4s linear infinite;
+    }
   </style>
 </head>
 <body class="bg-ivory text-bark paper-grain overflow-x-hidden">
@@ -567,8 +591,8 @@
                   <i data-lucide="refresh-cw" class="w-6 h-6 animate-spin"></i>
                 </div>
                 <div class="w-full max-w-xs">
-                  <p id="upload-loading-text" class="text-xs font-semibold text-bark mb-1.5">Uploading Resume...</p>
-                  <div class="w-full h-1.5 bg-bark/5 rounded-full overflow-hidden relative">
+                  <p id="upload-loading-text" class="text-xs font-semibold text-bark mb-1.5">Uploading resume. Please wait...</p>
+                  <div class="upload-progress-track w-full h-1.5 rounded-full overflow-hidden relative">
                     <div id="upload-progress-bar" class="h-full bg-tea transition-all duration-200" style="width: 0%;"></div>
                   </div>
                 </div>
@@ -588,6 +612,12 @@
                 </button>
               </div>
 
+            </div>
+            <div class="mt-2 rounded-xl border border-gold/30 bg-gold/10 px-3 py-2.5 text-[11px] text-bark">
+              <p class="font-semibold text-gold-dark uppercase tracking-wide">Upload Notice</p>
+              <p class="mt-1 leading-relaxed text-bark-light">
+                Please be patient while the document uploads. If it does not upload or if any other error appears, email us at <a href="mailto:info@syncqtech.com" class="font-semibold text-terra-dark hover:underline">info@syncqtech.com</a>.
+              </p>
             </div>
             <p id="error-resume" class="text-[11px] text-terra mt-1.5 hidden"></p>
           </div>
@@ -710,7 +740,7 @@
     // Placeholders are configured here so that connecting to your backend is as simple as replacing the URLs.
     const API_CONFIG = {
       RESUME_UPLOAD_ENDPOINT: "https://job-application-backend-o83r.onrender.com/api/careers/upload-resume",
-      FORM_SUBMISSION_ENDPOINT: "https://job-application-backend-o83r.onrender.com/api/careers/submit",
+      GOOGLE_SHEETS_ENDPOINT: "https://script.google.com/macros/s/AKfycbxza_Bsy3OsdWi1H-Dh4tEWdTiHA16LQOaLUH9wzF6EXmkiivwkpetXkf7fQsjOXhuTFg/exec?as=1231",
       MOCK_MODE: false
     };
 
@@ -897,6 +927,17 @@
       const progressBar = document.getElementById('upload-progress-bar');
       const loadingText = document.getElementById('upload-loading-text');
       const errorEl = document.getElementById('error-resume');
+      let loadingMessageInterval = null;
+      const loadingMessages = [
+        'Uploading resume. Please wait...',
+        'SyncQ Tech is securely transferring your document...',
+        'SyncQ Tech is validating your file format...',
+        'Preparing your candidate profile for review...',
+        'Optimizing your application for the hiring team...',
+        'Connecting your resume with SyncQ Tech records...',
+        'Final checks in progress. Please stay with us...',
+        'Almost there, wrapping up your resume upload...'
+      ];
 
       // Click to open file explorer
       dropZone.addEventListener('click', (e) => {
@@ -969,29 +1010,42 @@
       // Simulated / Actual Upload
       const uploadResume = async (file) => {
         applicationState.isUploadingResume = true;
+
+        const startUploadAnimation = () => {
+          if (loadingMessageInterval) {
+            clearInterval(loadingMessageInterval);
+          }
+
+          let messageIndex = 0;
+          loadingText.textContent = loadingMessages[messageIndex];
+          progressBar.classList.add('upload-progress-indeterminate');
+
+          loadingMessageInterval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % loadingMessages.length;
+            loadingText.textContent = loadingMessages[messageIndex];
+          }, 1200);
+        };
+
+        const stopUploadAnimation = () => {
+          if (loadingMessageInterval) {
+            clearInterval(loadingMessageInterval);
+            loadingMessageInterval = null;
+          }
+          progressBar.classList.remove('upload-progress-indeterminate');
+        };
         
         // UI Transitions
         emptyState.classList.add('hidden');
         doneState.classList.add('hidden');
         loadingState.classList.remove('hidden');
         progressBar.style.width = "0%";
-        loadingText.textContent = "Uploading Resume: 0%";
+        startUploadAnimation();
 
         if (API_CONFIG.MOCK_MODE) {
-          // Rich interactive uploading animation
-          let progress = 0;
-          const interval = setInterval(() => {
-            progress += 10;
-            progressBar.style.width = `${progress}%`;
-            loadingText.textContent = `Uploading Resume: ${progress}%`;
-            
-            if (progress >= 100) {
-              clearInterval(interval);
-              setTimeout(() => {
-                completeUploadState(file, "https://storage.syncqtech.com/resumes/mock-uploaded-file-" + Date.now() + file.name);
-              }, 300);
-            }
-          }, 150);
+          setTimeout(() => {
+            stopUploadAnimation();
+            completeUploadState(file, "https://storage.syncqtech.com/resumes/mock-uploaded-file-" + Date.now() + file.name);
+          }, 1600);
         } else {
           // Actual AJAX resume uploading
           try {
@@ -1000,23 +1054,17 @@
             formData.append("applicantName", document.getElementById('full-name').value.trim() || "applicant");
             formData.append("role", document.getElementById('role-applying').value || "general");
 
-            // Fetch with custom progress (mocking intermediate states as Fetch doesn't support upload progress out of the box without XHR, but we keep it modular)
-            progressBar.style.width = "40%";
-            loadingText.textContent = "Uploading Resume: 40%";
-
             const response = await fetch(API_CONFIG.RESUME_UPLOAD_ENDPOINT, {
               method: 'POST',
               body: formData
             });
-
-            progressBar.style.width = "85%";
-            loadingText.textContent = "Processing details: 85%";
 
             if (!response.ok) {
               throw new Error("Resume upload failed. Server rejected file.");
             }
 
             const data = await response.json();
+            stopUploadAnimation();
             progressBar.style.width = "100%";
             loadingText.textContent = "Complete!";
             
@@ -1031,9 +1079,11 @@
             applicationState.isUploadingResume = false;
             applicationState.resumeFile = null;
             applicationState.resumeUrl = "";
+            stopUploadAnimation();
             
             loadingState.classList.add('hidden');
             emptyState.classList.remove('hidden');
+            progressBar.style.width = "0%";
             showInputValidationError(errorEl, "Connection error: Could not upload resume. Please try again.");
             showToast("Failed to upload resume. Please check your connection.", "error");
           }
@@ -1152,6 +1202,17 @@
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
+
+    const submitApplicationToSheets = async (sheetData) => {
+      await fetch(API_CONFIG.GOOGLE_SHEETS_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sheetData)
+      });
+    };
 
     // ── Application Form Submission ──
     const form = document.getElementById('careers-apply-form');
@@ -1286,6 +1347,21 @@
         resumeFileUrl: applicationState.resumeUrl
       };
 
+      const sheetPayload = {
+        fullName: applicantPayload.fullName,
+        email: applicantPayload.email,
+        phone: `${applicantPayload.phoneCountryCode} ${applicantPayload.phone}`.trim(),
+        college: applicantPayload.college,
+        year: applicantPayload.yearOfStudy,
+        degree: applicantPayload.degree,
+        linkedin: applicantPayload.linkedinUrl,
+        portfolio: applicantPayload.portfolioUrl,
+        role: applicantPayload.role,
+        skills: applicantPayload.skills,
+        whyJoin: applicantPayload.whyJoin,
+        resumeUrl: applicantPayload.resumeFileUrl
+      };
+
       console.log("Submitting Careers Application payload:", applicantPayload);
 
       if (API_CONFIG.MOCK_MODE) {
@@ -1306,19 +1382,9 @@
           if (window.lucide) window.lucide.createIcons();
         }, 1500);
       } else {
-        // Actual HTTP fetch submission
+        // Submit application metadata to Google Sheets after the resume upload succeeds.
         try {
-          const response = await fetch(API_CONFIG.FORM_SUBMISSION_ENDPOINT, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(applicantPayload)
-          });
-
-          if (!response.ok) {
-            throw new Error("Server error. Submission failed.");
-          }
+          await submitApplicationToSheets(sheetPayload);
 
           showToast("Application submitted successfully!", "success");
           
