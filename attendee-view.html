@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SyncQ Attendee View</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tea': '#A8C5A0',
+            'tea-light': '#C5DDB8',
+            'tea-dark': '#7FA375',
+            'ivory': '#FAF6F0',
+            'ivory-dark': '#F0EAE0',
+            'terra': '#C67B5C',
+            'terra-light': '#D99A7E',
+            'terra-dark': '#A65E3F',
+            'bark': '#2C1A12',
+            'bark-light': '#5D4037',
+            'bark-lighter': '#8D6E63',
+            'gold': '#C9A84C',
+            'gold-light': '#E0C878',
+            'gold-dark': '#A68A30',
+          },
+          fontFamily: {
+            'serif': ['"Cormorant Garamond"', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { margin: 0; min-height: 100%; height: 100%; }
+    body { font-family: 'Inter', sans-serif; background: transparent; }
+    .attendee-scroll {
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scrollbar-gutter: stable;
+      overscroll-behavior: contain;
+    }
+    .attendee-scroll::-webkit-scrollbar { display: none; }
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+    @keyframes pulse-ring { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(2.2);opacity:0} }
+    @keyframes dot-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .pulse-ring { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) infinite; }
+    .pulse-ring-delay { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) 0.6s infinite; }
+    .animate-dot-blink { animation: dot-blink 1.5s ease-in-out infinite; }
+    .attendee-tab-btn { transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; }
+    .attendee-tab-btn.active {
+      background: #2C1A12;
+      color: #FAF6F0;
+      box-shadow: 0 10px 22px rgba(44, 26, 18, 0.16);
+      transform: translateY(-1px);
+    }
+    .attendee-tab-btn.active .attendee-tab-icon,
+    .attendee-tab-btn.active .attendee-tab-label { color: #FAF6F0; }
+    .floating-panel-enter { animation: floating-panel-enter 0.2s ease-out; }
+    @keyframes floating-panel-enter {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #FAF6F0; }
+    ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); border-radius: 3px; }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in { animation: fade-in 0.25s ease; }
+
+    details > summary { list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    .phone-stage {
+      min-height: 100dvh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+    }
+    .phone-frame {
+      width: min(300px, 92vw, 44vh);
+      aspect-ratio: 1 / 2;
+    }
+  </style>
+</head>
+<body class="h-full bg-transparent overflow-hidden">
+  <div class="phone-stage">
+    <a href="index.html" class="absolute top-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-2 text-xs font-medium text-bark shadow-sm border border-bark/10 hover:bg-white transition-colors">
+      <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+      Go Back
+    </a>
+    <div class="phone-frame bg-bark rounded-[3rem] p-3 phone-shadow" style="box-shadow: 0 0 80px rgba(201,168,76,0.12), 0 30px 60px rgba(44,26,18,0.18);">
+    <div class="w-full h-full bg-ivory rounded-[2.4rem] overflow-hidden relative flex flex-col">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-bark rounded-b-2xl z-10"></div>
+      <div class="flex justify-between items-center px-6 py-1.5 text-[10px] text-bark-lighter pt-3">
+        <span>11:58</span>
+        <div class="flex gap-1 items-center"><i data-lucide="signal" class="w-3 h-3"></i><i data-lucide="wifi" class="w-3 h-3"></i><i data-lucide="battery-full" class="w-3.5 h-3.5"></i></div>
+      </div>
+      <div class="px-5 pt-2 pb-3 flex items-center justify-between">
+        <div>
+          <p class="text-[10px] text-bark-lighter">Your event</p>
+          <p class="font-serif text-lg font-semibold text-bark">Technolympics '26</p>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-gold/15 flex items-center justify-center"><i data-lucide="qr-code" class="w-4 h-4 text-gold-dark"></i></div>
+      </div>
+      <div class="attendee-scroll px-5 flex-1 pb-16">
+        <div data-attendee-tab-panel="map" class="space-y-3">
+          <p class="text-[11px] font-semibold text-bark text-center">Live Venue Map</p>
+          <div class="mx-auto w-full rounded-2xl overflow-hidden relative" style="height:180px; background:#0F1629;">
+            <svg viewBox="0 0 260 140" class="w-full h-full">
+              <rect width="260" height="140" fill="#0F1629"/>
+              <rect x="20" y="15" width="100" height="50" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+              <text x="70" y="45" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="Inter">MAIN STAGE</text>
+              <rect x="140" y="15" width="100" height="50" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+              <text x="190" y="45" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">FOOD ZONE</text>
+              <rect x="20" y="80" width="100" height="45" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+              <text x="70" y="107" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">WORKSHOPS</text>
+              <rect x="140" y="80" width="100" height="45" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
+              <text x="190" y="107" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">RESTROOMS</text>
+              <circle cx="70" cy="68" r="5" fill="#C9A84C"/>
+              <circle cx="70" cy="68" r="9" fill="none" stroke="#C9A84C" stroke-width="0.6" class="pulse-ring" opacity="0.5"/>
+              <circle cx="190" cy="68" r="5" fill="#C67B5C"/>
+              <circle cx="190" cy="68" r="9" fill="none" stroke="#C67B5C" stroke-width="0.6" class="pulse-ring-delay" opacity="0.5"/>
+              <circle cx="70" cy="78" r="4" fill="#A8C5A0"/>
+              <circle cx="190" cy="78" r="4" fill="#A8C5A0"/>
+            </svg>
+            <div class="absolute bottom-2 left-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm rounded-full px-2.5 py-1">
+              <span class="w-1.5 h-1.5 bg-tea rounded-full animate-pulse"></span>
+              <span class="text-[9px] text-white/80 font-medium">Live Venue Map</span>
+            </div>
+          </div>
+          <div class="w-full grid grid-cols-3 gap-2">
+            <div class="rounded-xl border border-terra/20 bg-terra/8 px-2 py-1.5 text-center">
+              <p class="text-[8px] text-terra font-semibold">FOOD</p>
+              <p class="text-[8px] text-bark-lighter">Low wait</p>
+            </div>
+            <div class="rounded-xl border border-gold/20 bg-gold/8 px-2 py-1.5 text-center">
+              <p class="text-[8px] text-gold-dark font-semibold">STAGE</p>
+              <p class="text-[8px] text-bark-lighter">Crowded</p>
+            </div>
+            <div class="rounded-xl border border-tea/20 bg-tea/8 px-2 py-1.5 text-center">
+              <p class="text-[8px] text-tea-dark font-semibold">HALL A</p>
+              <p class="text-[8px] text-bark-lighter">Open seats</p>
+            </div>
+          </div>
+          <div class="pt-1">
+            <div class="mb-2 flex items-center justify-between">
+              <p class="text-[11px] font-semibold text-bark">Up Next</p>
+              <span class="rounded-full bg-bark/5 px-2 py-0.5 text-[8px] text-bark-lighter">Today</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 rounded-xl border border-terra/15 bg-terra/8 p-2.5">
+                <div class="text-center shrink-0 w-10">
+                  <p class="text-[10px] text-terra font-bold">2:15</p>
+                  <p class="text-[8px] text-terra-light">PM</p>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-[10px] font-semibold text-bark truncate">Guest Keynote Begins</p>
+                  <p class="text-[8px] text-bark-lighter">Main Stage</p>
+                </div>
+                <span class="ml-auto rounded-full bg-terra/15 px-2 py-0.5 text-[8px] font-medium text-terra-dark">Talk</span>
+              </div>
+              <div class="flex items-center gap-3 rounded-xl border border-gold/15 bg-gold/8 p-2.5">
+                <div class="text-center shrink-0 w-10">
+                  <p class="text-[10px] text-gold-dark font-bold">3:30</p>
+                  <p class="text-[8px] text-gold">PM</p>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-[10px] font-semibold text-bark truncate">AI Panel Discussion</p>
+                  <p class="text-[8px] text-bark-lighter">Hall A</p>
+                </div>
+                <span class="ml-auto rounded-full bg-gold/15 px-2 py-0.5 text-[8px] font-medium text-gold-dark">Panel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-attendee-tab-panel="photos" class="hidden pb-2">
+
+  <div class="flex items-center gap-2 mb-2">
+    <i data-lucide="images" class="w-4 h-4 text-terra-dark"></i>
+    <p class="text-[11px] font-semibold text-bark">
+      Event Gallery
+    </p>
+  </div>
+
+  <div class="grid grid-cols-2 gap-2">
+
+    <!-- FEATURE IMAGE -->
+    <div class="col-span-2 overflow-hidden rounded-2xl border border-bark/10 bg-white shadow-sm">
+      <img
+        src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop"
+        class="h-32 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
+      >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
+        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
+      >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
+        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
+      >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop"
+        alt="Business team collaborating"
+        loading="lazy"
+        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105"
+      >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1515169067868-5387ec356754?q=80&w=800&auto=format&fit=crop"
+        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
+      >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=800&auto=format&fit=crop"
+        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
+      >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop"
+        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
+      >
+    </div>
+
+  </div>
+
+</div>
+
+        <div data-attendee-tab-panel="schedule" class="hidden space-y-3 pb-2">
+
+          <div class="flex items-center gap-2">
+            <i data-lucide="clock-3" class="w-4 h-4 text-gold-dark"></i>
+            <p class="text-[11px] font-semibold text-bark">
+              Event Timeline
+            </p>
+          </div>
+
+          <div class="space-y-3">
+
+            <!-- Opening Ceremony -->
+            <details class="group rounded-2xl overflow-hidden border border-bark/10 bg-white/90" open>
+
+              <summary class="list-none cursor-pointer">
+
+                <div class="h-24 bg-gradient-to-br from-gold/20 to-terra/20 relative flex items-center justify-center">
+                  <i data-lucide="sparkles" class="w-8 h-8 text-bark/40"></i>
+
+                  <div class="absolute top-2 left-2 bg-white/90 rounded-full px-2 py-1 text-[7px] font-semibold">
+                    10:00 AM
+                  </div>
+                </div>
+
+                <div class="p-3 flex items-start gap-2">
+
+                  <div class="flex-1">
+                    <p class="text-[10px] font-semibold text-bark">
+                      Opening Ceremony
+                    </p>
+
+                    <p class="text-[8px] text-bark-lighter">
+                      Main Arena • Welcome & Introductions
+                    </p>
+                  </div>
+
+                  <i data-lucide="chevron-down"
+                    class="w-4 h-4 text-bark-lighter transition-transform duration-300 group-open:rotate-180"></i>
+
+                </div>
+
+              </summary>
+
+              <div class="px-3 pb-3 space-y-2 animate-fade-in">
+
+                <div class="rounded-xl bg-bark/[0.03] border border-bark/5 p-2">
+                  <p class="text-[8px] leading-relaxed text-bark-lighter">
+                    The opening ceremony will welcome attendees and introduce the day's highlights and speakers.
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between rounded-xl border border-gold/10 bg-gold/5 p-2">
+
+                  <div class="flex items-center gap-2">
+
+                    <div class="w-7 h-7 rounded-full bg-gold/15 flex items-center justify-center">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gold-dark"></i>
+                    </div>
+
+                    <div>
+                      <p class="text-[8px] font-medium text-bark">
+                        Main Stage
+                      </p>
+
+                      <p class="text-[7px] text-bark-lighter">
+                        North Arena
+                      </p>
+                    </div>
+
+                  </div>
+
+                  <button class="rounded-full bg-bark px-2 py-1 text-[7px] text-white">
+                    Open Map
+                  </button>
+
+                </div>
+
+              </div>
+
+            </details>
+
+            <!-- Networking Mixer -->
+            <details class="group rounded-2xl overflow-hidden border border-bark/10 bg-white/90">
+
+              <summary class="list-none cursor-pointer">
+
+                <div class="h-24 bg-gradient-to-br from-blue-100 to-tea/10 relative flex items-center justify-center">
+                  <i data-lucide="users" class="w-8 h-8 text-bark/40"></i>
+
+                  <div class="absolute top-2 left-2 bg-white/90 rounded-full px-2 py-1 text-[7px] font-semibold">
+                    11:30 AM
+                  </div>
+                </div>
+
+                <div class="p-3 flex items-start gap-2">
+
+                  <div class="flex-1">
+                    <p class="text-[10px] font-semibold text-bark">
+                      Networking Mixer
+                    </p>
+
+                    <p class="text-[8px] text-bark-lighter">
+                      Foyer • Icebreaker Sessions
+                    </p>
+                  </div>
+
+                  <i data-lucide="chevron-down"
+                    class="w-4 h-4 text-bark-lighter transition-transform duration-300 group-open:rotate-180"></i>
+
+                </div>
+
+              </summary>
+
+              <div class="px-3 pb-3 space-y-2 animate-fade-in">
+                <div class="rounded-xl bg-bark/[0.03] border border-bark/5 p-2">
+                  <p class="text-[8px] leading-relaxed text-bark-lighter">
+                    Quick icebreakers and speed-networking—come meet other attendees and exchange contacts.
+                  </p>
+                </div>
+                <div class="flex items-center justify-between rounded-xl border border-tea/10 bg-tea/5 p-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-tea/15 flex items-center justify-center">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5 text-tea-dark"></i>
+                    </div>
+                    <div>
+                      <p class="text-[8px] font-medium text-bark">Foyer</p>
+                      <p class="text-[7px] text-bark-lighter">Ground Level</p>
+                    </div>
+                  </div>
+                  <button class="rounded-full bg-bark px-2 py-1 text-[7px] text-white">Open Map</button>
+                </div>
+              </div>
+
+            </details>
+
+            <!-- Lunch & Networking -->
+            <details class="group rounded-2xl overflow-hidden border border-bark/10 bg-white/90">
+
+              <summary class="list-none cursor-pointer">
+
+                <div class="h-24 bg-gradient-to-br from-tea/20 to-gold/10 relative flex items-center justify-center">
+                  <i data-lucide="utensils-crossed" class="w-8 h-8 text-bark/40"></i>
+
+                  <div class="absolute top-2 left-2 bg-white/90 rounded-full px-2 py-1 text-[7px] font-semibold">
+                    1:00 PM
+                  </div>
+                </div>
+
+                <div class="p-3 flex items-start gap-2">
+
+                  <div class="flex-1">
+                    <p class="text-[10px] font-semibold text-bark">
+                      Lunch & Networking
+                    </p>
+
+                    <p class="text-[8px] text-bark-lighter">
+                      Food Court B • Open Buffet
+                    </p>
+                  </div>
+
+                  <i data-lucide="chevron-down"
+                    class="w-4 h-4 text-bark-lighter transition-transform duration-300 group-open:rotate-180"></i>
+
+                </div>
+
+              </summary>
+
+              <div class="px-3 pb-3 space-y-2 animate-fade-in">
+                <div class="rounded-xl bg-bark/[0.03] border border-bark/5 p-2">
+                  <p class="text-[8px] leading-relaxed text-bark-lighter">
+                    Enjoy a curated buffet with vegetarian and gluten-free options available. Seating areas nearby.
+                  </p>
+                </div>
+                <div class="flex items-center justify-between rounded-xl border border-terra/10 bg-terra/5 p-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-terra/15 flex items-center justify-center">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5 text-terra-dark"></i>
+                    </div>
+                    <div>
+                      <p class="text-[8px] font-medium text-bark">Food Court B</p>
+                      <p class="text-[7px] text-bark-lighter">South Wing</p>
+                    </div>
+                  </div>
+                  <button class="rounded-full bg-bark px-2 py-1 text-[7px] text-white">Open Map</button>
+                </div>
+              </div>
+
+            </details>
+
+            <!-- AI Keynote Session -->
+            <details class="group rounded-2xl overflow-hidden border border-bark/10 bg-white/90">
+
+              <summary class="list-none cursor-pointer">
+
+                <div class="h-24 bg-gradient-to-br from-terra/20 to-gold/10 relative flex items-center justify-center">
+                  <i data-lucide="mic-2" class="w-8 h-8 text-bark/40"></i>
+
+                  <div class="absolute top-2 left-2 bg-white/90 rounded-full px-2 py-1 text-[7px] font-semibold">
+                    2:15 PM
+                  </div>
+                </div>
+
+                <div class="p-3 flex items-start gap-2">
+
+                  <div class="flex-1">
+                    <p class="text-[10px] font-semibold text-bark">
+                      AI Keynote Session
+                    </p>
+
+                    <p class="text-[8px] text-bark-lighter">
+                      Main Stage • Dr. Aarya Mehta
+                    </p>
+                  </div>
+
+                  <i data-lucide="chevron-down"
+                    class="w-4 h-4 text-bark-lighter transition-transform duration-300 group-open:rotate-180"></i>
+
+                </div>
+
+              </summary>
+
+              <div class="px-3 pb-3 space-y-2 animate-fade-in">
+
+                <div class="rounded-xl bg-bark/[0.03] border border-bark/5 p-2">
+                  <p class="text-[8px] leading-relaxed text-bark-lighter">
+                    Learn how AI is transforming event operations, live coordination, and attendee engagement.
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between rounded-xl border border-gold/10 bg-gold/5 p-2">
+
+                  <div class="flex items-center gap-2">
+
+                    <div class="w-7 h-7 rounded-full bg-gold/15 flex items-center justify-center">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gold-dark"></i>
+                    </div>
+
+                    <div>
+                      <p class="text-[8px] font-medium text-bark">
+                        Main Stage
+                      </p>
+
+                      <p class="text-[7px] text-bark-lighter">
+                        North Arena
+                      </p>
+                    </div>
+
+                  </div>
+
+                  <button class="rounded-full bg-bark px-2 py-1 text-[7px] text-white">
+                    Open Map
+                  </button>
+
+                </div>
+
+              </div>
+
+            </details>
+
+            <!-- Startup Builder Workshop -->
+            <details class="group rounded-2xl overflow-hidden border border-bark/10 bg-white/90">
+
+              <summary class="list-none cursor-pointer">
+
+                <div class="h-24 bg-gradient-to-br from-blue-100 to-tea/10 relative flex items-center justify-center">
+                  <i data-lucide="laptop" class="w-8 h-8 text-bark/40"></i>
+
+                  <div class="absolute top-2 left-2 bg-white/90 rounded-full px-2 py-1 text-[7px] font-semibold">
+                    4:00 PM
+                  </div>
+                </div>
+
+                <div class="p-3 flex items-start gap-2">
+
+                  <div class="flex-1">
+                    <p class="text-[10px] font-semibold text-bark">
+                      Startup Builder Workshop
+                    </p>
+
+                    <p class="text-[8px] text-bark-lighter">
+                      Hall A • Interactive Session
+                    </p>
+                  </div>
+
+                  <i data-lucide="chevron-down"
+                    class="w-4 h-4 text-bark-lighter transition-transform duration-300 group-open:rotate-180"></i>
+
+                </div>
+
+              </summary>
+
+              <div class="px-3 pb-3 space-y-2 animate-fade-in">
+                <div class="rounded-xl bg-bark/[0.03] border border-bark/5 p-2">
+                  <p class="text-[8px] leading-relaxed text-bark-lighter">
+                    Hands-on workshop for founders to prototype and pitch ideas with mentor feedback.
+                  </p>
+                </div>
+                <div class="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/60 p-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-700"></i>
+                    </div>
+                    <div>
+                      <p class="text-[8px] font-medium text-bark">Hall A</p>
+                      <p class="text-[7px] text-bark-lighter">Workshop Wing</p>
+                    </div>
+                  </div>
+                  <button class="rounded-full bg-bark px-2 py-1 text-[7px] text-white">Open Map</button>
+                </div>
+              </div>
+
+            </details>
+
+            <!-- Closing Ceremony -->
+            <details class="group rounded-2xl overflow-hidden border border-bark/10 bg-white/90">
+
+              <summary class="list-none cursor-pointer">
+
+                <div class="h-24 bg-gradient-to-br from-bark/10 to-gold/10 relative flex items-center justify-center">
+                  <i data-lucide="party-popper" class="w-8 h-8 text-bark/40"></i>
+
+                  <div class="absolute top-2 left-2 bg-white/90 rounded-full px-2 py-1 text-[7px] font-semibold">
+                    8:00 PM
+                  </div>
+                </div>
+
+                <div class="p-3 flex items-start gap-2">
+
+                  <div class="flex-1">
+                    <p class="text-[10px] font-semibold text-bark">
+                      Closing Ceremony
+                    </p>
+
+                    <p class="text-[8px] text-bark-lighter">
+                      Main Arena • Awards & Performances
+                    </p>
+                  </div>
+
+                  <i data-lucide="chevron-down"
+                    class="w-4 h-4 text-bark-lighter transition-transform duration-300 group-open:rotate-180"></i>
+
+                </div>
+
+              </summary>
+
+              <div class="px-3 pb-3 space-y-2 animate-fade-in">
+                <div class="rounded-xl bg-bark/[0.03] border border-bark/5 p-2">
+                  <p class="text-[8px] leading-relaxed text-bark-lighter">
+                    Final awards, performances, and closing remarks. Stay for the farewell networking.
+                  </p>
+                </div>
+                <div class="flex items-center justify-between rounded-xl border border-bark/10 bg-white p-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-bark/10 flex items-center justify-center">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bark"></i>
+                    </div>
+                    <div>
+                      <p class="text-[8px] font-medium text-bark">Main Arena</p>
+                      <p class="text-[7px] text-bark-lighter">Central Hall</p>
+                    </div>
+                  </div>
+                  <button class="rounded-full bg-bark px-2 py-1 text-[7px] text-white">Open Map</button>
+                </div>
+              </div>
+
+            </details>
+
+          </div>
+
+        </div>
+
+        <div data-attendee-tab-panel="alerts" class="hidden space-y-3 pb-1">
+
+          <div class="flex items-center gap-2">
+            <i data-lucide="bell-ring" class="w-4 h-4 text-tea-dark"></i>
+            <p class="text-[11px] font-semibold text-bark">
+              Live Alerts
+            </p>
+          </div>
+
+          <div class="space-y-2">
+
+            <div class="rounded-2xl border border-gold/10 bg-gold/5 p-3">
+
+              <div class="flex items-start gap-2">
+
+                <div class="w-8 h-8 rounded-full bg-gold/15 flex items-center justify-center shrink-0">
+                  <i data-lucide="utensils-crossed" class="w-4 h-4 text-gold-dark"></i>
+                </div>
+
+                <div class="flex-1">
+
+                  <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-semibold text-bark">
+                      Food Open
+                    </p>
+
+                    <span class="text-[7px] text-bark-lighter">
+                      2 min ago
+                    </span>
+                  </div>
+
+                  <p class="text-[8px] leading-relaxed text-bark-lighter mt-1">
+                    Lunch counters are now open at Food Court B near the North Arena.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="rounded-2xl border border-terra/10 bg-terra/5 p-3">
+
+              <div class="flex items-start gap-2">
+
+                <div class="w-8 h-8 rounded-full bg-terra/15 flex items-center justify-center shrink-0">
+                  <i data-lucide="mic-2" class="w-4 h-4 text-terra-dark"></i>
+                </div>
+
+                <div class="flex-1">
+
+                  <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-semibold text-bark">
+                      Keynote Starting
+                    </p>
+
+                    <span class="text-[7px] text-bark-lighter">
+                      Live
+                    </span>
+                  </div>
+
+                  <p class="text-[8px] leading-relaxed text-bark-lighter mt-1">
+                    “Future of Event AI” begins in 10 minutes at Main Stage.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="rounded-2xl border border-blue-100 bg-blue-50/60 p-3">
+
+              <div class="flex items-start gap-2">
+
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                  <i data-lucide="users" class="w-4 h-4 text-blue-700"></i>
+                </div>
+
+                <div class="flex-1">
+
+                  <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-semibold text-bark">
+                      Networking Active
+                    </p>
+
+                    <span class="text-[7px] text-bark-lighter">
+                      Nearby
+                    </span>
+                  </div>
+
+                  <p class="text-[8px] leading-relaxed text-bark-lighter mt-1">
+                    24 attendees are currently networking around Workshop Hall A.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="rounded-2xl border border-red-100 bg-red-50/60 p-3">
+
+              <div class="flex items-start gap-2">
+
+                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+                  <i data-lucide="triangle-alert" class="w-4 h-4 text-red-600"></i>
+                </div>
+
+                <div class="flex-1">
+
+                  <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-semibold text-bark">
+                      Hall Capacity Warning
+                    </p>
+
+                    <span class="text-[7px] text-bark-lighter">
+                      Just now
+                    </span>
+                  </div>
+
+                  <p class="text-[8px] leading-relaxed text-bark-lighter mt-1">
+                    Workshop Hall A is reaching maximum capacity.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div data-attendee-tab-panel="chatbot" class="hidden space-y-3 pb-1">
+          <div class="flex items-center gap-2">
+            <i data-lucide="bot" class="w-4 h-4 text-terra-dark"></i>
+            <div>
+              <p class="text-[11px] font-semibold text-bark">Event FAQ Assistant</p>
+              <p class="text-[9px] text-bark-lighter">Ask about the event, not repeat questions already asked here.</p>
+            </div>
+          </div>
+          <div id="attendee-chat-log" class="space-y-2 rounded-2xl border border-bark/8 bg-white/70 p-3 shadow-sm max-h-40 overflow-y-auto">
+            <div class="flex justify-start">
+              <div class="max-w-[85%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-[10px] leading-relaxed text-bark border border-bark/8">
+                Ask me about timings, maps, access, announcements, or event rules.
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" data-chat-suggestion="Do attendees need to install an app?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">No app?</button>
+            <button type="button" data-chat-suggestion="Can schedules update in real time?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Live schedule</button>
+            <button type="button" data-chat-suggestion="Can maps show live crowd density and capacity?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Crowd map</button>
+            <button type="button" data-chat-suggestion="Can announcements target specific attendee groups?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Alerts</button>
+          </div>
+          <form id="attendee-chat-form" class="space-y-2">
+            <div class="flex gap-2">
+              <input id="attendee-chat-input" type="text" autocomplete="off" placeholder="Ask a new event question..." class="min-w-0 flex-1 rounded-full border border-bark/10 bg-white px-3 py-2 text-[10px] text-bark placeholder:text-bark-lighter focus:outline-none focus:ring-2 focus:ring-gold/30">
+              <button type="submit" class="shrink-0 rounded-full bg-bark px-3 py-2 text-[10px] font-medium text-ivory">Ask</button>
+            </div>
+            <p class="text-[8px] text-bark-lighter">If a question was already asked in this session, the assistant will point you back to something new.</p>
+          </form>
+        </div>
+
+      </div>
+      <button id="network-fab" type="button" class="absolute right-4 bottom-16 z-20 inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-white/95 px-3 py-2 text-[9px] font-medium text-blue-800 shadow-md shadow-blue-200/60">
+        <i data-lucide="users" class="w-3.5 h-3.5"></i>
+        Networking
+      </button>
+      <div id="network-float" class="hidden absolute right-4 bottom-28 z-30 w-[230px] rounded-2xl border border-blue-100 bg-white/95 p-3 shadow-xl shadow-blue-900/10 backdrop-blur floating-panel-enter">
+
+        <div class="mb-2 flex items-center justify-between gap-2">
+
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="users" class="w-3.5 h-3.5 text-blue-700"></i>
+            <p class="text-[10px] font-semibold text-bark">Nearby Attendees</p>
+          </div>
+
+          <button id="network-float-close"
+            type="button"
+            class="rounded-full p-1 text-bark-lighter hover:bg-bark/5">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          </button>
+
+        </div>
+
+        <div class="space-y-2">
+
+          <div class="rounded-xl border border-blue-100 bg-white p-2">
+
+            <div class="flex items-center justify-between">
+
+              <div>
+                <p class="text-[8px] font-medium text-bark">
+                  Ayush Sanger (BITS Goa)
+                </p>
+
+                <p class="text-[8px] text-bark-lighter">
+                  Near Workshop Hall A
+                </p>
+              </div>
+
+              <span class="text-[8px] text-blue-700">12m</span>
+
+            </div>
+
+            <div class="flex gap-1.5 mt-2">
+
+              <button class="flex-1 rounded-full bg-blue-700 px-2 py-1 text-[7px] text-white">
+                Connect
+              </button>
+
+              <button class="flex-1 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[7px] text-blue-700">
+                Exchange
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="rounded-xl border border-blue-100 bg-white p-2">
+
+            <div class="flex items-center justify-between">
+
+              <div>
+                <p class="text-[8px] font-medium text-bark">
+                  Abhinav Reddy
+                </p>
+
+                <p class="text-[8px] text-bark-lighter">
+                  Near Main Stage
+                </p>
+              </div>
+
+              <span class="text-[8px] text-blue-700">18m</span>
+
+            </div>
+
+            <div class="flex gap-1.5 mt-2">
+
+              <button class="flex-1 rounded-full bg-blue-700 px-2 py-1 text-[7px] text-white">
+                Connect
+              </button>
+
+              <button class="flex-1 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[7px] text-blue-700">
+                Exchange
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <p id="attendee-network-live"
+          class="mt-2 text-[8px] text-blue-700">
+          Updating nearby attendees...
+        </p>
+
+      </div>
+      <div class="border-t border-bark/5 bg-ivory/95 backdrop-blur px-2 py-2">
+        <div class="grid grid-cols-5 gap-1">
+          <button type="button" data-attendee-tab-btn data-tab="photos" class="attendee-tab-btn flex flex-col items-center gap-0.5 rounded-2xl px-1 py-1.5 text-bark-lighter">
+            <i data-lucide="images" class="attendee-tab-icon w-4 h-4"></i>
+            <span class="attendee-tab-label text-[8px] font-medium">Photos</span>
+          </button>
+          <button type="button" data-attendee-tab-btn data-tab="schedule" class="attendee-tab-btn flex flex-col items-center gap-0.5 rounded-2xl px-1 py-1.5 text-bark-lighter">
+            <i data-lucide="clock-3" class="attendee-tab-icon w-4 h-4"></i>
+            <span class="attendee-tab-label text-[8px] font-medium">Schedule</span>
+          </button>
+          <button type="button" data-attendee-tab-btn data-tab="map" class="attendee-tab-btn active flex flex-col items-center gap-0.5 rounded-2xl px-1 py-1.5">
+            <i data-lucide="map" class="attendee-tab-icon w-4 h-4 text-terra"></i>
+            <span class="attendee-tab-label text-[8px] font-medium text-terra">Map</span>
+          </button>
+          <button type="button" data-attendee-tab-btn data-tab="alerts" class="attendee-tab-btn flex flex-col items-center gap-0.5 rounded-2xl px-1.5 py-1.5 text-bark-lighter">
+            <i data-lucide="bell" class="attendee-tab-icon w-4 h-4"></i>
+            <span class="attendee-tab-label text-[8px] font-medium">Alerts</span>
+          </button>
+          <button type="button" data-attendee-tab-btn data-tab="chatbot" class="attendee-tab-btn flex flex-col items-center gap-0.5 rounded-2xl px-1.5 py-1.5 text-bark-lighter">
+            <i data-lucide="bot" class="attendee-tab-icon w-4 h-4"></i>
+            <span class="attendee-tab-label text-[8px] font-medium">Chat</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    function refreshIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    const tabButtons = Array.from(document.querySelectorAll('[data-attendee-tab-btn]'));
+    const tabPanels = Array.from(document.querySelectorAll('[data-attendee-tab-panel]'));
+    const chatLog = document.getElementById('attendee-chat-log');
+    const chatForm = document.getElementById('attendee-chat-form');
+    const chatInput = document.getElementById('attendee-chat-input');
+    const chatSuggestions = Array.from(document.querySelectorAll('[data-chat-suggestion]'));
+    const networkFab = document.getElementById('network-fab');
+    const networkFloat = document.getElementById('network-float');
+    const networkFloatClose = document.getElementById('network-float-close');
+    const askedQuestions = new Set();
+    let faqEntries = [
+      { question: 'What makes SyncQ different from traditional event platforms?', answer: 'Unlike traditional event platforms focused only on registrations or ticketing, SyncQ is built as a real-time digital operating system for live events.' },
+      { question: 'Do attendees need to install an app?', answer: 'No. SyncQ is completely no-install. Attendees simply scan a QR code or open a link to access the event instantly in their browser.' },
+      { question: 'Can schedules update in real time?', answer: 'Yes. Organizers can update schedules live during the event.' },
+      { question: 'Can maps show live crowd density and capacity?', answer: 'Yes. SyncQ supports live crowd-density and venue-capacity insights.' },
+      { question: 'Can announcements target specific attendee groups?', answer: 'Yes. Organizers can target announcements to specific attendee cohorts such as VIPs, volunteers, or workshop attendees.' },
+      { question: 'What types of events can use SyncQ Events?', answer: 'SyncQ Events is designed for college fests, conferences, hackathons, corporate events, weddings, cultural festivals, exhibitions, and any large-scale event requiring schedules, announcements, maps, and real-time coordination.' }
+    ];
+    let faqLoaded = false;
+    let networkTimer = null;
+
+    function normalize(text) {
+      return String(text || '').toLowerCase().replace(/[^a-z0-9\s]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function tokens(text) {
+      return normalize(text).split(' ').filter((word) => word.length > 2);
+    }
+
+    function loadFaqEntries() {
+      if (faqLoaded) return;
+      faqLoaded = true;
+      fetch('FAQ.json')
+        .then((response) => {
+          if (!response.ok) throw new Error('Failed to load FAQ.json');
+          return response.json();
+        })
+        .then((data) => {
+          const sections = Array.isArray(data?.faqSections) ? data.faqSections : [];
+          const entries = [];
+          sections.forEach((section) => {
+            (section.questions || []).forEach((question) => {
+              if (question?.question && question?.answer) entries.push({ question: question.question, answer: question.answer });
+            });
+          });
+          if (entries.length) faqEntries = entries;
+        })
+        .catch(() => {});
+    }
+
+    function findBestFaqMatch(question) {
+      const query = normalize(question);
+      if (!query) return null;
+      const queryTokens = tokens(question);
+      let bestMatch = null;
+      let bestScore = 0;
+
+      faqEntries.forEach((entry) => {
+        const entryQuestion = normalize(entry.question);
+        const entryText = normalize(`${entry.question} ${entry.answer}`);
+        let score = 0;
+        if (entryText.includes(query) || query.includes(entryQuestion)) score += 4;
+        const overlap = queryTokens.filter((token) => entryText.includes(token)).length;
+        score += overlap / Math.max(queryTokens.length, 1);
+        if (score > bestScore) {
+          bestScore = score;
+          bestMatch = entry;
+        }
+      });
+
+      return bestScore >= 1 ? bestMatch : null;
+    }
+
+    function addChatBubble(role, text) {
+      if (!chatLog) return;
+      const row = document.createElement('div');
+      row.className = role === 'user' ? 'flex justify-end' : 'flex justify-start';
+      const bubble = document.createElement('div');
+      bubble.className = role === 'user'
+        ? 'max-w-[85%] rounded-2xl rounded-br-md bg-bark px-3 py-2 text-[10px] leading-relaxed text-ivory'
+        : 'max-w-[85%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-[10px] leading-relaxed text-bark border border-bark/8';
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      chatLog.appendChild(row);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function askQuestion(question) {
+      const normalizedQuestion = normalize(question);
+      if (!normalizedQuestion) return;
+      if (askedQuestions.has(normalizedQuestion)) {
+        addChatBubble('assistant', 'You already asked that one. Try a different event question and I will answer from the FAQ set.');
+        return;
+      }
+      askedQuestions.add(normalizedQuestion);
+      addChatBubble('user', question.trim());
+      const match = findBestFaqMatch(question);
+      if (match) {
+        addChatBubble('assistant', match.answer);
+      } else {
+        addChatBubble('assistant', 'I can help with event timings, maps, access, announcements, and branding. Ask a new event-related question from the FAQ set.');
+      }
+    }
+
+    function setActiveTab(tab) {
+      tabButtons.forEach((button) => {
+        const active = button.getAttribute('data-tab') === tab;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', String(active));
+      });
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle('hidden', panel.getAttribute('data-attendee-tab-panel') !== tab);
+      });
+      if (tab === 'chatbot' && chatInput) {
+        setTimeout(() => chatInput.focus({ preventScroll: true }), 0);
+      }
+      refreshIcons();
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => setActiveTab(button.getAttribute('data-tab') || 'map'));
+    });
+
+    if (chatForm && chatInput) {
+      chatForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        askQuestion(chatInput.value);
+        chatInput.value = '';
+      });
+    }
+
+    chatSuggestions.forEach((button) => {
+      button.addEventListener('click', () => {
+        const question = button.getAttribute('data-chat-suggestion') || '';
+        askQuestion(question);
+        if (chatInput) chatInput.value = '';
+      });
+    });
+
+    const liveNode = document.getElementById('attendee-network-live');
+    if (liveNode) {
+      const statuses = [
+        'Ayush Sanger is now 10m away near Hall A.',
+        'Abhinav Reddy just checked in at Main Stage.',
+        '2 more attendees are nearby in Food Zone.'
+      ];
+      let statusIndex = 0;
+      networkTimer = setInterval(() => {
+        statusIndex = (statusIndex + 1) % statuses.length;
+        liveNode.textContent = statuses[statusIndex];
+      }, 2800);
+    }
+
+    if (networkFab && networkFloat) {
+      networkFab.addEventListener('click', () => {
+        networkFloat.classList.toggle('hidden');
+        refreshIcons();
+      });
+    }
+
+    if (networkFloatClose && networkFloat) {
+      networkFloatClose.addEventListener('click', () => {
+        networkFloat.classList.add('hidden');
+      });
+    }
+
+    loadFaqEntries();
+    setActiveTab('map');
+    refreshIcons();
+  </script>
+</body>
+</html>
