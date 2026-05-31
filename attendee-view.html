@@ -186,72 +186,64 @@
           </div>
         </div>
 
-        <div data-attendee-tab-panel="photos" class="hidden pb-2">
+        <div data-attendee-tab-panel="photos" class="hidden space-y-3 pb-2">
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <button type="button" class="inline-flex items-center gap-1.5 rounded-full bg-bark px-3 py-2 text-[8px] font-medium text-ivory shadow-sm">
+              <i data-lucide="upload" class="w-3 h-3"></i>
+              Upload Photos
+            </button>
+            <span class="rounded-full border border-tea/20 bg-tea/10 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-wide text-tea-dark">Community Powered</span>
+            <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-bark/10 bg-white px-3 py-2 text-[8px] font-medium text-bark shadow-sm">
+              <i data-lucide="download" class="w-3 h-3"></i>
+              Download All
+            </button>
+          </div>
 
-  <div class="flex items-center gap-2 mb-2">
-    <i data-lucide="images" class="w-4 h-4 text-terra-dark"></i>
-    <p class="text-[11px] font-semibold text-bark">
-      Event Gallery
-    </p>
-  </div>
+          <div class="rounded-2xl border border-gold/10 bg-gold/5 p-3">
+            <div class="flex items-center justify-between text-[8px]">
+              <span class="font-medium text-bark">Uploading 12 attendee photos</span>
+              <span class="font-semibold text-gold-dark">64%</span>
+            </div>
+            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white">
+              <div class="h-full w-[64%] rounded-full bg-gold"></div>
+            </div>
+          </div>
 
-  <div class="grid grid-cols-2 gap-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="images" class="w-4 h-4 text-terra-dark"></i>
+            <div>
+              <p class="text-[11px] font-semibold text-bark">Event Gallery</p>
+              <p class="text-[8px] text-bark-lighter">Attendee uploads, official photos, and mixed gallery feed.</p>
+            </div>
+          </div>
 
-    <!-- FEATURE IMAGE -->
-    <div class="col-span-2 overflow-hidden rounded-2xl border border-bark/10 bg-white shadow-sm">
-      <img
-        src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop"
-        class="h-32 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
-      >
-    </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="col-span-2 overflow-hidden rounded-2xl border border-bark/10 bg-white shadow-sm relative">
+              <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop" class="h-28 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" alt="Official stage photo">
+              <span class="absolute left-2 top-2 rounded-full bg-gold/90 px-2 py-1 text-[7px] font-semibold text-bark">Official Photo</span>
+            </div>
 
-    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
-      <img
-        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
-        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
-      >
-    </div>
+            <div class="overflow-hidden rounded-xl border border-bark/10 bg-white relative">
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop" class="h-20 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" alt="Attendee upload">
+              <span class="absolute left-1.5 top-1.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[6px] text-terra-dark">Attendee</span>
+            </div>
 
-    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
-      <img
-        src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
-        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
-      >
-    </div>
+            <div class="overflow-hidden rounded-xl border border-bark/10 bg-white relative">
+              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop" class="h-20 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" alt="Official event media">
+              <span class="absolute left-1.5 top-1.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[6px] text-gold-dark">Official</span>
+            </div>
 
-    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
-      <img
-        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop"
-        alt="Business team collaborating"
-        loading="lazy"
-        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105"
-      >
-    </div>
+            <div class="overflow-hidden rounded-xl border border-bark/10 bg-white relative">
+              <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop" alt="Mixed gallery event photo" loading="lazy" class="h-20 w-full object-cover transition-transform duration-500 hover:scale-105">
+              <span class="absolute left-1.5 top-1.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[6px] text-tea-dark">Mixed Feed</span>
+            </div>
 
-    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
-      <img
-        src="https://images.unsplash.com/photo-1515169067868-5387ec356754?q=80&w=800&auto=format&fit=crop"
-        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
-      >
-    </div>
-
-    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
-      <img
-        src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=800&auto=format&fit=crop"
-        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
-      >
-    </div>
-
-    <div class="overflow-hidden rounded-xl border border-bark/10 bg-white">
-      <img
-        src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop"
-        class="h-24 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy"
-      >
-    </div>
-
-  </div>
-
-</div>
+            <div class="overflow-hidden rounded-xl border border-bark/10 bg-white relative">
+              <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=800&auto=format&fit=crop" class="h-20 w-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" alt="Attendee contributed photo">
+              <span class="absolute left-1.5 top-1.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[6px] text-terra-dark">Attendee</span>
+            </div>
+          </div>
+        </div>
 
         <div data-attendee-tab-panel="schedule" class="hidden space-y-3 pb-2">
 
@@ -759,33 +751,62 @@
 
         </div>
 
-        <div data-attendee-tab-panel="chatbot" class="hidden space-y-3 pb-1">
+        <div data-attendee-tab-panel="ai" class="hidden space-y-3 pb-1">
           <div class="flex items-center gap-2">
             <i data-lucide="bot" class="w-4 h-4 text-terra-dark"></i>
             <div>
-              <p class="text-[11px] font-semibold text-bark">Event FAQ Assistant</p>
-              <p class="text-[9px] text-bark-lighter">Ask about the event, not repeat questions already asked here.</p>
+              <p class="text-[11px] font-semibold text-bark">AI Event Assistant</p>
+              <p class="text-[9px] text-bark-lighter">Answers from verified event context.</p>
             </div>
           </div>
-          <div id="attendee-chat-log" class="space-y-2 rounded-2xl border border-bark/8 bg-white/70 p-3 shadow-sm max-h-40 overflow-y-auto">
+          <div class="inline-flex w-max items-center gap-1.5 rounded-full border border-tea/20 bg-tea/10 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-wide text-tea-dark">
+            <span class="h-1.5 w-1.5 rounded-full bg-tea animate-dot-blink"></span>
+            Powered by Event Knowledge
+          </div>
+          <div id="attendee-chat-log" class="space-y-2 rounded-2xl border border-bark/8 bg-white/70 p-3 shadow-sm max-h-48 overflow-y-auto">
+            <div class="flex justify-end">
+              <div class="max-w-[85%] rounded-2xl rounded-br-md bg-bark px-3 py-2 text-[10px] leading-relaxed text-ivory">
+                When does the keynote start?
+              </div>
+            </div>
             <div class="flex justify-start">
               <div class="max-w-[85%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-[10px] leading-relaxed text-bark border border-bark/8">
-                Ask me about timings, maps, access, announcements, or event rules.
+                The keynote begins at 2:15 PM on the Main Stage.
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <div class="max-w-[85%] rounded-2xl rounded-br-md bg-bark px-3 py-2 text-[10px] leading-relaxed text-ivory">
+                Where is Workshop Hall A?
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="max-w-[85%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-[10px] leading-relaxed text-bark border border-bark/8">
+                Workshop Hall A is located in the north workshop zone. Follow the map directions from your current location.
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl border border-terra/15 bg-terra/8 p-3">
+            <div class="flex items-start gap-2">
+              <div class="mt-0.5 h-7 w-7 shrink-0 rounded-full bg-terra/15 flex items-center justify-center">
+                <i data-lucide="route" class="w-3.5 h-3.5 text-terra-dark"></i>
+              </div>
+              <div>
+                <p class="text-[8px] font-semibold text-terra-dark uppercase tracking-wide">Organizer Escalation</p>
+                <p class="text-[9px] leading-relaxed text-bark-lighter mt-1">I couldn't find that information. I've sent your question to the event organizers.</p>
               </div>
             </div>
           </div>
           <div class="flex flex-wrap gap-1.5">
-            <button type="button" data-chat-suggestion="Do attendees need to install an app?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">No app?</button>
-            <button type="button" data-chat-suggestion="Can schedules update in real time?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Live schedule</button>
-            <button type="button" data-chat-suggestion="Can maps show live crowd density and capacity?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Crowd map</button>
-            <button type="button" data-chat-suggestion="Can announcements target specific attendee groups?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Alerts</button>
+            <button type="button" data-chat-suggestion="When does the keynote start?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Keynote time</button>
+            <button type="button" data-chat-suggestion="Where is Workshop Hall A?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Hall A</button>
+            <button type="button" data-chat-suggestion="What are the event rules?" class="rounded-full border border-bark/10 bg-white px-2.5 py-1 text-[8px] text-bark-lighter hover:text-bark transition-colors">Rules</button>
           </div>
           <form id="attendee-chat-form" class="space-y-2">
             <div class="flex gap-2">
-              <input id="attendee-chat-input" type="text" autocomplete="off" placeholder="Ask a new event question..." class="min-w-0 flex-1 rounded-full border border-bark/10 bg-white px-3 py-2 text-[10px] text-bark placeholder:text-bark-lighter focus:outline-none focus:ring-2 focus:ring-gold/30">
+              <input id="attendee-chat-input" type="text" autocomplete="off" placeholder="Ask the AI Event Assistant..." class="min-w-0 flex-1 rounded-full border border-bark/10 bg-white px-3 py-2 text-[10px] text-bark placeholder:text-bark-lighter focus:outline-none focus:ring-2 focus:ring-gold/30">
               <button type="submit" class="shrink-0 rounded-full bg-bark px-3 py-2 text-[10px] font-medium text-ivory">Ask</button>
             </div>
-            <p class="text-[8px] text-bark-lighter">If a question was already asked in this session, the assistant will point you back to something new.</p>
+            <p class="text-[8px] text-bark-lighter">Unknown questions are routed to organizers for a verified answer.</p>
           </form>
         </div>
 
@@ -903,9 +924,9 @@
             <i data-lucide="bell" class="attendee-tab-icon w-4 h-4"></i>
             <span class="attendee-tab-label text-[8px] font-medium">Alerts</span>
           </button>
-          <button type="button" data-attendee-tab-btn data-tab="chatbot" class="attendee-tab-btn flex flex-col items-center gap-0.5 rounded-2xl px-1.5 py-1.5 text-bark-lighter">
+          <button type="button" data-attendee-tab-btn data-tab="ai" class="attendee-tab-btn flex flex-col items-center gap-0.5 rounded-2xl px-1.5 py-1.5 text-bark-lighter">
             <i data-lucide="bot" class="attendee-tab-icon w-4 h-4"></i>
-            <span class="attendee-tab-label text-[8px] font-medium">Chat</span>
+            <span class="attendee-tab-label text-[8px] font-medium">AI</span>
           </button>
         </div>
       </div>
@@ -936,7 +957,9 @@
       { question: 'Can schedules update in real time?', answer: 'Yes. Organizers can update schedules live during the event.' },
       { question: 'Can maps show live crowd density and capacity?', answer: 'Yes. SyncQ supports live crowd-density and venue-capacity insights.' },
       { question: 'Can announcements target specific attendee groups?', answer: 'Yes. Organizers can target announcements to specific attendee cohorts such as VIPs, volunteers, or workshop attendees.' },
-      { question: 'What types of events can use SyncQ Events?', answer: 'SyncQ Events is designed for college fests, conferences, hackathons, corporate events, weddings, cultural festivals, exhibitions, and any large-scale event requiring schedules, announcements, maps, and real-time coordination.' }
+      { question: 'What types of events can use SyncQ Events?', answer: 'SyncQ Events is designed for college fests, conferences, hackathons, corporate events, weddings, cultural festivals, exhibitions, and any large-scale event requiring schedules, announcements, maps, and real-time coordination.' },
+      { question: 'When does the keynote start?', answer: 'The keynote begins at 2:15 PM on the Main Stage.' },
+      { question: 'Where is Workshop Hall A?', answer: 'Workshop Hall A is located in the north workshop zone. Follow the map directions from your current location.' }
     ];
     let faqLoaded = false;
     let networkTimer = null;
@@ -1011,7 +1034,7 @@
       const normalizedQuestion = normalize(question);
       if (!normalizedQuestion) return;
       if (askedQuestions.has(normalizedQuestion)) {
-        addChatBubble('assistant', 'You already asked that one. Try a different event question and I will answer from the FAQ set.');
+        addChatBubble('assistant', 'You already asked that one. Try a different event question and I will answer from event knowledge.');
         return;
       }
       askedQuestions.add(normalizedQuestion);
@@ -1020,7 +1043,7 @@
       if (match) {
         addChatBubble('assistant', match.answer);
       } else {
-        addChatBubble('assistant', 'I can help with event timings, maps, access, announcements, and branding. Ask a new event-related question from the FAQ set.');
+        addChatBubble('assistant', "I couldn't find that information. I've sent your question to the event organizers.");
       }
     }
 
@@ -1033,7 +1056,7 @@
       tabPanels.forEach((panel) => {
         panel.classList.toggle('hidden', panel.getAttribute('data-attendee-tab-panel') !== tab);
       });
-      if (tab === 'chatbot' && chatInput) {
+      if (tab === 'ai' && chatInput) {
         setTimeout(() => chatInput.focus({ preventScroll: true }), 0);
       }
       refreshIcons();
