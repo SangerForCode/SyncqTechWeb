@@ -111,6 +111,16 @@
     .view-toggle-btn.active { box-shadow: 0 0 20px rgba(198, 123, 92, 0.4); transform: scale(1.05); }
     .view-toggle-btn.active:hover { background-color: #5D4037; color: #FAF6F0; box-shadow: 0 0 28px rgba(198, 123, 92, 0.6); }
     .view-toggle-btn.inactive:hover { background-color: transparent; }
+    .other-user-type-wrapper {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+    }
+    .other-user-type-wrapper.is-open {
+      max-height: 7rem;
+      opacity: 1;
+    }
     .toast-enter { transform:translateX(120%); }
     .toast-show { transform:translateX(0); }
     ::-webkit-scrollbar { width:6px; }
@@ -1233,26 +1243,33 @@
       </div>
       <div class="reveal bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5">
         <form id="early-access-form" class="space-y-5">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">First Name</label>
-              <input id="first-name" type="text" required placeholder="John" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Last Name</label>
-              <input id="last-name" type="text" required placeholder="Doe" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
-            </div>
+          <div>
+            <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Full Name</label>
+            <input id="full-name" type="text" required placeholder="John Doe" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
           </div>
           <div>
             <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Phone Number</label>
-            <div class="grid grid-cols-[96px_1fr] gap-3">
-              <input id="country-code" type="tel" required value="+91" placeholder="+91" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-3 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
-              <input id="phone-number" type="tel" required placeholder="9876543210" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
-            </div>
+            <input id="phone-number" type="tel" required placeholder="9876543210" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
           </div>
           <div>
             <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Email Address</label>
             <input id="email-address" type="email" required placeholder="name@email.com" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">I am a...</label>
+            <div class="relative">
+              <select id="user-type" required class="w-full appearance-none bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 pr-11 text-sm text-bark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+                <option value="" disabled selected>Select one</option>
+                <option value="Student Club Owner">Student Club Owner</option>
+                <option value="Event Organizer">Event Organizer</option>
+                <option value="Business">Business</option>
+                <option value="Other">Other</option>
+              </select>
+              <i data-lucide="chevron-down" class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-bark-lighter"></i>
+            </div>
+            <div id="user-type-other-wrapper" class="other-user-type-wrapper">
+              <input id="user-type-other" type="text" placeholder="Please specify..." class="mt-3 w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3.5 text-sm text-bark placeholder-bark-lighter/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
+            </div>
           </div>
           <button id="submit-btn" type="submit" class="w-full bg-bark text-ivory text-base font-medium py-4 rounded-xl btn-pop hover:shadow-lg hover:shadow-bark/20 flex items-center justify-center gap-2 mt-2">
             <i data-lucide="send" class="w-4 h-4"></i> Request Early Access
@@ -1354,45 +1371,81 @@
     const btn = document.querySelector('#submit-btn');
     const successState = document.querySelector('#waitlist-success');
     const addAnotherEntryBtn = document.querySelector('#add-another-entry-btn');
+    const userTypeSelect = document.querySelector('#user-type');
+    const otherUserTypeWrapper = document.querySelector('#user-type-other-wrapper');
+    const otherUserTypeInput = document.querySelector('#user-type-other');
     const defaultButtonHTML = btn.innerHTML;
+    const loadingButtonHTML = '<svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z"></path></svg> Sending...';
+
+    const setSubmittingState = isSubmitting => {
+      btn.disabled = isSubmitting;
+      btn.innerHTML = isSubmitting ? loadingButtonHTML : defaultButtonHTML;
+    };
+
+    const toggleOtherUserType = () => {
+      const isOther = userTypeSelect.value.toLowerCase() === 'other';
+      otherUserTypeWrapper.classList.toggle('is-open', isOther);
+      otherUserTypeInput.required = isOther;
+
+      if (!isOther) {
+        otherUserTypeInput.value = '';
+      }
+    };
+
+    userTypeSelect.addEventListener('change', toggleOtherUserType);
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-      btn.disabled = true;
-      btn.innerText = 'Syncing...';
-      const firstName = document.querySelector('#first-name').value.trim();
-      const lastName = document.querySelector('#last-name').value.trim();
-      const countryCode = document.querySelector('#country-code').value.trim() || '+91';
-      const phone = document.querySelector('#phone-number').value.trim();
+      successState.classList.add('hidden');
+      document.querySelector('#add-another-entry-wrapper').classList.add('hidden');
+      const selectedUserType = userTypeSelect.value;
+      const customUserType = otherUserTypeInput.value.trim();
+      const isOtherSelected = selectedUserType.toLowerCase() === 'other';
+
+      if (isOtherSelected && !customUserType) {
+        alert('Please specify your role before submitting.');
+        otherUserTypeInput.focus();
+        return;
+      }
+
+      setSubmittingState(true);
       const payload = {
-        firstName,
-        lastName,
-        fullName: `${firstName} ${lastName}`.trim(),
-        countryCode,
-        phone,
-        fullPhone: `${countryCode}${phone}`,
-        email: document.querySelector('#email-address').value.trim()
+        fullName: document.querySelector('#full-name').value.trim(),
+        phone: document.querySelector('#phone-number').value.trim(),
+        email: document.querySelector('#email-address').value.trim(),
+        userType: isOtherSelected ? customUserType : selectedUserType
       };
+      console.log('Payload being sent to Google:', payload);
       fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-      .then(() => {
+      .then(async response => {
+        const responseText = await response.text();
+        let responseData = {};
+
+        try {
+          responseData = responseText ? JSON.parse(responseText) : {};
+        } catch (error) {
+          responseData = {};
+        }
+
+        if (!response.ok || responseData.result !== 'success') {
+          throw new Error(responseText || 'Submission failed');
+        }
+
         form.reset();
-        form.classList.add('hidden');
+        toggleOtherUserType();
         successState.classList.remove('hidden');
         successState.innerHTML = '<div class="flex items-center justify-center gap-2 text-tea-dark"><svg class="w-5 h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="text-sm font-medium">You are added to the early access queue. We will contact you shortly.</span></div>';
         document.querySelector('#add-another-entry-wrapper').classList.remove('hidden');
-        btn.disabled = false;
-        btn.innerHTML = defaultButtonHTML;
+        setSubmittingState(false);
       })
       .catch(error => {
         console.error('Error!', error.message);
         alert('Submission failed. Please try again or use the Mail Now link.');
-        btn.disabled = false;
-        btn.innerHTML = defaultButtonHTML;
+        setSubmittingState(false);
       });
     });
 
@@ -1402,6 +1455,7 @@
       addAnotherEntryWrapper.classList.add('hidden');
       form.classList.remove('hidden');
       form.reset();
+      toggleOtherUserType();
     });
 
     // ── Navbar Scroll Effect ──
