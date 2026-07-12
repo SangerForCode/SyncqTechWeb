@@ -206,19 +206,52 @@ function injectFaqJsonLd(sections) {
   document.head.appendChild(script);
 }
 
-fetch('FAQ.json')
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Failed to load FAQ.json');
+// Load FAQ.json with a timeout and retries; slow hosts and cold CDN edges
+// otherwise leave the page stuck on the loading state.
+const FAQ_FETCH_TIMEOUT_MS = 8000;
+const FAQ_FETCH_ATTEMPTS = 3;
+
+async function fetchFaqWithRetry() {
+  let lastError;
+  for (let attempt = 1; attempt <= FAQ_FETCH_ATTEMPTS; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FAQ_FETCH_TIMEOUT_MS);
+    try {
+      const url = attempt === 1 ? 'FAQ.json' : 'FAQ.json?retry=' + Date.now();
+      const response = await fetch(url, {
+        signal: controller.signal,
+        cache: attempt === 1 ? 'default' : 'reload'
+      });
+      if (!response.ok) {
+        throw new Error('HTTP ' + response.status + ' loading FAQ.json');
+      }
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+      if (attempt < FAQ_FETCH_ATTEMPTS) {
+        await new Promise((resolve) => setTimeout(resolve, 600 * attempt));
+      }
+    } finally {
+      clearTimeout(timer);
     }
-    return response.json();
-  })
-  .then(renderFAQ)
-  .catch((error) => {
-    console.error(error);
-    document.getElementById('faq-loading').classList.add('hidden');
-    document.getElementById('faq-error').classList.remove('hidden');
-  });
+  }
+  throw lastError;
+}
+
+function loadFaq() {
+  document.getElementById('faq-loading').classList.remove('hidden');
+  document.getElementById('faq-error').classList.add('hidden');
+  fetchFaqWithRetry()
+    .then(renderFAQ)
+    .catch((error) => {
+      console.error('FAQ load failed:', error);
+      document.getElementById('faq-loading').classList.add('hidden');
+      document.getElementById('faq-error').classList.remove('hidden');
+      refreshIcons();
+    });
+}
+window.loadFaq = loadFaq;
+loadFaq();
 
 const faqSearchInput = document.getElementById('faq-search');
 const faqSearchEmpty = document.getElementById('faq-search-empty');

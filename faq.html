@@ -13,11 +13,12 @@
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" href="images/favicon.png">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://unpkg.com/lucide@0.469.0"></script>
+  <script src="js/vendor/lucide.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="js/tailwind-config.js"></script>
+  <link rel="preload" href="FAQ.json" as="fetch" crossorigin="anonymous">
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/faq.css">
 </head>
@@ -139,7 +140,10 @@
           </div>
           <div id="faq-error" class="hidden rounded-[2rem] border border-terra/15 bg-terra/8 p-8 text-center">
             <p class="font-medium text-bark">FAQ content could not be loaded.</p>
-            <p class="mt-2 text-sm text-bark-lighter">Finding <code>FAQ.json</code> </p>
+            <p class="mt-2 text-sm text-bark-lighter">Please check your connection and try again.</p>
+            <button type="button" onclick="loadFaq()" class="mt-5 inline-flex items-center gap-2 bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:shadow-lg hover:shadow-bark/20">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Try Again
+            </button>
           </div>
         </div>
       </div>
