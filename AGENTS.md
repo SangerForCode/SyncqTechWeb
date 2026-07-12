@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a static marketing site for SyncQ Events. The main entry points are `index.html` for the landing page, `faq.html` for the FAQ experience, and `map.html` for map-related UI work. Content data lives in `FAQ.json`. Visual assets such as logos, favicons, and mockups are stored at the repository root (`logo.png`, `logo2.png`, `favicon.png`, `all.png`). Keep related updates together: if you change FAQ rendering in `faq.html`, verify the schema in `FAQ.json`.
+This repository is a static marketing site for SyncQ Events. The main entry points are `index.html` for the landing page, `faq.html` for the FAQ experience, and `map.html` for map-related UI work. Content data lives in `FAQ.json`. Visual assets such as logos, favicons, and mockups are stored in `images/`. Page styles live in `css/<page>.css` and page scripts in `js/<page>.js`; the shared Tailwind palette/config is `js/tailwind-config.js`, loaded in each page's `<head>` right after the Tailwind CDN script. Keep related updates together: if you change FAQ rendering in `faq.html`, verify the schema in `FAQ.json` and the logic in `js/faq.js`.
 
 ## Build, Test, and Development Commands
 There is no package-based build step in this repo. For local preview, run a simple static server from the repository root:
@@ -13,7 +13,7 @@ python3 -m http.server 8000
 Then open `http://localhost:8000/index.html`. Use this same flow to verify `faq.html` loads `FAQ.json` correctly; opening files directly via `file://` can hide fetch-related issues.
 
 ## Coding Style & Naming Conventions
-Use 2-space indentation in HTML, CSS, and inline JavaScript to match the existing files. Preserve the current structure: semantic sections, Tailwind utility classes in markup, and small inline scripts only for page-specific behavior. Prefer lowercase, hyphenated IDs and filenames such as `mobile-menu-btn` and `faq.html`. Reuse the established palette tokens in the inline Tailwind config (`tea`, `terra`, `bark`, `gold`) instead of adding ad hoc colors.
+Use 2-space indentation in HTML, CSS, and JavaScript to match the existing files. Preserve the current structure: semantic sections, Tailwind utility classes in markup, page-specific CSS in `css/`, and page-specific scripts in `js/` (no new inline `<style>` or `<script>` blocks). Prefer lowercase, hyphenated IDs and filenames such as `mobile-menu-btn` and `faq.html`. Reuse the established palette tokens in the inline Tailwind config (`tea`, `terra`, `bark`, `gold`) instead of adding ad hoc colors.
 
 ## Testing Guidelines
 There is no automated test suite yet. Manual verification is required for each change:

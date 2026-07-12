@@ -3,132 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SyncQ Events - Your Event, Digitized.</title>
+  <title>SyncQ Events — Your Entire Event. One Link.</title>
+  <meta name="description" content="SyncQ turns your event into a branded web app — interactive maps, live schedules, and instant announcements. Attendees scan a QR code and they're in. Nothing to install.">
   <link rel="icon" type="image/png" href="images/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'tea': '#A8C5A0',
-            'tea-light': '#C5DDB8',
-            'tea-dark': '#7FA375',
-            'ivory': '#FAF6F0',
-            'ivory-dark': '#F0EAE0',
-            'terra': '#C67B5C',
-            'terra-light': '#D99A7E',
-            'terra-dark': '#A65E3F',
-            'bark': '#2C1A12',
-            'bark-light': '#5D4037',
-            'bark-lighter': '#8D6E63',
-            'gold': '#C9A84C',
-            'gold-light': '#E0C878',
-            'gold-dark': '#A68A30',
-          },
-          fontFamily: {
-            'serif': ['"Cormorant Garamond"', 'serif'],
-            'sans': ['Inter', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .font-serif { font-family: 'Cormorant Garamond', serif; }
-    .paper-grain::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(circle, #2C1A12 0.5px, transparent 0.5px);
-      background-size: 24px 24px;
-      opacity: 0.018;
-      pointer-events: none;
-      z-index: 9999;
-    }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-    .animate-float { animation: float 5s ease-in-out infinite; }
-    @keyframes pulse-ring { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(2.2);opacity:0} }
-    .pulse-ring { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) infinite; }
-    @keyframes dot-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .animate-dot-blink { animation: dot-blink 1.5s ease-in-out infinite; }
-    .pulse-ring-delay { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) 0.6s infinite; }
-    .pulse-ring-delay2 { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) 1.2s infinite; }
-    .reveal { opacity:0; transform:translateY(36px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
-    .reveal.revealed { opacity:1; transform:translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    @keyframes menu-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-    @keyframes menu-fade-out { 0% { opacity: 1; } 100% { opacity: 0; } }
-    #mobile-menu { animation: menu-fade-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    #mobile-menu.hidden { display: none !important; }
-    .schedule-details { max-height:0; opacity:0; overflow:hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; margin-top:0; }
-    .schedule-item:hover .schedule-details { max-height:80px; opacity:1; margin-top:8px; }
-    .phone-shadow { box-shadow: 0 0 80px rgba(201,168,76,0.12), 0 30px 60px rgba(44,26,18,0.18); }
-    .glass-card { background:rgba(255,255,255,0.06); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.1); }
-    .floating-nav-shell {
-      background: rgba(250, 246, 240, 0.72);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 20px 50px rgba(44, 26, 18, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    }
-    .floating-nav-shell.scrolled {
-      background: rgba(250, 246, 240, 0.88);
-      border-color: rgba(201, 168, 76, 0.16);
-      box-shadow: 0 24px 60px rgba(44, 26, 18, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-    }
-    .nav-link {
-      position: relative;
-      color: #8D6E63;
-      transition: color 0.25s ease;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 5px;
-      left: 1rem;
-      width: 0;
-      height: 1px;
-      background: #C9A84C;
-      transition: width 0.3s ease;
-    }
-    .nav-link:hover {
-      color: #2C1A12;
-    }
-    .nav-link:hover::after {
-      width: calc(100% - 2rem);
-    }
-    .btn-pop { transition: transform 0.2s, box-shadow 0.2s; }
-    .btn-pop:hover { transform:scale(1.02); }
-    .btn-pop:active { transform:scale(0.98); }
-    .gold-divider { height:1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent); }
-    .view-toggle-btn.active { box-shadow: 0 0 20px rgba(198, 123, 92, 0.4); transform: scale(1.05); }
-    .view-toggle-btn.active:hover { background-color: #5D4037; color: #FAF6F0; box-shadow: 0 0 28px rgba(198, 123, 92, 0.6); }
-    .view-toggle-btn.inactive:hover { background-color: transparent; }
-    .other-user-type-wrapper {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, opacity 0.25s ease;
-    }
-    .other-user-type-wrapper.is-open {
-      max-height: 7rem;
-      opacity: 1;
-    }
-    .toast-enter { transform:translateX(120%); }
-    .toast-show { transform:translateX(0); }
-    ::-webkit-scrollbar { width:6px; }
-    ::-webkit-scrollbar-track { background:#FAF6F0; }
-    ::-webkit-scrollbar-thumb { background:rgba(201,168,76,0.4); border-radius:3px; }
-  </style>
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/index.css">
 </head>
 <body class="bg-ivory text-bark paper-grain overflow-x-hidden">
+
+  <div id="scroll-progress"></div>
 
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-24 right-6 z-[10000] flex flex-col gap-3"></div>
@@ -187,13 +73,13 @@
           </span>
         </div>
         <h1 class="reveal reveal-delay-1 font-serif text-5xl md:text-6xl lg:text-7xl font-light text-bark leading-[1.08] tracking-tight">
-          Your Event,<br><span class="font-semibold text-terra">Digitized.</span>
+          Your Entire Event.<br><span class="font-semibold text-terra">One Link.</span>
         </h1>
         <p class="reveal reveal-delay-2 text-lg md:text-xl text-bark-lighter leading-relaxed max-w-lg font-light">
-          Interactive maps, live schedules, real-time announcements — all white-labeled for your brand. No actual app download required.
+          SyncQ turns your event into a branded web app — interactive maps, live schedules, and instant announcements. Attendees scan a QR code and they're in. <span class="font-medium text-bark">Nothing to install.</span>
         </p>
         <div class="reveal reveal-delay-3 flex flex-wrap items-center gap-4">
-          <a href="#early-access" class="bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
+          <a href="#early-access" data-magnetic class="bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
             Join the Waitlist
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
@@ -214,14 +100,21 @@
           </div>
         </div>
       </div>
-      <div class="reveal reveal-delay-2 flex justify-center lg:justify-end">
+      <div id="hero-phone-zone" class="reveal reveal-delay-2 flex justify-center lg:justify-end" style="perspective:1200px">
         <div class="animate-float">
-          <div class="relative w-[280px] h-[570px] bg-bark rounded-[3rem] p-3 phone-shadow">
+          <div id="hero-phone" class="relative w-[280px] h-[570px] bg-bark rounded-[3rem] p-3 phone-shadow">
             <div class="absolute -right-[2px] top-28 w-[3px] h-8 bg-bark-lighter rounded-l"></div>
             <div class="absolute -left-[2px] top-24 w-[3px] h-12 bg-bark-lighter rounded-r"></div>
             <div class="absolute -left-[2px] top-40 w-[3px] h-12 bg-bark-lighter rounded-r"></div>
             <div class="w-full h-full bg-ivory rounded-[2.4rem] overflow-hidden relative">
               <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-bark rounded-b-2xl z-10"></div>
+              <div id="phone-notif" class="phone-notif absolute top-9 left-3 right-3 z-20 rounded-2xl bg-bark/95 px-3 py-2.5 flex items-center gap-2.5 shadow-lg shadow-bark/30 pointer-events-none">
+                <div class="w-7 h-7 rounded-lg bg-gold/20 flex items-center justify-center shrink-0"><i data-lucide="bell" class="w-3.5 h-3.5 text-gold"></i></div>
+                <div class="min-w-0">
+                  <p id="phone-notif-title" class="text-[9px] font-semibold text-ivory truncate">Pizza has arrived!</p>
+                  <p id="phone-notif-body" class="text-[8px] text-ivory/60 truncate">South Lawn — first 300 people</p>
+                </div>
+              </div>
               <div class="h-full overflow-hidden">
                 <div class="flex justify-between items-center px-6 py-1.5 text-[10px] text-bark-lighter pt-3">
                   <span>9:41</span>
@@ -317,13 +210,56 @@
 
   <div class="gold-divider max-w-4xl mx-auto"></div>
 
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="text-xs font-medium tracking-widest uppercase text-gold-dark">How It Works</span>
+        <h2 class="font-serif text-4xl md:text-5xl font-light text-bark mt-4 tracking-tight">Live in <span class="font-semibold">Three Steps</span></h2>
+        <p class="text-bark-lighter mt-4 max-w-xl mx-auto font-light">From sign-up to a fully branded event page your attendees can open on any phone.</p>
+      </div>
+      <div class="relative grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-px bg-gradient-to-r from-terra/30 via-gold/40 to-tea/30"></div>
+        <div class="reveal relative bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5 hover:shadow-xl hover:shadow-terra/10 hover:-translate-y-1 transition-all duration-500">
+          <div class="relative w-12 h-12 rounded-2xl bg-terra/12 border border-terra/20 flex items-center justify-center mb-6">
+            <i data-lucide="settings-2" class="w-5 h-5 text-terra-dark"></i>
+            <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-terra text-ivory text-[11px] font-semibold flex items-center justify-center">1</span>
+          </div>
+          <h3 class="font-serif text-2xl font-semibold text-bark">Set It Up</h3>
+          <p class="text-sm text-bark-lighter mt-3 leading-relaxed font-light">Add your schedule, venue map, and branding in minutes. No code, no design skills — our dashboard handles it all.</p>
+          <p class="text-xs text-terra-dark font-medium mt-4 flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ~5 minutes</p>
+        </div>
+        <div class="reveal reveal-delay-1 relative bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5 hover:shadow-xl hover:shadow-gold/10 hover:-translate-y-1 transition-all duration-500">
+          <div class="relative w-12 h-12 rounded-2xl bg-gold/12 border border-gold/25 flex items-center justify-center mb-6">
+            <i data-lucide="qr-code" class="w-5 h-5 text-gold-dark"></i>
+            <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-gold text-bark text-[11px] font-semibold flex items-center justify-center">2</span>
+          </div>
+          <h3 class="font-serif text-2xl font-semibold text-bark">Share One Link</h3>
+          <p class="text-sm text-bark-lighter mt-3 leading-relaxed font-light">Put a QR code on posters, badges, or screens. Your event page opens instantly in any browser — no app store, no sign-up.</p>
+          <p class="text-xs text-gold-dark font-medium mt-4 flex items-center gap-1.5"><i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Works on any device</p>
+        </div>
+        <div class="reveal reveal-delay-2 relative bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5 hover:shadow-xl hover:shadow-tea/10 hover:-translate-y-1 transition-all duration-500">
+          <div class="relative w-12 h-12 rounded-2xl bg-tea/15 border border-tea/25 flex items-center justify-center mb-6">
+            <i data-lucide="radio" class="w-5 h-5 text-tea-dark"></i>
+            <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-tea-dark text-ivory text-[11px] font-semibold flex items-center justify-center">3</span>
+          </div>
+          <h3 class="font-serif text-2xl font-semibold text-bark">Run It Live</h3>
+          <p class="text-sm text-bark-lighter mt-3 leading-relaxed font-light">Push announcements, update the schedule on the fly, and watch check-ins roll in — every attendee sees changes in real time.</p>
+          <p class="text-xs text-tea-dark font-medium mt-4 flex items-center gap-1.5"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Real-time updates</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider max-w-4xl mx-auto"></div>
+
   <!-- VIEW TOGGLE -->
   <section id="features" class="py-24 lg:py-32 relative">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-16 reveal">
         <span class="text-xs font-medium tracking-widest uppercase text-gold-dark">Two Perspectives</span>
         <h2 class="font-serif text-4xl md:text-5xl font-light text-bark mt-4 tracking-tight">One <span class="font-semibold">Powerful</span> Platform</h2>
-        <p class="text-bark-lighter mt-4 max-w-xl mx-auto font-light">Seamlessly switch between organizer control and attendee experience.</p>
+        <p class="text-bark-lighter mt-4 max-w-xl mx-auto font-light">A command center for organizers. A pocket guide for attendees. Toggle below to see both sides.</p>
       </div>
       <div class="reveal flex justify-center mb-12">
         <div class="inline-flex bg-ivory-dark rounded-full p-1.5 border border-bark/8">
@@ -353,28 +289,28 @@
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div class="bg-ivory rounded-2xl p-5 border border-bark/5">
               <p class="text-xs text-bark-lighter font-medium mb-1">Registrations</p>
-              <p class="text-2xl font-semibold text-bark">3,247</p>
+              <p class="text-2xl font-semibold text-bark" data-count="3247">0</p>
               <p class="text-[11px] text-tea-dark font-medium mt-1">+12% today</p>
             </div>
             <div class="bg-ivory rounded-2xl p-5 border border-bark/5">
               <p class="text-xs text-bark-lighter font-medium mb-1">Checked In</p>
-              <p class="text-2xl font-semibold text-bark">2,891</p>
+              <p class="text-2xl font-semibold text-bark" data-count="2891">0</p>
               <p class="text-[11px] text-tea-dark font-medium mt-1">89% rate</p>
             </div>
             <div class="bg-ivory rounded-2xl p-5 border border-bark/5">
               <p class="text-xs text-bark-lighter font-medium mb-1">Active Now</p>
-              <p class="text-2xl font-semibold text-terra flex items-center gap-2">1,456 <span class="w-2 h-2 bg-tea rounded-full animate-pulse"></span></p>
+              <p class="text-2xl font-semibold text-terra flex items-center gap-2"><span data-count="1456">0</span> <span class="w-2 h-2 bg-tea rounded-full animate-pulse"></span></p>
             </div>
             <div class="bg-ivory rounded-2xl p-5 border border-bark/5">
               <p class="text-xs text-bark-lighter font-medium mb-1">Satisfaction</p>
-              <p class="text-2xl font-semibold text-gold-dark">95%</p>
+              <p class="text-2xl font-semibold text-gold-dark" data-count="95" data-suffix="%">0%</p>
               <p class="text-[11px] text-bark-lighter mt-1">from live polls</p>
             </div>
           </div>
           <div class="grid md:grid-cols-5 gap-4">
             <div class="md:col-span-3 bg-ivory rounded-2xl p-5 border border-bark/5">
               <p class="text-xs font-medium text-bark mb-4">Hourly Check-ins</p>
-              <div class="flex items-end gap-2 h-32">
+              <div id="checkin-chart" class="flex items-end gap-2 h-32">
                 <div class="flex-1 bg-tea/20 rounded-t-md" style="height:30%"></div>
                 <div class="flex-1 bg-tea/30 rounded-t-md" style="height:55%"></div>
                 <div class="flex-1 bg-tea/40 rounded-t-md" style="height:80%"></div>
@@ -546,7 +482,7 @@
         <div class="reveal">
           <span class="text-xs font-medium tracking-widest uppercase text-terra">White-Label</span>
           <h2 class="font-serif text-4xl md:text-5xl font-light text-bark mt-4 tracking-tight">Make it <span class="font-semibold">Yours.</span></h2>
-          <p class="text-bark-lighter mt-5 leading-relaxed font-light">Your logo. Your colors. Your brand identity. Attendees will never know it is powered by SyncQ — unless you want them to.</p>
+          <p class="text-bark-lighter mt-5 leading-relaxed font-light">Your logo. Your colors. Your brand identity. Attendees will never know it is powered by SyncQ — unless you want them to. <span class="text-bark font-medium">Don't take our word for it — rebrand the phone on the right, live.</span></p>
           <ul class="mt-8 space-y-4">
             <li class="flex items-start gap-3"><div class="w-6 h-6 rounded-full bg-tea/15 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark"></i></div><span class="text-sm text-bark-lighter">Custom brand colors and typography</span></li>
             <li class="flex items-start gap-3"><div class="w-6 h-6 rounded-full bg-tea/15 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark"></i></div><span class="text-sm text-bark-lighter">Custom logo and event branding</span></li>
@@ -554,225 +490,73 @@
             <li class="flex items-start gap-3"><div class="w-6 h-6 rounded-full bg-tea/15 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="check" class="w-3.5 h-3.5 text-tea-dark"></i></div><span class="text-sm text-bark-lighter">Zero "Powered by" badges</span></li>
           </ul>
         </div>
-        <div class="reveal reveal-delay-2 flex flex-col items-center">
-          <div class="relative" style="width:260px;height:520px;">
-            <div id="wl-unbranded" class="absolute inset-0 bg-gray-200 rounded-[2.4rem] p-2 transition-all duration-500 shadow-lg">
-              <div class="w-full h-full bg-white rounded-[2rem] overflow-hidden relative">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-200 rounded-b-2xl z-10"></div>
-                <div class="pt-8 px-5">
-                  <div class="flex items-center gap-2 mb-4">
-                    <div class="w-8 h-8 rounded-lg bg-gray-200"></div>
-                    <div><div class="w-20 h-3 bg-gray-200 rounded"></div><div class="w-14 h-2 bg-gray-100 rounded mt-1.5"></div></div>
-                  </div>
-                  <div class="w-full h-24 bg-gray-100 rounded-xl mb-3"></div>
-                  <div class="space-y-2">
-                    <div class="w-full h-12 bg-gray-50 rounded-lg border border-gray-100"></div>
-                    <div class="w-full h-12 bg-gray-50 rounded-lg border border-gray-100"></div>
-                    <div class="w-full h-12 bg-gray-50 rounded-lg border border-gray-100"></div>
-                  </div>
-                </div>
-              </div>
-              <p class="text-center text-[11px] text-bark-lighter mt-3 font-medium">Generic Event App</p>
+        <div class="reveal reveal-delay-2 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8">
+          <div class="w-full max-w-xs bg-ivory rounded-3xl border border-bark/5 shadow-lg shadow-bark/5 p-6 space-y-5">
+            <p class="text-[10px] font-semibold tracking-widest uppercase text-gold-dark flex items-center gap-2"><i data-lucide="wand-2" class="w-3.5 h-3.5"></i> Try it — live preview</p>
+            <div>
+              <label for="wl-name" class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Event name</label>
+              <input id="wl-name" type="text" maxlength="24" value="SyncQ Fest '26" autocomplete="off" class="w-full bg-ivory-dark border border-bark/10 rounded-xl px-4 py-3 text-sm text-bark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all">
             </div>
-            <div id="wl-branded" class="absolute inset-0 bg-blue-700 rounded-[2.4rem] p-2 transition-all duration-500 shadow-xl opacity-0 translate-x-4 pointer-events-none">
-              <div class="w-full h-full bg-ivory rounded-[2rem] overflow-hidden relative">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-blue-700 rounded-b-2xl z-10"></div>
-                <div class="pt-8 px-5">
-                  <div class="flex items-center gap-2 mb-4">
-                    <img src="images/BITS.png" alt="BITS Logo" class="w-8 h-8 rounded-lg">
-                    <div><p class="font-serif text-sm font-semibold text-bark">SyncQ Fest '26</p><p class="text-[9px] text-blue-700">BITS GOA</p></div>
-                  </div>
-                  <div class="w-full h-24 bg-blue-100 rounded-xl mb-3 flex items-center justify-center border border-blue-300">
-                    <i data-lucide="map-pin" class="w-8 h-8 text-blue-400"></i>
-                  </div>
-                  <div class="space-y-2">
-                    <div class="w-full h-12 bg-red-50 rounded-lg border border-red-200 flex items-center px-3 gap-2">
-                      <div class="w-2 h-2 bg-red-600 rounded-full"></div>
-                      <div class="w-16 h-2 bg-red-300 rounded"></div>
-                    </div>
-                    <div class="w-full h-12 bg-yellow-50 rounded-lg border border-yellow-200 flex items-center px-3 gap-2">
-                      <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
-                      <div class="w-20 h-2 bg-yellow-300 rounded"></div>
-                    </div>
-                    <div class="w-full h-12 bg-blue-50 rounded-lg border border-blue-200 flex items-center px-3 gap-2">
-                      <div class="w-2 h-2 bg-blue-600 rounded-full"></div>
-                      <div class="w-14 h-2 bg-blue-300 rounded"></div>
-                    </div>
-                  </div>
-                </div>
+            <div>
+              <span class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Brand color</span>
+              <div id="wl-swatches" class="flex items-center gap-2.5">
+                <button type="button" data-brand="#2563EB" aria-label="Blue" class="wl-swatch active w-8 h-8 rounded-full" style="background:#2563EB"></button>
+                <button type="button" data-brand="#C67B5C" aria-label="Terracotta" class="wl-swatch w-8 h-8 rounded-full" style="background:#C67B5C"></button>
+                <button type="button" data-brand="#7C3AED" aria-label="Purple" class="wl-swatch w-8 h-8 rounded-full" style="background:#7C3AED"></button>
+                <button type="button" data-brand="#059669" aria-label="Green" class="wl-swatch w-8 h-8 rounded-full" style="background:#059669"></button>
+                <button type="button" data-brand="#E11D48" aria-label="Crimson" class="wl-swatch w-8 h-8 rounded-full" style="background:#E11D48"></button>
               </div>
-              <p class="text-center text-[11px] text-blue-700 font-medium mt-3">Fully Branded</p>
             </div>
+            <div>
+              <span class="block text-xs font-medium text-bark-lighter mb-2 uppercase tracking-wider">Corner style</span>
+              <div class="inline-flex bg-ivory-dark rounded-full p-1 border border-bark/8">
+                <button type="button" data-radius="1rem" class="wl-radius-btn active text-xs font-medium px-4 py-1.5 rounded-full">Soft</button>
+                <button type="button" data-radius="0.3rem" class="wl-radius-btn text-xs font-medium px-4 py-1.5 rounded-full">Sharp</button>
+              </div>
+            </div>
+            <p class="text-[11px] text-bark-lighter font-light leading-relaxed">Every change you make here happens instantly on real event pages too.</p>
           </div>
-          <div class="text-center mt-6">
-            <button id="wl-toggle-btn" onclick="toggleWhiteLabel()" class="bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:shadow-lg hover:shadow-bark/20 flex items-center gap-2 mx-auto">
-              <i data-lucide="sparkles" class="w-4 h-4 text-gold"></i>
-              Apply Branding
-            </button>
+          <div id="wl-phone" class="wl-phone relative w-[240px] h-[480px] rounded-[2.6rem] p-2.5 shadow-xl transition-colors duration-500 shrink-0" style="background:var(--wl)">
+            <div class="w-full h-full bg-white rounded-[2.1rem] overflow-hidden relative flex flex-col">
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 rounded-b-2xl z-10 transition-colors duration-500" style="background:var(--wl)"></div>
+              <div class="pt-9 px-4 pb-3 flex items-center gap-2.5">
+                <div id="wl-logo" class="wl-radius-el w-9 h-9 flex items-center justify-center text-white text-sm font-bold transition-all duration-500 shrink-0" style="background:var(--wl)">S</div>
+                <div class="min-w-0">
+                  <p id="wl-phone-name" class="font-serif text-base font-semibold text-bark truncate">SyncQ Fest '26</p>
+                  <p class="text-[9px] font-medium transition-colors duration-500" style="color:var(--wl)">Your brand, not ours</p>
+                </div>
+              </div>
+              <div class="mx-4 h-28 wl-radius-el flex items-center justify-center transition-all duration-500" style="background:color-mix(in srgb, var(--wl) 10%, white); border:1px solid color-mix(in srgb, var(--wl) 25%, white)">
+                <i data-lucide="map-pin" class="w-7 h-7 transition-colors duration-500" style="color:var(--wl)"></i>
+              </div>
+              <div class="px-4 pt-3 space-y-2">
+                <div class="wl-radius-el h-11 flex items-center px-3 gap-2 transition-all duration-500" style="background:color-mix(in srgb, var(--wl) 7%, white); border:1px solid color-mix(in srgb, var(--wl) 20%, white)">
+                  <span class="w-2 h-2 rounded-full transition-colors duration-500" style="background:var(--wl)"></span>
+                  <span class="text-[10px] text-bark font-medium">Live Schedule</span>
+                </div>
+                <div class="wl-radius-el h-11 flex items-center px-3 gap-2 transition-all duration-500" style="background:color-mix(in srgb, var(--wl) 7%, white); border:1px solid color-mix(in srgb, var(--wl) 20%, white)">
+                  <span class="w-2 h-2 rounded-full transition-colors duration-500" style="background:var(--wl)"></span>
+                  <span class="text-[10px] text-bark font-medium">Announcements</span>
+                </div>
+                <div class="wl-radius-el h-11 flex items-center px-3 gap-2 transition-all duration-500" style="background:color-mix(in srgb, var(--wl) 7%, white); border:1px solid color-mix(in srgb, var(--wl) 20%, white)">
+                  <span class="w-2 h-2 rounded-full transition-colors duration-500" style="background:var(--wl)"></span>
+                  <span class="text-[10px] text-bark font-medium">Venue Map</span>
+                </div>
+              </div>
+              <div class="mt-auto grid grid-cols-4 px-3 py-2.5 border-t" style="border-color:color-mix(in srgb, var(--wl) 15%, white)">
+                <div class="flex flex-col items-center gap-0.5"><i data-lucide="map" class="w-4 h-4 transition-colors duration-500" style="color:var(--wl)"></i><span class="text-[7px] font-medium transition-colors duration-500" style="color:var(--wl)">Map</span></div>
+                <div class="flex flex-col items-center gap-0.5"><i data-lucide="clock" class="w-4 h-4 text-bark-lighter"></i><span class="text-[7px] text-bark-lighter">Schedule</span></div>
+                <div class="flex flex-col items-center gap-0.5"><i data-lucide="bell" class="w-4 h-4 text-bark-lighter"></i><span class="text-[7px] text-bark-lighter">Alerts</span></div>
+                <div class="flex flex-col items-center gap-0.5"><i data-lucide="bot" class="w-4 h-4 text-bark-lighter"></i><span class="text-[7px] text-bark-lighter">AI</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <script>
-  (function(){
-    // Track whether the user has manually interacted to disable auto behaviors
-    // Flags are section-scoped so a manual interaction only disables that section's auto behavior
-    let userInteracted = { whiteLabel: false, viewToggle: false };
-    // suppressUserMark is used to avoid marking an auto-triggered click as a manual interaction
-    let suppressUserMark = { viewToggle: false };
-
-    // White-label auto-apply
-    const wlSection = document.getElementById('white-label-section');
-    const wlBtn = document.getElementById('wl-toggle-btn');
-    const wlBranded = document.getElementById('wl-branded');
-    const wlUnbranded = document.getElementById('wl-unbranded');
-    let wlTimer = null;
-
-    function applyBranding(auto = false){
-      if(auto && userInteracted.whiteLabel) return; // don't override a user's choice
-      if(!wlBranded || !wlUnbranded) return;
-      wlBranded.style.opacity = '1';
-      wlBranded.style.transform = 'translateX(0)';
-      wlBranded.style.pointerEvents = 'auto';
-      wlUnbranded.style.opacity = '0';
-      wlUnbranded.style.transform = 'translateX(-8px)';
-      wlUnbranded.style.pointerEvents = 'none';
-      wlBtn.classList.add('applied');
-      wlBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-gold"></i> Branding Applied';
-      if(window.lucide) window.lucide.replace();
-    }
-
-    function toggleWhiteLabel(){
-      if(!wlBranded || !wlUnbranded) return;
-      const brandedShown = (wlBranded.style.opacity === '1');
-      if(!brandedShown){
-        applyBranding(false);
-      } else {
-        // revert to unbranded
-        wlBranded.style.opacity = '';
-        wlBranded.style.transform = '';
-        wlBranded.style.pointerEvents = 'none';
-        wlUnbranded.style.opacity = '';
-        wlUnbranded.style.transform = '';
-        wlUnbranded.style.pointerEvents = '';
-        wlBtn.classList.remove('applied');
-        wlBtn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4 text-gold"></i> Apply Branding';
-        if(window.lucide) window.lucide.replace();
-      }
-      // mark as user interaction so auto won't override
-      userInteracted.whiteLabel = true;
-    }
-    window.toggleWhiteLabel = toggleWhiteLabel;
-
-    if(wlSection){
-      const observer = new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting && !userInteracted.whiteLabel){
-            // start 2s timer to auto-apply
-            if(wlTimer) clearTimeout(wlTimer);
-            wlTimer = setTimeout(()=> applyBranding(true), 2000);
-          } else {
-            if(wlTimer){ clearTimeout(wlTimer); wlTimer = null; }
-          }
-        });
-      }, { threshold: 0.45 });
-      observer.observe(wlSection);
-
-      // any user interaction in the section cancels auto and gives control
-      ['pointerdown','touchstart','click'].forEach(ev=>{
-        wlSection.addEventListener(ev, ()=>{ userInteracted.whiteLabel = true; if(wlTimer){ clearTimeout(wlTimer); wlTimer = null; } });
-      });
-    }
-
-    // View toggle and attendee hover/long-press
-    const btnAtt = document.getElementById('toggle-attendee');
-    const btnOrg = document.getElementById('toggle-organizer');
-    const viewOrg = document.getElementById('view-organizer');
-    const viewAtt = document.getElementById('view-attendee');
-    let hoverTimer = null;
-
-    function triggerAttendeeAutoSwitch(){
-      if(btnAtt){
-        suppressUserMark.viewToggle = true;
-        btnAtt.click();
-        // clear suppress shortly after the click handler runs
-        setTimeout(()=>{ suppressUserMark.viewToggle = false; }, 50);
-      } else {
-        switchView('attendee');
-      }
-    }
-
-    function switchView(to){
-      // only mark as user interaction when this was a real user action
-      if(!suppressUserMark.viewToggle){ userInteracted.viewToggle = true; }
-      if(to === 'attendee'){
-        if(viewOrg) viewOrg.classList.add('hidden');
-        if(viewAtt) viewAtt.classList.remove('hidden');
-        if(btnOrg) { btnOrg.classList.remove('active'); btnOrg.classList.add('inactive'); }
-        if(btnAtt) { btnAtt.classList.add('active'); btnAtt.classList.remove('inactive'); }
-      } else {
-        if(viewAtt) viewAtt.classList.add('hidden');
-        if(viewOrg) viewOrg.classList.remove('hidden');
-        if(btnAtt) { btnAtt.classList.remove('active'); btnAtt.classList.add('inactive'); }
-        if(btnOrg) { btnOrg.classList.add('active'); btnOrg.classList.remove('inactive'); }
-      }
-    }
-    window.switchView = function(v){ switchView(v); };
-
-    function startHoverTimer(e){
-      if(userInteracted.viewToggle) return;
-      if(hoverTimer) clearTimeout(hoverTimer);
-      const isTouch = (e && (e.pointerType === 'touch' || e.type.startsWith('touch')));
-      hoverTimer = setTimeout(triggerAttendeeAutoSwitch, 2000);
-      if(isTouch){
-        const cancel = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } window.removeEventListener('pointerup', cancel); window.removeEventListener('pointercancel', cancel); window.removeEventListener('pointermove', cancel); };
-        window.addEventListener('pointerup', cancel);
-        window.addEventListener('pointercancel', cancel);
-        window.addEventListener('pointermove', cancel);
-      }
-    }
-    function cancelHoverTimer(){ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } }
-
-    if(btnAtt){
-      btnAtt.addEventListener('pointerenter', startHoverTimer);
-      btnAtt.addEventListener('pointerleave', cancelHoverTimer);
-      btnAtt.addEventListener('pointerdown', startHoverTimer);
-      btnAtt.addEventListener('pointerup', cancelHoverTimer);
-      btnAtt.addEventListener('pointercancel', cancelHoverTimer);
-      // any interaction inside features section disables auto and hands control to user
-      const featuresSection = document.getElementById('features');
-      if(featuresSection){
-        // visibility-based auto-switch to attendee after 2.5s when section appears
-        let featuresTimer = null;
-        const featuresObserver = new IntersectionObserver((entries)=>{
-          entries.forEach(entry=>{
-            if(entry.isIntersecting && !userInteracted.viewToggle){
-              if(featuresTimer) clearTimeout(featuresTimer);
-              featuresTimer = setTimeout(()=>{
-                triggerAttendeeAutoSwitch();
-                featuresTimer = null;
-              }, 2500);
-            } else {
-              if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; }
-            }
-          });
-        }, { threshold: 0.5, rootMargin: '0px 0px -20% 0px' });
-        featuresObserver.observe(featuresSection);
-
-        // cancel auto-switch on explicit interactions (no mousemove to avoid accidental cancels)
-        ['pointerdown','touchstart','click'].forEach(ev=>{
-          featuresSection.addEventListener(ev, ()=>{ userInteracted.viewToggle = true; if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; } });
-        });
-      }
-    }
-
-    // ensure icons refresh
-    document.addEventListener('DOMContentLoaded', ()=>{ if(window.lucide) window.lucide.replace(); });
-
-  })();
-  </script>
+  <script src="js/index-view-toggle.js"></script>
 
   <div class="gold-divider max-w-4xl mx-auto"></div>
 
@@ -1063,46 +847,40 @@
     <div class="absolute bottom-20 right-20 w-80 h-80 bg-gold/8 rounded-full blur-[120px]"></div>
     <div class="max-w-7xl mx-auto px-6 relative">
       <div class="text-center mb-16 reveal">
-        <span class="text-xs font-medium tracking-widest uppercase text-gold">Real-Time</span>
+        <span class="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-gold">Real-Time
+          <span class="inline-flex items-center gap-1.5 bg-terra/20 text-terra-light px-2.5 py-0.5 rounded-full normal-case tracking-normal"><span class="w-1.5 h-1.5 bg-terra rounded-full animate-pulse"></span>Live demo</span>
+        </span>
         <h2 class="font-serif text-4xl md:text-5xl font-light text-white mt-4 tracking-tight">Live <span class="font-semibold text-gold">Announcements</span></h2>
-        <p class="text-white/50 mt-4 max-w-xl mx-auto font-light">Push notifications that reach every attendee instantly. No app, no friction — just a browser tab.</p>
+        <p class="text-white/50 mt-4 max-w-xl mx-auto font-light">Push notifications that reach every attendee instantly. No app, no friction — just a browser tab. Watch below: this feed is running.</p>
       </div>
-      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        <div class="reveal glass-card rounded-2xl p-6 transform md:-translate-y-4 hover:-translate-y-6 transition-transform duration-500">
+      <div id="announcement-feed" class="reveal grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="ann-card glass-card rounded-2xl p-6 hover:-translate-y-1" data-ts-static="2m ago">
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2 h-2 bg-terra rounded-full animate-pulse"></span>
             <span class="text-[10px] text-terra-light font-medium uppercase tracking-wider">Food Update</span>
-            <span class="ml-auto text-[10px] text-white/30">2 min ago</span>
+            <span class="ml-auto text-[10px] text-white/30 ann-ts">2m ago</span>
           </div>
           <p class="text-white/90 text-sm font-medium leading-relaxed">Pizza has arrived at the South Lawn!</p>
           <p class="text-white/40 text-xs mt-2">Limited to first 300 people. Head over now.</p>
         </div>
-        <div class="reveal reveal-delay-1 glass-card rounded-2xl p-6 transform md:translate-y-2 hover:-translate-y-2 transition-transform duration-500">
+        <div class="ann-card glass-card rounded-2xl p-6 hover:-translate-y-1" data-ts-static="5m ago">
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2 h-2 bg-gold rounded-full animate-pulse"></span>
             <span class="text-[10px] text-gold-light font-medium uppercase tracking-wider">Schedule Change</span>
-            <span class="ml-auto text-[10px] text-white/30">5 min ago</span>
+            <span class="ml-auto text-[10px] text-white/30 ann-ts">5m ago</span>
           </div>
           <p class="text-white/90 text-sm font-medium leading-relaxed">Guest keynote moved to 2:15 PM</p>
           <p class="text-white/40 text-xs mt-2">Main Stage. Please update your schedules.</p>
         </div>
-        <div class="reveal reveal-delay-2 glass-card rounded-2xl p-6 transform md:-translate-y-2 hover:-translate-y-4 transition-transform duration-500">
+        <div class="ann-card glass-card rounded-2xl p-6 hover:-translate-y-1" data-ts-static="8m ago">
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2 h-2 bg-tea rounded-full animate-pulse"></span>
             <span class="text-[10px] text-tea-light font-medium uppercase tracking-wider">Venue Info</span>
-            <span class="ml-auto text-[10px] text-white/30">8 min ago</span>
+            <span class="ml-auto text-[10px] text-white/30 ann-ts">8m ago</span>
           </div>
           <p class="text-white/90 text-sm font-medium leading-relaxed">Restrooms near East Wing now open</p>
           <p class="text-white/40 text-xs mt-2">Additional facilities available near Workshop Zone.</p>
         </div>
-      </div>
-      <div class="reveal reveal-delay-3 max-w-md mx-auto mt-8 glass-card rounded-2xl p-5 transform translate-y-4 hover:translate-y-2 transition-transform duration-500">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="w-2 h-2 bg-gold rounded-full animate-pulse"></span>
-          <span class="text-[10px] text-gold-light font-medium uppercase tracking-wider">Crowd Alert</span>
-          <span class="ml-auto text-[10px] text-white/30">just now</span>
-        </div>
-        <p class="text-white/90 text-sm font-medium">Main Stage is at 95% capacity. Overflow seating available at Workshop Hall B with live stream.</p>
       </div>
     </div>
   </section>
@@ -1146,7 +924,7 @@
         </div>
         <div class="reveal order-1 lg:order-2 text-center">
           <span class="text-xs font-medium tracking-widest uppercase text-tea-dark">Frictionless Sharing</span>
-          <h2 class="font-serif text-4xl md:text-5xl font-light text-bark mt-4 tracking-tight">One Scan. <span class="font-semibold">They are In.</span></h2>
+          <h2 class="font-serif text-4xl md:text-5xl font-light text-bark mt-4 tracking-tight">One Scan. <span class="font-semibold">They're In.</span></h2>
           <p class="text-bark-lighter mt-5 leading-relaxed font-light">No app store. No downloads. No sign-ups for attendees. Just share a link or display a QR code — your event page opens instantly in any browser.</p>
           <div class="mt-8 flex flex-wrap justify-center gap-3">
             <button onclick="showToast('Your event link will be here !  ; D')" class="bg-bark text-ivory text-sm font-medium px-6 py-3 rounded-full btn-pop hover:shadow-lg hover:shadow-bark/20 flex items-center gap-2">
@@ -1180,7 +958,7 @@
           <p class="text-sm text-bark-lighter leading-relaxed mb-6">"SyncQ Events transformed how we run our annual tech fest. 3,200+ attendees, zero confusion about venues or schedules."</p>
           <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-full bg-terra/15 flex items-center justify-center text-sm font-medium text-terra-dark">A</div>
-            <div><p class="text-sm font-medium text-bark">Aman</p><p class="text-xs text-bark-lighter">Technolympic's secretary</p></div>
+            <div><p class="text-sm font-medium text-bark">Aman</p><p class="text-xs text-bark-lighter">Secretary, Technolympics</p></div>
           </div>
           <div class="flex gap-3 pt-4 border-t border-bark/5">
             <div class="text-center flex-1"><p class="text-lg font-semibold text-bark">3.2K+</p><p class="text-[10px] text-bark-lighter">Attendees</p></div>
@@ -1217,16 +995,16 @@
 
   <!-- CTA -->
   <section class="py-24 lg:py-32 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-bark via-[#3D2417] to-terra-dark"></div>
     <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50"></div>
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-cyan-300/20 rounded-full blur-[100px]"></div>
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-gold/15 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-terra/25 rounded-full blur-[100px]"></div>
     <div class="max-w-3xl mx-auto px-6 text-center relative">
       <div class="reveal">
         <h2 class="font-serif text-4xl md:text-6xl font-light text-white tracking-tight leading-tight">Launch Your First Digital Event<br>in <span class="font-semibold">5 Minutes.</span></h2>
         <p class="text-white/80 mt-6 text-lg font-light max-w-xl mx-auto">No credit card. No coding. Just your event details and a vision — we handle the rest.</p>
         <div class="mt-10 flex flex-wrap justify-center gap-4">
-          <a href="#early-access" class="bg-white text-blue-600 text-base font-semibold px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-black/20 flex items-center gap-2">Start for Free <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+          <a href="#early-access" data-magnetic class="bg-gold text-bark text-base font-semibold px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-black/30 hover:bg-gold-light flex items-center gap-2">Start for Free <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
           <a href="#features" class="bg-white/15 text-white text-sm font-medium px-8 py-4 rounded-full btn-pop border border-white/20 hover:bg-white/25 flex items-center gap-2 backdrop-blur-sm"><i data-lucide="play-circle" class="w-5 h-5"></i> Watch Demo</a>
         </div>
       </div>
@@ -1361,304 +1139,6 @@
   </footer>
 
   <!-- ALL JAVASCRIPT -->
-  <script>
-    // Initialize Lucide icons
-    lucide.createIcons();
-
-    // ── Early access form submission ──
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwybXoEFvzodbpr_FocEZKBeQ62YUG_KJze-jiZyaE_r4F_zTWwu1oO1lLHQmBYvIM/exec';
-    const form = document.querySelector('#early-access-form');
-    const btn = document.querySelector('#submit-btn');
-    const successState = document.querySelector('#waitlist-success');
-    const addAnotherEntryBtn = document.querySelector('#add-another-entry-btn');
-    const userTypeSelect = document.querySelector('#user-type');
-    const otherUserTypeWrapper = document.querySelector('#user-type-other-wrapper');
-    const otherUserTypeInput = document.querySelector('#user-type-other');
-    const defaultButtonHTML = btn.innerHTML;
-    const loadingButtonHTML = '<svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z"></path></svg> Sending...';
-
-    const setSubmittingState = isSubmitting => {
-      btn.disabled = isSubmitting;
-      btn.innerHTML = isSubmitting ? loadingButtonHTML : defaultButtonHTML;
-    };
-
-    const toggleOtherUserType = () => {
-      const isOther = userTypeSelect.value.toLowerCase() === 'other';
-      otherUserTypeWrapper.classList.toggle('is-open', isOther);
-      otherUserTypeInput.required = isOther;
-
-      if (!isOther) {
-        otherUserTypeInput.value = '';
-      }
-    };
-
-    userTypeSelect.addEventListener('change', toggleOtherUserType);
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      successState.classList.add('hidden');
-      document.querySelector('#add-another-entry-wrapper').classList.add('hidden');
-      const selectedUserType = userTypeSelect.value;
-      const customUserType = otherUserTypeInput.value.trim();
-      const isOtherSelected = selectedUserType.toLowerCase() === 'other';
-
-      if (isOtherSelected && !customUserType) {
-        alert('Please specify your role before submitting.');
-        otherUserTypeInput.focus();
-        return;
-      }
-
-      setSubmittingState(true);
-      const payload = {
-        fullName: document.querySelector('#full-name').value.trim(),
-        phone: document.querySelector('#phone-number').value.trim(),
-        email: document.querySelector('#email-address').value.trim(),
-        userType: isOtherSelected ? customUserType : selectedUserType
-      };
-      console.log('Payload being sent to Google:', payload);
-      fetch(scriptURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      })
-      .then(async response => {
-        const responseText = await response.text();
-        let responseData = {};
-
-        try {
-          responseData = responseText ? JSON.parse(responseText) : {};
-        } catch (error) {
-          responseData = {};
-        }
-
-        if (!response.ok || responseData.result !== 'success') {
-          throw new Error(responseText || 'Submission failed');
-        }
-
-        form.reset();
-        toggleOtherUserType();
-        successState.classList.remove('hidden');
-        successState.innerHTML = '<div class="flex items-center justify-center gap-2 text-tea-dark"><svg class="w-5 h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="text-sm font-medium">You are added to the early access queue. We will contact you shortly.</span></div>';
-        document.querySelector('#add-another-entry-wrapper').classList.remove('hidden');
-        setSubmittingState(false);
-      })
-      .catch(error => {
-        console.error('Error!', error.message);
-        alert('Submission failed. Please try again or use the Mail Now link.');
-        setSubmittingState(false);
-      });
-    });
-
-    const addAnotherEntryWrapper = document.querySelector('#add-another-entry-wrapper');
-    addAnotherEntryBtn.addEventListener('click', () => {
-      successState.classList.add('hidden');
-      addAnotherEntryWrapper.classList.add('hidden');
-      form.classList.remove('hidden');
-      form.reset();
-      toggleOtherUserType();
-    });
-
-    // ── Navbar Scroll Effect ──
-    const nav = document.getElementById('navbar');
-    const navShell = document.getElementById('navbar-shell');
-    let lastScroll = 0;
-    let isMobileMenuOpen = false;
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.scrollY;
-
-      if (isMobileMenuOpen) {
-        nav.style.top = '16px';
-        return;
-      }
-
-      if (currentScroll > 24) {
-        navShell.classList.add('scrolled');
-      } else {
-        navShell.classList.remove('scrolled');
-      }
-
-      if (currentScroll > 100) {
-        nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
-      } else {
-        nav.style.top = '16px';
-      }
-
-      lastScroll = currentScroll;
-    }, { passive: true });
-
-    // ── Mobile Menu ──
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const setMobileMenuState = (isOpen) => {
-      isMobileMenuOpen = isOpen;
-      mobileMenu.classList.toggle('hidden', !isOpen);
-      document.body.classList.toggle('overflow-hidden', isOpen);
-      mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-      mobileMenuBtn.innerHTML = isOpen
-        ? '<i data-lucide="x" class="w-5 h-5"></i>'
-        : '<i data-lucide="menu" class="w-5 h-5"></i>';
-      nav.style.top = '16px';
-      lucide.createIcons();
-    };
-
-    mobileMenuBtn.addEventListener('click', () => {
-      setMobileMenuState(!isMobileMenuOpen);
-    });
-    document.querySelectorAll('#mobile-menu a').forEach(link => {
-      link.addEventListener('click', () => {
-        setMobileMenuState(false);
-      });
-    });
-
-    // ── Scroll Reveal ──
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-    // ── View Toggle ──
-    const organizerView = document.getElementById('view-organizer');
-    const attendeeView = document.getElementById('view-attendee');
-    const organizerToggleBtn = document.getElementById('toggle-organizer');
-    const attendeeToggleBtn = document.getElementById('toggle-attendee');
-    const attendeeNewBadge = document.getElementById('attendee-new-badge');
-
-    function setToggleButtonState(activeBtn, inactiveBtn) {
-      activeBtn.classList.add('bg-bark', 'text-ivory', 'active');
-      activeBtn.classList.remove('text-bark-lighter', 'inactive');
-      inactiveBtn.classList.remove('bg-bark', 'text-ivory', 'active');
-      inactiveBtn.classList.add('text-bark-lighter', 'inactive');
-    }
-
-    function switchView(view) {
-      if (view === 'organizer') {
-        organizerView.classList.remove('hidden');
-        attendeeView.classList.add('hidden');
-        setToggleButtonState(organizerToggleBtn, attendeeToggleBtn);
-      } else {
-        organizerView.classList.add('hidden');
-        attendeeView.classList.remove('hidden');
-        setToggleButtonState(attendeeToggleBtn, organizerToggleBtn);
-        if (attendeeNewBadge) attendeeNewBadge.classList.add('hidden');
-        initAttendeeViewPanels();
-      }
-      lucide.createIcons();
-    }
-
-    function initAttendeeViewPanels() {
-      if (!attendeeView || attendeeView.dataset.dynamicReady === 'true') return;
-
-      const cards = Array.from(attendeeView.querySelectorAll('[data-attendee-card]'));
-
-      const setCardState = (card, expanded) => {
-        const key = card.getAttribute('data-panel');
-        const panel = card.querySelector(`[data-attendee-panel="${key}"]`);
-        const chevron = card.querySelector('[data-lucide="chevron-down"]');
-        if (!panel) return;
-
-        if (expanded) {
-          panel.classList.remove('max-h-0', 'opacity-0', 'pb-0');
-          panel.classList.add('opacity-100');
-          panel.style.maxHeight = panel.scrollHeight + 'px';
-          if (chevron) chevron.style.transform = 'rotate(180deg)';
-        } else {
-          panel.style.maxHeight = '0px';
-          panel.classList.add('max-h-0', 'opacity-0', 'pb-0');
-          panel.classList.remove('opacity-100');
-          if (chevron) chevron.style.transform = 'rotate(0deg)';
-        }
-      };
-
-      cards.forEach((card) => {
-        setCardState(card, false);
-        card.addEventListener('click', () => {
-          const key = card.getAttribute('data-panel');
-          const panel = card.querySelector(`[data-attendee-panel="${key}"]`);
-          const isOpen = panel && panel.style.maxHeight && panel.style.maxHeight !== '0px';
-
-          cards.forEach((otherCard) => setCardState(otherCard, false));
-          if (!isOpen) setCardState(card, true);
-        });
-      });
-
-      const liveNode = attendeeView.querySelector('#attendee-network-live');
-      if (liveNode) {
-        const statuses = [
-          'Ayush Sanger is now 10m away near Hall A.',
-          'Abhinav Reddy just checked in at Main Stage.',
-          '2 more attendees are nearby in Food Zone.'
-        ];
-        let statusIndex = 0;
-        setInterval(() => {
-          statusIndex = (statusIndex + 1) % statuses.length;
-          liveNode.textContent = statuses[statusIndex];
-        }, 2800);
-      }
-
-      attendeeView.dataset.dynamicReady = 'true';
-    }
-
-    initAttendeeViewPanels();
-
-    // ── White Label Toggle ──
-    let wlBranded = false;
-    function toggleWhiteLabel() {
-      wlBranded = !wlBranded;
-      const unbranded = document.getElementById('wl-unbranded');
-      const branded = document.getElementById('wl-branded');
-      const btn = document.getElementById('wl-toggle-btn');
-      if (wlBranded) {
-        unbranded.style.opacity = '0';
-        unbranded.style.transform = 'translateX(-16px)';
-        unbranded.style.pointerEvents = 'none';
-        branded.style.opacity = '1';
-        branded.style.transform = 'translateX(0)';
-        branded.style.pointerEvents = 'auto';
-        btn.innerHTML = '<svg class="w-4 h-4 text-gold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Remove Branding';
-        lucide.createIcons();
-      } else {
-        unbranded.style.opacity = '1';
-        unbranded.style.transform = 'translateX(0)';
-        unbranded.style.pointerEvents = 'auto';
-        branded.style.opacity = '0';
-        branded.style.transform = 'translateX(16px)';
-        branded.style.pointerEvents = 'none';
-        btn.innerHTML = '<svg class="w-4 h-4 text-gold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg> Apply Branding';
-        lucide.createIcons();
-      }
-    }
-
-    // ── Toast Notifications ──
-    function showToast(message) {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = 'toast-enter flex items-center gap-3 bg-bark text-ivory text-sm px-5 py-3.5 rounded-xl shadow-xl shadow-bark/20 transition-transform duration-300 max-w-sm';
-      toast.innerHTML = '<svg class="w-4 h-4 text-tea shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>' + message + '</span>';
-      container.appendChild(toast);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { toast.classList.remove('toast-enter'); toast.classList.add('toast-show'); });
-      });
-      setTimeout(() => {
-        toast.classList.remove('toast-show');
-        toast.classList.add('toast-enter');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    // ── Smooth scroll for anchor links ──
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-  </script>
+  <script src="js/index.js"></script>
 </body>
 </html>

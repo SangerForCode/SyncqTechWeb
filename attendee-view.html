@@ -3,103 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SyncQ Attendee View</title>
+  <title>Attendee Experience — SyncQ Events</title>
+  <meta name="description" content="A live, interactive preview of what your attendees see on their phones — venue map, schedule, alerts, photos, and the AI assistant.">
   <link rel="icon" type="image/png" href="images/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'tea': '#A8C5A0',
-            'tea-light': '#C5DDB8',
-            'tea-dark': '#7FA375',
-            'ivory': '#FAF6F0',
-            'ivory-dark': '#F0EAE0',
-            'terra': '#C67B5C',
-            'terra-light': '#D99A7E',
-            'terra-dark': '#A65E3F',
-            'bark': '#2C1A12',
-            'bark-light': '#5D4037',
-            'bark-lighter': '#8D6E63',
-            'gold': '#C9A84C',
-            'gold-light': '#E0C878',
-            'gold-dark': '#A68A30',
-          },
-          fontFamily: {
-            'serif': ['"Cormorant Garamond"', 'serif'],
-            'sans': ['Inter', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    html, body { margin: 0; min-height: 100%; height: 100%; }
-    body { font-family: 'Inter', sans-serif; background: transparent; }
-    .attendee-scroll {
-      overflow-y: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      scrollbar-gutter: stable;
-      overscroll-behavior: contain;
-    }
-    .attendee-scroll::-webkit-scrollbar { display: none; }
-    .font-serif { font-family: 'Cormorant Garamond', serif; }
-    @keyframes pulse-ring { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(2.2);opacity:0} }
-    @keyframes dot-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .pulse-ring { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) infinite; }
-    .pulse-ring-delay { animation: pulse-ring 2s cubic-bezier(0,0,0.2,1) 0.6s infinite; }
-    .animate-dot-blink { animation: dot-blink 1.5s ease-in-out infinite; }
-    .attendee-tab-btn { transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; }
-    .attendee-tab-btn.active {
-      background: #2C1A12;
-      color: #FAF6F0;
-      box-shadow: 0 10px 22px rgba(44, 26, 18, 0.16);
-      transform: translateY(-1px);
-    }
-    .attendee-tab-btn.active .attendee-tab-icon,
-    .attendee-tab-btn.active .attendee-tab-label { color: #FAF6F0; }
-    .floating-panel-enter { animation: floating-panel-enter 0.2s ease-out; }
-    @keyframes floating-panel-enter {
-      from { opacity: 0; transform: translateY(8px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #FAF6F0; }
-    ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); border-radius: 3px; }
-    @keyframes fade-in {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade-in { animation: fade-in 0.25s ease; }
-
-    details > summary { list-style: none; }
-    details summary::-webkit-details-marker { display: none; }
-    .phone-stage {
-      min-height: 100dvh;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      position: relative;
-    }
-    .phone-frame {
-      width: min(300px, 92vw, 44vh);
-      aspect-ratio: 1 / 2;
-    }
-  </style>
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/attendee-view.css">
 </head>
 <body class="h-full bg-transparent overflow-hidden">
   <div class="phone-stage">
+    <div class="stage-orb top-16 left-10 w-72 h-72 bg-tea/15 blur-[100px]"></div>
+    <div class="stage-orb bottom-16 right-10 w-96 h-96 bg-gold/10 blur-[120px]"></div>
+    <div class="stage-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-terra/5 blur-[150px]"></div>
     <a href="index.html" class="absolute top-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-2 text-xs font-medium text-bark shadow-sm border border-bark/10 hover:bg-white transition-colors">
       <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
       Go Back
     </a>
+    <div class="absolute bottom-4 inset-x-0 z-30 hidden sm:flex justify-center pointer-events-none">
+      <p class="text-xs text-bark-lighter bg-white/80 backdrop-blur-sm border border-bark/10 rounded-full px-4 py-2 shadow-sm">This is what your attendees see — tap the tabs and cards to explore.</p>
+    </div>
     <div class="phone-frame bg-bark rounded-[3rem] p-3 phone-shadow" style="box-shadow: 0 0 80px rgba(201,168,76,0.12), 0 30px 60px rgba(44,26,18,0.18);">
     <div class="w-full h-full bg-ivory rounded-[2.4rem] overflow-hidden relative flex flex-col">
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-bark rounded-b-2xl z-10"></div>
@@ -934,184 +858,6 @@
   </div>
   </div>
 
-  <script>
-    function refreshIcons() {
-      if (window.lucide && typeof window.lucide.createIcons === 'function') {
-        window.lucide.createIcons();
-      }
-    }
-
-    const tabButtons = Array.from(document.querySelectorAll('[data-attendee-tab-btn]'));
-    const tabPanels = Array.from(document.querySelectorAll('[data-attendee-tab-panel]'));
-    const chatLog = document.getElementById('attendee-chat-log');
-    const chatForm = document.getElementById('attendee-chat-form');
-    const chatInput = document.getElementById('attendee-chat-input');
-    const chatSuggestions = Array.from(document.querySelectorAll('[data-chat-suggestion]'));
-    const networkFab = document.getElementById('network-fab');
-    const networkFloat = document.getElementById('network-float');
-    const networkFloatClose = document.getElementById('network-float-close');
-    const askedQuestions = new Set();
-    let faqEntries = [
-      { question: 'What makes SyncQ different from traditional event platforms?', answer: 'Unlike traditional event platforms focused only on registrations or ticketing, SyncQ is built as a real-time digital operating system for live events.' },
-      { question: 'Do attendees need to install an app?', answer: 'No. SyncQ is completely no-install. Attendees simply scan a QR code or open a link to access the event instantly in their browser.' },
-      { question: 'Can schedules update in real time?', answer: 'Yes. Organizers can update schedules live during the event.' },
-      { question: 'Can maps show live crowd density and capacity?', answer: 'Yes. SyncQ supports live crowd-density and venue-capacity insights.' },
-      { question: 'Can announcements target specific attendee groups?', answer: 'Yes. Organizers can target announcements to specific attendee cohorts such as VIPs, volunteers, or workshop attendees.' },
-      { question: 'What types of events can use SyncQ Events?', answer: 'SyncQ Events is designed for college fests, conferences, hackathons, corporate events, weddings, cultural festivals, exhibitions, and any large-scale event requiring schedules, announcements, maps, and real-time coordination.' },
-      { question: 'When does the keynote start?', answer: 'The keynote begins at 2:15 PM on the Main Stage.' },
-      { question: 'Where is Workshop Hall A?', answer: 'Workshop Hall A is located in the north workshop zone. Follow the map directions from your current location.' }
-    ];
-    let faqLoaded = false;
-    let networkTimer = null;
-
-    function normalize(text) {
-      return String(text || '').toLowerCase().replace(/[^a-z0-9\s]+/g, ' ').replace(/\s+/g, ' ').trim();
-    }
-
-    function tokens(text) {
-      return normalize(text).split(' ').filter((word) => word.length > 2);
-    }
-
-    function loadFaqEntries() {
-      if (faqLoaded) return;
-      faqLoaded = true;
-      fetch('FAQ.json')
-        .then((response) => {
-          if (!response.ok) throw new Error('Failed to load FAQ.json');
-          return response.json();
-        })
-        .then((data) => {
-          const sections = Array.isArray(data?.faqSections) ? data.faqSections : [];
-          const entries = [];
-          sections.forEach((section) => {
-            (section.questions || []).forEach((question) => {
-              if (question?.question && question?.answer) entries.push({ question: question.question, answer: question.answer });
-            });
-          });
-          if (entries.length) faqEntries = entries;
-        })
-        .catch(() => {});
-    }
-
-    function findBestFaqMatch(question) {
-      const query = normalize(question);
-      if (!query) return null;
-      const queryTokens = tokens(question);
-      let bestMatch = null;
-      let bestScore = 0;
-
-      faqEntries.forEach((entry) => {
-        const entryQuestion = normalize(entry.question);
-        const entryText = normalize(`${entry.question} ${entry.answer}`);
-        let score = 0;
-        if (entryText.includes(query) || query.includes(entryQuestion)) score += 4;
-        const overlap = queryTokens.filter((token) => entryText.includes(token)).length;
-        score += overlap / Math.max(queryTokens.length, 1);
-        if (score > bestScore) {
-          bestScore = score;
-          bestMatch = entry;
-        }
-      });
-
-      return bestScore >= 1 ? bestMatch : null;
-    }
-
-    function addChatBubble(role, text) {
-      if (!chatLog) return;
-      const row = document.createElement('div');
-      row.className = role === 'user' ? 'flex justify-end' : 'flex justify-start';
-      const bubble = document.createElement('div');
-      bubble.className = role === 'user'
-        ? 'max-w-[85%] rounded-2xl rounded-br-md bg-bark px-3 py-2 text-[10px] leading-relaxed text-ivory'
-        : 'max-w-[85%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-[10px] leading-relaxed text-bark border border-bark/8';
-      bubble.textContent = text;
-      row.appendChild(bubble);
-      chatLog.appendChild(row);
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-
-    function askQuestion(question) {
-      const normalizedQuestion = normalize(question);
-      if (!normalizedQuestion) return;
-      if (askedQuestions.has(normalizedQuestion)) {
-        addChatBubble('assistant', 'You already asked that one. Try a different event question and I will answer from event knowledge.');
-        return;
-      }
-      askedQuestions.add(normalizedQuestion);
-      addChatBubble('user', question.trim());
-      const match = findBestFaqMatch(question);
-      if (match) {
-        addChatBubble('assistant', match.answer);
-      } else {
-        addChatBubble('assistant', "I couldn't find that information. I've sent your question to the event organizers.");
-      }
-    }
-
-    function setActiveTab(tab) {
-      tabButtons.forEach((button) => {
-        const active = button.getAttribute('data-tab') === tab;
-        button.classList.toggle('active', active);
-        button.setAttribute('aria-selected', String(active));
-      });
-      tabPanels.forEach((panel) => {
-        panel.classList.toggle('hidden', panel.getAttribute('data-attendee-tab-panel') !== tab);
-      });
-      if (tab === 'ai' && chatInput) {
-        setTimeout(() => chatInput.focus({ preventScroll: true }), 0);
-      }
-      refreshIcons();
-    }
-
-    tabButtons.forEach((button) => {
-      button.addEventListener('click', () => setActiveTab(button.getAttribute('data-tab') || 'map'));
-    });
-
-    if (chatForm && chatInput) {
-      chatForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        askQuestion(chatInput.value);
-        chatInput.value = '';
-      });
-    }
-
-    chatSuggestions.forEach((button) => {
-      button.addEventListener('click', () => {
-        const question = button.getAttribute('data-chat-suggestion') || '';
-        askQuestion(question);
-        if (chatInput) chatInput.value = '';
-      });
-    });
-
-    const liveNode = document.getElementById('attendee-network-live');
-    if (liveNode) {
-      const statuses = [
-        'Ayush Sanger is now 10m away near Hall A.',
-        'Abhinav Reddy just checked in at Main Stage.',
-        '2 more attendees are nearby in Food Zone.'
-      ];
-      let statusIndex = 0;
-      networkTimer = setInterval(() => {
-        statusIndex = (statusIndex + 1) % statuses.length;
-        liveNode.textContent = statuses[statusIndex];
-      }, 2800);
-    }
-
-    if (networkFab && networkFloat) {
-      networkFab.addEventListener('click', () => {
-        networkFloat.classList.toggle('hidden');
-        refreshIcons();
-      });
-    }
-
-    if (networkFloatClose && networkFloat) {
-      networkFloatClose.addEventListener('click', () => {
-        networkFloat.classList.add('hidden');
-      });
-    }
-
-    loadFaqEntries();
-    setActiveTab('map');
-    refreshIcons();
-  </script>
+  <script src="js/attendee-view.js"></script>
 </body>
 </html>
