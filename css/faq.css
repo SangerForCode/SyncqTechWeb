@@ -217,3 +217,14 @@ mark.faq-hit { background: rgba(201,168,76,0.35); color: inherit; border-radius:
 .faq-item { transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .faq-item:hover { transform: translateX(4px); }
 @media (prefers-reduced-motion: reduce) { .faq-item:hover { transform: none; } }
+
+/* FAQ loading dots */
+.faq-dot { width: 10px; height: 10px; border-radius: 9999px; animation: dot-bounce 1s ease-in-out infinite; }
+.faq-dot:nth-child(1) { background: #C9A84C; }
+.faq-dot:nth-child(2) { background: #C67B5C; animation-delay: 0.15s; }
+.faq-dot:nth-child(3) { background: #A8C5A0; animation-delay: 0.3s; }
+@keyframes dot-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+@media (prefers-reduced-motion: reduce) { .faq-dot { animation: none; } }

@@ -111,3 +111,67 @@ body { font-family: 'Inter', sans-serif; }
   .btn-pop:hover,
   .btn-pop:active { transform: none; }
 }
+
+/* ── Animation pack: shimmer, shine, spotlight, menu stagger ── */
+.shimmer-text {
+  --shimmer-base: #2C1A12;
+  --shimmer-hi: #E0C878;
+  background: linear-gradient(110deg, var(--shimmer-base) 35%, var(--shimmer-hi) 50%, var(--shimmer-base) 65%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-sweep 4s linear infinite;
+}
+@keyframes shimmer-sweep {
+  0% { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.btn-shine:hover::after { left: 130%; }
+
+.spotlight { position: relative; }
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(380px circle at var(--sx, 50%) var(--sy, 50%), rgba(201, 168, 76, 0.16), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.spotlight:hover::before { opacity: 1; }
+
+#mobile-menu:not(.hidden) a { animation: menu-link-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+#mobile-menu:not(.hidden) a:nth-child(1) { animation-delay: 0.05s; }
+#mobile-menu:not(.hidden) a:nth-child(2) { animation-delay: 0.1s; }
+#mobile-menu:not(.hidden) a:nth-child(3) { animation-delay: 0.15s; }
+#mobile-menu:not(.hidden) a:nth-child(4) { animation-delay: 0.2s; }
+#mobile-menu:not(.hidden) a:nth-child(5) { animation-delay: 0.25s; }
+#mobile-menu:not(.hidden) a:nth-child(6) { animation-delay: 0.3s; }
+@keyframes menu-link-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-text { animation: none; color: var(--shimmer-base); background: none; }
+  .btn-shine::after { display: none; }
+  .spotlight::before { display: none; }
+  #mobile-menu:not(.hidden) a { animation: none; }
+}

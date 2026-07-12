@@ -54,3 +54,7 @@ details summary::-webkit-details-marker { display: none; }
   width: min(300px, 92vw, 44vh);
   aspect-ratio: 1 / 2;
 }
+
+/* Dock-style hover pop on bottom tabs */
+.attendee-tab-btn:hover { transform: translateY(-3px) scale(1.08); }
+@media (prefers-reduced-motion: reduce) { .attendee-tab-btn:hover { transform: none; } }

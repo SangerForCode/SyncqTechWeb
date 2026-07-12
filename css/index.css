@@ -81,3 +81,51 @@
   #testimonials .reveal.revealed .gap-1 svg { animation: none; }
   #how-it-works .reveal:hover > div:first-child { transform: none; }
 }
+
+/* Hero rotating word */
+.word-rotator {
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.4em;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.word-rotator span {
+  display: block;
+  line-height: 1.4em;
+  animation: word-cycle 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes word-cycle {
+  0%, 16% { transform: translateY(0); }
+  20%, 36% { transform: translateY(-1.4em); }
+  40%, 56% { transform: translateY(-2.8em); }
+  60%, 76% { transform: translateY(-4.2em); }
+  80%, 96% { transform: translateY(-5.6em); }
+  100% { transform: translateY(-7em); }
+}
+
+/* Rising particles in CTA section */
+.cta-particles span {
+  position: absolute;
+  bottom: -12px;
+  border-radius: 9999px;
+  background: rgba(224, 200, 120, 0.55);
+  animation: particle-rise linear infinite;
+}
+.cta-particles span:nth-child(1) { left: 12%; width: 5px; height: 5px; animation-duration: 9s; }
+.cta-particles span:nth-child(2) { left: 28%; width: 4px; height: 4px; animation-duration: 12s; animation-delay: 2s; }
+.cta-particles span:nth-child(3) { left: 46%; width: 6px; height: 6px; animation-duration: 8s; animation-delay: 4s; }
+.cta-particles span:nth-child(4) { left: 62%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 1s; }
+.cta-particles span:nth-child(5) { left: 78%; width: 5px; height: 5px; animation-duration: 10s; animation-delay: 5s; }
+.cta-particles span:nth-child(6) { left: 90%; width: 3px; height: 3px; animation-duration: 13s; animation-delay: 3s; }
+@keyframes particle-rise {
+  0% { transform: translateY(0); opacity: 0; }
+  12% { opacity: 1; }
+  85% { opacity: 0.5; }
+  100% { transform: translateY(-72vh); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-rotator span { animation: none; }
+  .cta-particles { display: none; }
+}
