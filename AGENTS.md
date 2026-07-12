@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a static marketing site for SyncQ Events. The main entry points are `index.html` for the landing page, `faq.html` for the FAQ experience, and `map.html` for map-related UI work. Content data lives in `FAQ.json`. Visual assets such as logos, favicons, and mockups are stored in `images/`. Page styles live in `css/<page>.css` and page scripts in `js/<page>.js`; the shared Tailwind palette/config is `js/tailwind-config.js`, loaded in each page's `<head>` right after the Tailwind CDN script. Keep related updates together: if you change FAQ rendering in `faq.html`, verify the schema in `FAQ.json` and the logic in `js/faq.js`.
+This repository is a static marketing site for SyncQ Events. The main entry points are `index.html` for the landing page, `faq.html` for the FAQ experience, and `map.html` for map-related UI work. Content data lives in `FAQ.json`. Visual assets such as logos, favicons, and mockups are stored in `images/`. Common styles (nav, reveal animations, buttons, toasts) live in `css/shared.css` and common behavior (navbar, mobile menu, scroll reveal, toasts) in `js/shared.js`; page-specific styles live in `css/<page>.css` and page scripts in `js/<page>.js`. The shared Tailwind palette/config is `js/tailwind-config.js`, loaded in each page's `<head>` right after the pinned Tailwind CDN script — keep that order. Keep related updates together: if you change FAQ rendering in `faq.html`, verify the schema in `FAQ.json` and the logic in `js/faq.js`.
 
 ## Build, Test, and Development Commands
 There is no package-based build step in this repo. For local preview, run a simple static server from the repository root:

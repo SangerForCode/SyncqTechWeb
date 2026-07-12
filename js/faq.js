@@ -7,59 +7,10 @@ const refreshIcons = () => {
 refreshIcons();
 
 let lastScroll = 0;
-let isMobileMenuOpen = false;
 let faqIndexState = 'icon';
 let faqIndexTimer = null;
 
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  const navShell = document.getElementById('navbar-shell');
-  const currentScroll = window.scrollY;
 
-  if (isMobileMenuOpen) {
-    nav.style.top = '16px';
-    return;
-  }
-
-  if (currentScroll > 24) {
-    navShell.classList.add('scrolled');
-  } else {
-    navShell.classList.remove('scrolled');
-  }
-
-  if (currentScroll > 100) {
-    nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
-  } else {
-    nav.style.top = '16px';
-  }
-
-  lastScroll = currentScroll;
-}, { passive: true });
-
-const mobileMenu = document.getElementById('mobile-menu');
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-
-const setMobileMenuState = (isOpen) => {
-  isMobileMenuOpen = isOpen;
-  mobileMenu.classList.toggle('hidden', !isOpen);
-  document.body.classList.toggle('overflow-hidden', isOpen);
-  mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-  mobileMenuBtn.innerHTML = isOpen
-    ? '<i data-lucide="x" class="w-5 h-5"></i>'
-    : '<i data-lucide="menu" class="w-5 h-5"></i>';
-  document.getElementById('navbar').style.top = '16px';
-  refreshIcons();
-};
-
-mobileMenuBtn.addEventListener('click', () => {
-  setMobileMenuState(!isMobileMenuOpen);
-});
-
-document.querySelectorAll('#mobile-menu a').forEach((link) => {
-  link.addEventListener('click', () => {
-    setMobileMenuState(false);
-  });
-});
 
 const faqIndexShell = document.getElementById('faq-index-shell');
 const faqIndexToggle = document.getElementById('faq-index-toggle');
@@ -127,32 +78,7 @@ if (window.innerWidth < 1024) {
   syncFaqIndexState();
 }
 
-const revealElements = document.querySelectorAll('.reveal');
 
-if ('IntersectionObserver' in window) {
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-  revealElements.forEach((el) => revealObserver.observe(el));
-} else {
-  revealElements.forEach((el) => el.classList.add('revealed'));
-}
-
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-});
 
 function sortSectionQuestions(section) {
   return [...(section.questions || [])].sort((a, b) => {
@@ -259,7 +185,25 @@ function renderFAQ(data) {
     sectionsRoot.appendChild(sectionNode);
   });
 
+  injectFaqJsonLd(orderedSections);
   refreshIcons();
+}
+
+// SEO: FAQPage structured data built from the same JSON that renders the page
+function injectFaqJsonLd(sections) {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: sections.flatMap((section) => (section.questions || []).map((q) => ({
+      '@type': 'Question',
+      name: q.question,
+      acceptedAnswer: { '@type': 'Answer', text: q.answer }
+    })))
+  };
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(ld);
+  document.head.appendChild(script);
 }
 
 fetch('FAQ.json')
@@ -317,8 +261,4 @@ faqSearchInput.addEventListener('input', () => {
   faqSearchEmpty.classList.toggle('hidden', anyVisible || !query);
 });
 
-const faqProgress = document.getElementById('scroll-progress');
-window.addEventListener('scroll', () => {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  faqProgress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
-}, { passive: true });
+

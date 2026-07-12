@@ -1,6 +1,3 @@
-// Initialize Lucide icons
-lucide.createIcons();
-
 // ── Early access form submission ──
 const scriptURL = 'https://script.google.com/macros/s/AKfycbwybXoEFvzodbpr_FocEZKBeQ62YUG_KJze-jiZyaE_r4F_zTWwu1oO1lLHQmBYvIM/exec';
 const form = document.querySelector('#early-access-form');
@@ -39,7 +36,7 @@ form.addEventListener('submit', e => {
   const isOtherSelected = selectedUserType.toLowerCase() === 'other';
 
   if (isOtherSelected && !customUserType) {
-    alert('Please specify your role before submitting.');
+    showToast('Please specify your role before submitting.');
     otherUserTypeInput.focus();
     return;
   }
@@ -51,7 +48,6 @@ form.addEventListener('submit', e => {
     email: document.querySelector('#email-address').value.trim(),
     userType: isOtherSelected ? customUserType : selectedUserType
   };
-  console.log('Payload being sent to Google:', payload);
   fetch(scriptURL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -80,7 +76,7 @@ form.addEventListener('submit', e => {
   })
   .catch(error => {
     console.error('Error!', error.message);
-    alert('Submission failed. Please try again or use the Mail Now link.');
+    showToast('Submission failed. Please try again or email info@syncqtech.com.');
     setSubmittingState(false);
   });
 });
@@ -94,67 +90,8 @@ addAnotherEntryBtn.addEventListener('click', () => {
   toggleOtherUserType();
 });
 
-// ── Navbar Scroll Effect ──
-const nav = document.getElementById('navbar');
-const navShell = document.getElementById('navbar-shell');
-let lastScroll = 0;
-let isMobileMenuOpen = false;
-window.addEventListener('scroll', () => {
-  const currentScroll = window.scrollY;
 
-  if (isMobileMenuOpen) {
-    nav.style.top = '16px';
-    return;
-  }
 
-  if (currentScroll > 24) {
-    navShell.classList.add('scrolled');
-  } else {
-    navShell.classList.remove('scrolled');
-  }
-
-  if (currentScroll > 100) {
-    nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
-  } else {
-    nav.style.top = '16px';
-  }
-
-  lastScroll = currentScroll;
-}, { passive: true });
-
-// ── Mobile Menu ──
-const mobileMenu = document.getElementById('mobile-menu');
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const setMobileMenuState = (isOpen) => {
-  isMobileMenuOpen = isOpen;
-  mobileMenu.classList.toggle('hidden', !isOpen);
-  document.body.classList.toggle('overflow-hidden', isOpen);
-  mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-  mobileMenuBtn.innerHTML = isOpen
-    ? '<i data-lucide="x" class="w-5 h-5"></i>'
-    : '<i data-lucide="menu" class="w-5 h-5"></i>';
-  nav.style.top = '16px';
-  lucide.createIcons();
-};
-
-mobileMenuBtn.addEventListener('click', () => {
-  setMobileMenuState(!isMobileMenuOpen);
-});
-document.querySelectorAll('#mobile-menu a').forEach(link => {
-  link.addEventListener('click', () => {
-    setMobileMenuState(false);
-  });
-});
-
-// ── Scroll Reveal ──
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('revealed');
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // ── View Toggle ──
 const organizerView = document.getElementById('view-organizer');
@@ -224,8 +161,8 @@ function initAttendeeViewPanels() {
   const liveNode = attendeeView.querySelector('#attendee-network-live');
   if (liveNode) {
     const statuses = [
-      'Ayush Sanger is now 10m away near Hall A.',
-      'Abhinav Reddy just checked in at Main Stage.',
+      'Aarav Kapoor is now 10m away near Hall A.',
+      'Meera Iyer just checked in at Main Stage.',
       '2 more attendees are nearby in Food Zone.'
     ];
     let statusIndex = 0;
@@ -240,34 +177,10 @@ function initAttendeeViewPanels() {
 
 initAttendeeViewPanels();
 
-// ── Toast Notifications ──
-function showToast(message) {
-  const container = document.getElementById('toast-container');
-  const toast = document.createElement('div');
-  toast.className = 'toast-enter flex items-center gap-3 bg-bark text-ivory text-sm px-5 py-3.5 rounded-xl shadow-xl shadow-bark/20 transition-transform duration-300 max-w-sm';
-  toast.innerHTML = '<svg class="w-4 h-4 text-tea shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>' + message + '</span>';
-  container.appendChild(toast);
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => { toast.classList.remove('toast-enter'); toast.classList.add('toast-show'); });
-  });
-  setTimeout(() => {
-    toast.classList.remove('toast-show');
-    toast.classList.add('toast-enter');
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
 
 // ── Interactive layer ──
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Scroll progress bar
-const progressBar = document.getElementById('scroll-progress');
-if (progressBar) {
-  window.addEventListener('scroll', () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progressBar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
-  }, { passive: true });
-}
 
 // Hero phone 3D tilt
 const heroZone = document.getElementById('hero-phone-zone');
@@ -416,10 +329,10 @@ if (annFeed) {
       <div class="flex items-center gap-2 mb-4">
         <span class="w-2 h-2 ${toneDot[a.tone]} rounded-full animate-pulse"></span>
         <span class="text-[10px] ${toneText[a.tone]} font-medium uppercase tracking-wider">${a.tag}</span>
-        <span class="ml-auto text-[10px] text-white/30 ann-ts">just now</span>
+        <span class="ml-auto text-[10px] text-white/50 ann-ts">just now</span>
       </div>
       <p class="text-white/90 text-sm font-medium leading-relaxed">${a.msg}</p>
-      <p class="text-white/40 text-xs mt-2">${a.sub}</p>`;
+      <p class="text-white/55 text-xs mt-2">${a.sub}</p>`;
     annFeed.prepend(card);
     requestAnimationFrame(() => requestAnimationFrame(() => card.classList.remove('ann-enter')));
     if (annFeed.children.length > 6) {
@@ -462,13 +375,96 @@ if (!prefersReducedMotion) {
   });
 }
 
-// ── Smooth scroll for anchor links ──
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// ── Attendee view auto-switch (hover/visibility) ──
+(function(){
+  // Track whether the user has manually interacted to disable auto behaviors
+  // Flags are section-scoped so a manual interaction only disables that section's auto behavior
+  let userInteracted = { whiteLabel: false, viewToggle: false };
+  // suppressUserMark is used to avoid marking an auto-triggered click as a manual interaction
+  let suppressUserMark = { viewToggle: false };
+
+  // View toggle and attendee hover/long-press
+  const btnAtt = document.getElementById('toggle-attendee');
+  const btnOrg = document.getElementById('toggle-organizer');
+  const viewOrg = document.getElementById('view-organizer');
+  const viewAtt = document.getElementById('view-attendee');
+  let hoverTimer = null;
+
+  function triggerAttendeeAutoSwitch(){
+    if(btnAtt){
+      suppressUserMark.viewToggle = true;
+      btnAtt.click();
+      // clear suppress shortly after the click handler runs
+      setTimeout(()=>{ suppressUserMark.viewToggle = false; }, 50);
+    } else {
+      switchView('attendee');
     }
-  });
-});
+  }
+
+  function switchView(to){
+    // only mark as user interaction when this was a real user action
+    if(!suppressUserMark.viewToggle){ userInteracted.viewToggle = true; }
+    if(to === 'attendee'){
+      if(viewOrg) viewOrg.classList.add('hidden');
+      if(viewAtt) viewAtt.classList.remove('hidden');
+      if(btnOrg) { btnOrg.classList.remove('active'); btnOrg.classList.add('inactive'); }
+      if(btnAtt) { btnAtt.classList.add('active'); btnAtt.classList.remove('inactive'); }
+    } else {
+      if(viewAtt) viewAtt.classList.add('hidden');
+      if(viewOrg) viewOrg.classList.remove('hidden');
+      if(btnAtt) { btnAtt.classList.remove('active'); btnAtt.classList.add('inactive'); }
+      if(btnOrg) { btnOrg.classList.add('active'); btnOrg.classList.remove('inactive'); }
+    }
+  }
+  
+  function startHoverTimer(e){
+    if(userInteracted.viewToggle) return;
+    if(hoverTimer) clearTimeout(hoverTimer);
+    const isTouch = (e && (e.pointerType === 'touch' || e.type.startsWith('touch')));
+    hoverTimer = setTimeout(triggerAttendeeAutoSwitch, 2000);
+    if(isTouch){
+      const cancel = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } window.removeEventListener('pointerup', cancel); window.removeEventListener('pointercancel', cancel); window.removeEventListener('pointermove', cancel); };
+      window.addEventListener('pointerup', cancel);
+      window.addEventListener('pointercancel', cancel);
+      window.addEventListener('pointermove', cancel);
+    }
+  }
+  function cancelHoverTimer(){ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } }
+
+  if(btnAtt){
+    btnAtt.addEventListener('pointerenter', startHoverTimer);
+    btnAtt.addEventListener('pointerleave', cancelHoverTimer);
+    btnAtt.addEventListener('pointerdown', startHoverTimer);
+    btnAtt.addEventListener('pointerup', cancelHoverTimer);
+    btnAtt.addEventListener('pointercancel', cancelHoverTimer);
+    // any interaction inside features section disables auto and hands control to user
+    const featuresSection = document.getElementById('features');
+    if(featuresSection){
+      // visibility-based auto-switch to attendee after 2.5s when section appears
+      let featuresTimer = null;
+      const featuresObserver = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting && !userInteracted.viewToggle){
+            if(featuresTimer) clearTimeout(featuresTimer);
+            featuresTimer = setTimeout(()=>{
+              triggerAttendeeAutoSwitch();
+              featuresTimer = null;
+            }, 2500);
+          } else {
+            if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; }
+          }
+        });
+      }, { threshold: 0.5, rootMargin: '0px 0px -20% 0px' });
+      featuresObserver.observe(featuresSection);
+
+      // cancel auto-switch on explicit interactions (no mousemove to avoid accidental cancels)
+      ['pointerdown','touchstart','click'].forEach(ev=>{
+        featuresSection.addEventListener(ev, ()=>{ userInteracted.viewToggle = true; if(featuresTimer){ clearTimeout(featuresTimer); featuresTimer = null; } });
+      });
+    }
+  }
+
+  // ensure icons refresh
+  document.addEventListener('DOMContentLoaded', ()=>{ if(window.lucide) window.lucide.replace(); });
+
+})();

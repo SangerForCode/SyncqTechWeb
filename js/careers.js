@@ -22,75 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setupSkillsTags();
   setupResumeUpload();
-  setupNavbar();
   setupFormValidation();
 });
 
-// ── Navbar & Mobile Menu ──
-const setupNavbar = () => {
-  const nav = document.getElementById('navbar');
-  const navShell = document.getElementById('navbar-shell');
-  let lastScroll = 0;
-  let isMobileMenuOpen = false;
-
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    if (isMobileMenuOpen) {
-      nav.style.top = '16px';
-      return;
-    }
-    if (currentScroll > 24) {
-      navShell.classList.add('scrolled');
-    } else {
-      navShell.classList.remove('scrolled');
-    }
-    if (currentScroll > 100) {
-      nav.style.top = currentScroll > lastScroll ? '-110px' : '16px';
-    } else {
-      nav.style.top = '16px';
-    }
-    lastScroll = currentScroll;
-  }, { passive: true });
-
-  const mobileMenu = document.getElementById('mobile-menu');
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-
-  const setMobileMenuState = (isOpen) => {
-    isMobileMenuOpen = isOpen;
-    mobileMenu.classList.toggle('hidden', !isOpen);
-    document.body.classList.toggle('overflow-hidden', isOpen);
-    mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-    mobileMenuBtn.innerHTML = isOpen
-      ? '<i data-lucide="x" class="w-5 h-5"></i>'
-      : '<i data-lucide="menu" class="w-5 h-5"></i>';
-    nav.style.top = '16px';
-    if (window.lucide) window.lucide.createIcons();
-  };
-
-  mobileMenuBtn.addEventListener('click', () => {
-    setMobileMenuState(!isMobileMenuOpen);
-  });
-  document.querySelectorAll('#mobile-menu a').forEach(link => {
-    link.addEventListener('click', () => {
-      setMobileMenuState(false);
-    });
-  });
-
-  // ── Scroll Reveal ──
-  if ('IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-  } else {
-    document.querySelectorAll('.reveal').forEach(el => el.classList.add('revealed'));
-  }
-};
 
 // ── Prefill Role Dropdown and Scroll ──
 function prefillRole(roleName) {
@@ -624,8 +558,6 @@ const submitApplication = async () => {
     resumeUrl: applicantPayload.resumeFileUrl
   };
 
-  console.log("Submitting Careers Application payload:", applicantPayload);
-
   if (API_CONFIG.MOCK_MODE) {
     // Mock network delay (1.5 seconds)
     setTimeout(() => {
@@ -706,12 +638,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Scroll progress bar
-const careersProgress = document.getElementById('scroll-progress');
-window.addEventListener('scroll', () => {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  careersProgress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
-}, { passive: true });
 
 // Role card 3D tilt
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

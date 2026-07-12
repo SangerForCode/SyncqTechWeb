@@ -148,8 +148,8 @@ chatSuggestions.forEach((button) => {
 const liveNode = document.getElementById('attendee-network-live');
 if (liveNode) {
   const statuses = [
-    'Ayush Sanger is now 10m away near Hall A.',
-    'Abhinav Reddy just checked in at Main Stage.',
+    'Aarav Kapoor is now 10m away near Hall A.',
+    'Meera Iyer just checked in at Main Stage.',
     '2 more attendees are nearby in Food Zone.'
   ];
   let statusIndex = 0;

@@ -5,11 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SyncQ Events — Your Entire Event. One Link.</title>
   <meta name="description" content="SyncQ turns your event into a branded web app — interactive maps, live schedules, and instant announcements. Attendees scan a QR code and they're in. Nothing to install.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SyncQ Events">
+  <meta property="og:title" content="SyncQ Events — Your Entire Event. One Link.">
+  <meta property="og:description" content="SyncQ turns your event into a branded web app — interactive maps, live schedules, and instant announcements. Nothing to install.">
+  <meta property="og:image" content="https://syncqtech.com/images/logo.png">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" href="images/favicon.png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.469.0"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body class="bg-ivory text-bark paper-grain overflow-x-hidden">
@@ -61,8 +70,8 @@
 
   <!-- HERO -->
   <section class="min-h-screen flex items-center pt-20 relative overflow-hidden">
-    <div class="absolute top-32 left-10 w-72 h-72 bg-tea/15 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-20 right-20 w-96 h-96 bg-gold/10 rounded-full blur-[120px]"></div>
+    <div class="animate-drift absolute top-32 left-10 w-72 h-72 bg-tea/15 rounded-full blur-[100px]"></div>
+    <div class="animate-drift-slow absolute bottom-20 right-20 w-96 h-96 bg-gold/10 rounded-full blur-[120px]"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-terra/5 rounded-full blur-[150px]"></div>
     <div class="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-16">
       <div class="space-y-8">
@@ -73,15 +82,15 @@
           </span>
         </div>
         <h1 class="reveal reveal-delay-1 font-serif text-5xl md:text-6xl lg:text-7xl font-light text-bark leading-[1.08] tracking-tight">
-          Your Entire Event.<br><span class="font-semibold text-terra">One Link.</span>
+          Your Entire Event.<br><span class="hero-underline font-semibold text-terra">One Link.</span>
         </h1>
         <p class="reveal reveal-delay-2 text-lg md:text-xl text-bark-lighter leading-relaxed max-w-lg font-light">
           SyncQ turns your event into a branded web app — interactive maps, live schedules, and instant announcements. Attendees scan a QR code and they're in. <span class="font-medium text-bark">Nothing to install.</span>
         </p>
         <div class="reveal reveal-delay-3 flex flex-wrap items-center gap-4">
-          <a href="#early-access" data-magnetic class="bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
+          <a href="#early-access" data-magnetic class="group bg-bark text-ivory text-base font-medium px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-bark/20 flex items-center gap-2">
             Join the Waitlist
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
           </a>
           <a href="#features" class="text-sm font-medium text-bark-lighter hover:text-bark transition-colors flex items-center gap-2 px-4 py-4">
             <i data-lucide="play-circle" class="w-5 h-5 text-gold"></i>
@@ -223,7 +232,7 @@
         <div class="reveal relative bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5 hover:shadow-xl hover:shadow-terra/10 hover:-translate-y-1 transition-all duration-500">
           <div class="relative w-12 h-12 rounded-2xl bg-terra/12 border border-terra/20 flex items-center justify-center mb-6">
             <i data-lucide="settings-2" class="w-5 h-5 text-terra-dark"></i>
-            <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-terra text-ivory text-[11px] font-semibold flex items-center justify-center">1</span>
+            <span class="step-badge absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-terra text-ivory text-[11px] font-semibold flex items-center justify-center">1</span>
           </div>
           <h3 class="font-serif text-2xl font-semibold text-bark">Set It Up</h3>
           <p class="text-sm text-bark-lighter mt-3 leading-relaxed font-light">Add your schedule, venue map, and branding in minutes. No code, no design skills — our dashboard handles it all.</p>
@@ -232,7 +241,7 @@
         <div class="reveal reveal-delay-1 relative bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5 hover:shadow-xl hover:shadow-gold/10 hover:-translate-y-1 transition-all duration-500">
           <div class="relative w-12 h-12 rounded-2xl bg-gold/12 border border-gold/25 flex items-center justify-center mb-6">
             <i data-lucide="qr-code" class="w-5 h-5 text-gold-dark"></i>
-            <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-gold text-bark text-[11px] font-semibold flex items-center justify-center">2</span>
+            <span class="step-badge absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-gold text-bark text-[11px] font-semibold flex items-center justify-center">2</span>
           </div>
           <h3 class="font-serif text-2xl font-semibold text-bark">Share One Link</h3>
           <p class="text-sm text-bark-lighter mt-3 leading-relaxed font-light">Put a QR code on posters, badges, or screens. Your event page opens instantly in any browser — no app store, no sign-up.</p>
@@ -241,7 +250,7 @@
         <div class="reveal reveal-delay-2 relative bg-ivory rounded-3xl p-8 border border-bark/5 shadow-lg shadow-bark/5 hover:shadow-xl hover:shadow-tea/10 hover:-translate-y-1 transition-all duration-500">
           <div class="relative w-12 h-12 rounded-2xl bg-tea/15 border border-tea/25 flex items-center justify-center mb-6">
             <i data-lucide="radio" class="w-5 h-5 text-tea-dark"></i>
-            <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-tea-dark text-ivory text-[11px] font-semibold flex items-center justify-center">3</span>
+            <span class="step-badge absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-tea-dark text-ivory text-[11px] font-semibold flex items-center justify-center">3</span>
           </div>
           <h3 class="font-serif text-2xl font-semibold text-bark">Run It Live</h3>
           <p class="text-sm text-bark-lighter mt-3 leading-relaxed font-light">Push announcements, update the schedule on the fly, and watch check-ins roll in — every attendee sees changes in real time.</p>
@@ -425,14 +434,14 @@
                     <div class="space-y-2 pb-3">
                       <div class="flex items-center justify-between bg-white/80 rounded-lg px-2.5 py-2 border border-blue-100">
                         <div>
-                          <p class="text-[9px] font-medium text-bark">Ayush Sanger (BITS Goa)</p>
+                          <p class="text-[9px] font-medium text-bark">Aarav Kapoor (Zenith College)</p>
                           <p class="text-[8px] text-bark-lighter">Near Workshop Hall A</p>
                         </div>
                         <span class="text-[8px] text-blue-700">12m</span>
                       </div>
                       <div class="flex items-center justify-between bg-white/80 rounded-lg px-2.5 py-2 border border-blue-100">
                         <div>
-                          <p class="text-[9px] font-medium text-bark">Abhinav Reddy (BITS Goa)</p>
+                          <p class="text-[9px] font-medium text-bark">Meera Iyer (Zenith College)</p>
                           <p class="text-[8px] text-bark-lighter">Near Main Stage</p>
                         </div>
                         <span class="text-[8px] text-blue-700">18m</span>
@@ -556,8 +565,6 @@
     </div>
   </section>
 
-  <script src="js/index-view-toggle.js"></script>
-
   <div class="gold-divider max-w-4xl mx-auto"></div>
 
   <!-- INTERACTIVE MAPS -->
@@ -575,7 +582,7 @@
               <div class="w-2 h-2 bg-tea rounded-full animate-pulse"></div>
               <span class="text-sm text-white/70 font-medium">Live Venue Map</span>
             </div>
-            <div class="flex items-center gap-4 text-[11px] text-white/40">
+            <div class="flex items-center gap-4 text-[11px] text-white/55">
               <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-gold"></span>Main Stage</span>
               <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-terra"></span>Food Zone</span>
               <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-tea"></span>Restrooms</span>
@@ -853,33 +860,33 @@
         <h2 class="font-serif text-4xl md:text-5xl font-light text-white mt-4 tracking-tight">Live <span class="font-semibold text-gold">Announcements</span></h2>
         <p class="text-white/50 mt-4 max-w-xl mx-auto font-light">Push notifications that reach every attendee instantly. No app, no friction — just a browser tab. Watch below: this feed is running.</p>
       </div>
-      <div id="announcement-feed" class="reveal grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div id="announcement-feed" aria-live="off" class="reveal grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         <div class="ann-card glass-card rounded-2xl p-6 hover:-translate-y-1" data-ts-static="2m ago">
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2 h-2 bg-terra rounded-full animate-pulse"></span>
             <span class="text-[10px] text-terra-light font-medium uppercase tracking-wider">Food Update</span>
-            <span class="ml-auto text-[10px] text-white/30 ann-ts">2m ago</span>
+            <span class="ml-auto text-[10px] text-white/50 ann-ts">2m ago</span>
           </div>
           <p class="text-white/90 text-sm font-medium leading-relaxed">Pizza has arrived at the South Lawn!</p>
-          <p class="text-white/40 text-xs mt-2">Limited to first 300 people. Head over now.</p>
+          <p class="text-white/55 text-xs mt-2">Limited to first 300 people. Head over now.</p>
         </div>
         <div class="ann-card glass-card rounded-2xl p-6 hover:-translate-y-1" data-ts-static="5m ago">
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2 h-2 bg-gold rounded-full animate-pulse"></span>
             <span class="text-[10px] text-gold-light font-medium uppercase tracking-wider">Schedule Change</span>
-            <span class="ml-auto text-[10px] text-white/30 ann-ts">5m ago</span>
+            <span class="ml-auto text-[10px] text-white/50 ann-ts">5m ago</span>
           </div>
           <p class="text-white/90 text-sm font-medium leading-relaxed">Guest keynote moved to 2:15 PM</p>
-          <p class="text-white/40 text-xs mt-2">Main Stage. Please update your schedules.</p>
+          <p class="text-white/55 text-xs mt-2">Main Stage. Please update your schedules.</p>
         </div>
         <div class="ann-card glass-card rounded-2xl p-6 hover:-translate-y-1" data-ts-static="8m ago">
           <div class="flex items-center gap-2 mb-4">
             <span class="w-2 h-2 bg-tea rounded-full animate-pulse"></span>
             <span class="text-[10px] text-tea-light font-medium uppercase tracking-wider">Venue Info</span>
-            <span class="ml-auto text-[10px] text-white/30 ann-ts">8m ago</span>
+            <span class="ml-auto text-[10px] text-white/50 ann-ts">8m ago</span>
           </div>
           <p class="text-white/90 text-sm font-medium leading-relaxed">Restrooms near East Wing now open</p>
-          <p class="text-white/40 text-xs mt-2">Additional facilities available near Workshop Zone.</p>
+          <p class="text-white/55 text-xs mt-2">Additional facilities available near Workshop Zone.</p>
         </div>
       </div>
     </div>
@@ -946,7 +953,7 @@
   <div class="gold-divider max-w-4xl mx-auto"></div>
 
   <!-- TESTIMONIALS -->
-  <section class="py-24 lg:py-32 bg-ivory-dark/50">
+  <section id="testimonials" class="py-24 lg:py-32 bg-ivory-dark/50">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-16 reveal">
         <span class="text-xs font-medium tracking-widest uppercase text-gold-dark">Community</span>
@@ -997,14 +1004,14 @@
   <section class="py-24 lg:py-32 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-bark via-[#3D2417] to-terra-dark"></div>
     <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50"></div>
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-gold/15 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-terra/25 rounded-full blur-[100px]"></div>
+    <div class="animate-drift absolute top-0 left-1/4 w-96 h-96 bg-gold/15 rounded-full blur-[120px]"></div>
+    <div class="animate-drift-slow absolute bottom-0 right-1/4 w-72 h-72 bg-terra/25 rounded-full blur-[100px]"></div>
     <div class="max-w-3xl mx-auto px-6 text-center relative">
       <div class="reveal">
         <h2 class="font-serif text-4xl md:text-6xl font-light text-white tracking-tight leading-tight">Launch Your First Digital Event<br>in <span class="font-semibold">5 Minutes.</span></h2>
         <p class="text-white/80 mt-6 text-lg font-light max-w-xl mx-auto">No credit card. No coding. Just your event details and a vision — we handle the rest.</p>
         <div class="mt-10 flex flex-wrap justify-center gap-4">
-          <a href="#early-access" data-magnetic class="bg-gold text-bark text-base font-semibold px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-black/30 hover:bg-gold-light flex items-center gap-2">Start for Free <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+          <a href="#early-access" data-magnetic class="group bg-gold text-bark text-base font-semibold px-8 py-4 rounded-full btn-pop hover:shadow-xl hover:shadow-black/30 hover:bg-gold-light flex items-center gap-2">Start for Free <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i></a>
           <a href="#features" class="bg-white/15 text-white text-sm font-medium px-8 py-4 rounded-full btn-pop border border-white/20 hover:bg-white/25 flex items-center gap-2 backdrop-blur-sm"><i data-lucide="play-circle" class="w-5 h-5"></i> Watch Demo</a>
         </div>
       </div>
@@ -1072,7 +1079,7 @@
             </div>
             <span class="font-serif text-xl font-semibold text-ivory">SyncQ<span class="text-gold">Events</span></span>
           </a>
-          <p class="text-sm text-white/40 leading-relaxed">Part of the SyncQ OS ecosystem. The operating system for student organizations.</p>
+          <p class="text-sm text-white/55 leading-relaxed">Part of the SyncQ OS ecosystem. The operating system for student organizations.</p>
           <div class="mt-4 flex items-center gap-3">
             <a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="inline-flex w-9 h-9 rounded-full bg-white/5 items-center justify-center hover:bg-white/10 transition-colors" aria-label="LinkedIn">
               <svg class="w-4 h-4 text-white/50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -1090,32 +1097,32 @@
         <div>
           <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Product</p>
           <ul class="space-y-2.5">
-            <li><a href="#features" class="text-sm text-white/40 hover:text-gold transition-colors">Features</a></li>
-            <li><a href="#maps" class="text-sm text-white/40 hover:text-gold transition-colors">Interactive Maps</a></li>
-            <li><a href="#schedule" class="text-sm text-white/40 hover:text-gold transition-colors">Dynamic Schedule</a></li>
-            <li><a href="faq.html" class="text-sm text-white/40 hover:text-gold transition-colors">FAQ</a></li>
+            <li><a href="#features" class="text-sm text-white/55 hover:text-gold transition-colors">Features</a></li>
+            <li><a href="#maps" class="text-sm text-white/55 hover:text-gold transition-colors">Interactive Maps</a></li>
+            <li><a href="#schedule" class="text-sm text-white/55 hover:text-gold transition-colors">Dynamic Schedule</a></li>
+            <li><a href="faq.html" class="text-sm text-white/55 hover:text-gold transition-colors">FAQ</a></li>
           </ul>
         </div>
         <div>
           <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Company</p>
           <ul class="space-y-2.5">
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">SyncQ OS</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">About Us</a></li>
-            <li><a href="careers.html" class="text-sm text-white/40 hover:text-gold transition-colors">Careers</a></li>
-            <li><a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="text-sm text-white/40 hover:text-gold transition-colors">Contact us on LinkedIn</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/55 hover:text-gold transition-colors">SyncQ OS</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/55 hover:text-gold transition-colors">About Us</a></li>
+            <li><a href="careers.html" class="text-sm text-white/55 hover:text-gold transition-colors">Careers</a></li>
+            <li><a href="https://www.linkedin.com/company/syncqtechnologies" target="_blank" rel="noopener noreferrer" class="text-sm text-white/55 hover:text-gold transition-colors">Contact us on LinkedIn</a></li>
           </ul>
         </div>
         <div>
           <p class="text-xs font-medium text-white/60 uppercase tracking-wider mb-4">Legal</p>
           <ul class="space-y-2.5">
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Privacy Policy</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Terms of Service</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/40 hover:text-gold transition-colors">Cookie Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/55 hover:text-gold transition-colors">Privacy Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/55 hover:text-gold transition-colors">Terms of Service</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showToast('Coming soon! We are working on this.'); return false;" class="text-sm text-white/55 hover:text-gold transition-colors">Cookie Policy</a></li>
           </ul>
         </div>
       </div>
       <div class="border-t border-white/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-xs text-white/30">2026 SyncQ Technologies. All rights reserved.</p>
+        <p class="text-xs text-white/50">2026 SyncQ Technologies. All rights reserved.</p>
         <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
           <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors" aria-label="Top of page">
             <i data-lucide="arrow-up" class="w-4 h-4"></i>
@@ -1139,6 +1146,7 @@
   </footer>
 
   <!-- ALL JAVASCRIPT -->
+  <script src="js/shared.js"></script>
   <script src="js/index.js"></script>
 </body>
 </html>
