@@ -175,3 +175,8 @@ if (networkFloatClose && networkFloat) {
 loadFaqEntries();
 setActiveTab('map');
 refreshIcons();
+
+// Embed mode: strip standalone page chrome when loaded inside the landing page
+if (new URLSearchParams(window.location.search).has('embed')) {
+  document.body.classList.add('embed');
+}

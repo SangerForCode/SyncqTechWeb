@@ -58,3 +58,9 @@ details summary::-webkit-details-marker { display: none; }
 /* Dock-style hover pop on bottom tabs */
 .attendee-tab-btn:hover { transform: translateY(-3px) scale(1.08); }
 @media (prefers-reduced-motion: reduce) { .attendee-tab-btn:hover { transform: none; } }
+
+/* Embed mode (?embed=1): hide standalone chrome when iframed into index */
+body.embed .stage-back,
+body.embed .stage-caption,
+body.embed .stage-orb { display: none; }
+body.embed .phone-stage { padding: 8px; }

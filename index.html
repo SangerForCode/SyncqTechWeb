@@ -283,16 +283,15 @@
       </div>
       <div class="reveal flex justify-center mb-12">
         <div class="inline-flex bg-ivory-dark rounded-full p-1.5 border border-bark/8">
-          <button id="toggle-organizer" onclick="switchView('organizer')" class="view-toggle-btn active text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 bg-bark text-ivory flex items-center gap-2">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Organizer View
+          <button id="toggle-attendee" onclick="switchView('attendee')" class="view-toggle-btn active text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 bg-bark text-ivory flex items-center gap-2">
+            <i data-lucide="smartphone" class="w-4 h-4"></i> Attendee View
           </button>
-          <button id="toggle-attendee" onclick="switchView('attendee')" class="view-toggle-btn inactive text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 text-bark-lighter hover:text-bark flex items-center gap-2">
-            <i data-lucide="smartphone" class="w-4 h-4"></i>
-            <span class="relative inline-block">Attendee View<span id="attendee-new-badge" class="absolute top-1/2 -translate-y-1/2 -right-4 w-2 h-2 bg-terra rounded-full animate-dot-blink"></span></span>
+          <button id="toggle-organizer" onclick="switchView('organizer')" class="view-toggle-btn inactive text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 text-bark-lighter hover:text-bark flex items-center gap-2">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Organizer View
           </button>
         </div>
       </div>
-      <div id="view-organizer" class="reveal transition-all duration-500">
+      <div id="view-organizer" class="hidden reveal transition-all duration-500">
         <div class="bg-ivory-dark rounded-3xl border border-bark/8 p-6 md:p-8 shadow-lg shadow-bark/5">
           <div class="flex items-center justify-between mb-6 gap-4">
             <div class="flex items-center gap-3 flex-1">
@@ -372,123 +371,8 @@
           </div>
         </div>
       </div>
-      <div id="view-attendee" class="hidden transition-all duration-500 flex justify-center">
-        <div class="w-[300px] h-[600px] bg-bark rounded-[3rem] p-3 phone-shadow">
-          <div class="w-full h-full bg-ivory rounded-[2.4rem] overflow-hidden relative">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-bark rounded-b-2xl z-10"></div>
-            <div class="h-full overflow-y-auto pb-16">
-              <div class="flex justify-between items-center px-6 py-1.5 text-[10px] text-bark-lighter pt-3">
-                <span>11:58</span>
-                <div class="flex gap-1 items-center"><i data-lucide="signal" class="w-3 h-3"></i><i data-lucide="wifi" class="w-3 h-3"></i><i data-lucide="battery-full" class="w-3.5 h-3.5"></i></div>
-              </div>
-              <div class="px-5 pt-2 pb-3 flex items-center justify-between">
-                <div>
-                  <p class="text-[10px] text-bark-lighter">Your event</p>
-                  <p class="font-serif text-lg font-semibold text-bark">Technolympics '26</p>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-gold/15 flex items-center justify-center"><i data-lucide="qr-code" class="w-4 h-4 text-gold-dark"></i></div>
-              </div>
-              <div class="px-5 pb-3">
-                <a href="attendee-view.html" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-bark/10 bg-white px-3 py-2 text-[9px] font-medium text-bark shadow-sm transition-colors hover:bg-bark hover:text-ivory">
-                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                  In-depth Experience
-                </a>
-              </div>
-              <div class="px-5 space-y-2">
-                <div data-attendee-card data-panel="map" class="bg-terra/8 rounded-xl border border-terra/15 cursor-pointer transition-all duration-300">
-                  <div class="flex items-center gap-3 p-3">
-                    <i data-lucide="map" class="w-4 h-4 text-terra shrink-0"></i>
-                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Venue Map</p><p class="text-[9px] text-bark-lighter">Tap to explore zones</p></div>
-                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-terra ml-auto"></i>
-                  </div>
-                  <div data-attendee-panel="map" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
-                    <div class="rounded-lg overflow-hidden" style="height:96px; background:#0F1629;">
-                      <svg viewBox="0 0 260 140" class="w-full h-full">
-                        <rect width="260" height="140" fill="#0F1629"/>
-                        <rect x="20" y="15" width="100" height="50" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
-                        <text x="70" y="45" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="Inter">MAIN STAGE</text>
-                        <rect x="140" y="15" width="100" height="50" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
-                        <text x="190" y="45" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">FOOD ZONE</text>
-                        <rect x="20" y="80" width="100" height="45" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
-                        <text x="70" y="107" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">WORKSHOPS</text>
-                        <rect x="140" y="80" width="100" height="45" rx="6" fill="#1E293B" stroke="#334155" stroke-width="0.8"/>
-                        <text x="190" y="107" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="Inter">RESTROOMS</text>
-                        <circle cx="70" cy="68" r="5" fill="#C9A84C"/>
-                        <circle cx="190" cy="68" r="5" fill="#C67B5C"/>
-                      </svg>
-                    </div>
-                    <p class="text-[9px] text-bark-lighter mt-2">Live map preview with zone highlights.</p>
-                  </div>
-                </div>
-                <div data-attendee-card data-panel="schedule" class="bg-gold/8 rounded-xl border border-gold/15 cursor-pointer transition-all duration-300">
-                  <div class="flex items-center gap-3 p-3">
-                    <i data-lucide="clock" class="w-4 h-4 text-gold-dark shrink-0"></i>
-                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Schedule</p><p class="text-[9px] text-bark-lighter">8 sessions today</p></div>
-                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-dark ml-auto"></i>
-                  </div>
-                  <div data-attendee-panel="schedule" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
-                    <div class="space-y-1.5 pb-3">
-                      <div class="flex items-center justify-between text-[9px]"><span class="text-bark">11:30 Food Break</span><span class="text-bark-lighter">South Lawn</span></div>
-                      <div class="flex items-center justify-between text-[9px]"><span class="text-bark">2:00 Guest Keynote</span><span class="text-bark-lighter">Main Stage</span></div>
-                      <div class="flex items-center justify-between text-[9px]"><span class="text-bark">3:30 Panel Discussion</span><span class="text-bark-lighter">Hall A</span></div>
-                    </div>
-                  </div>
-                </div>
-                <div data-attendee-card data-panel="network" class="bg-blue-50 rounded-xl border border-blue-200 cursor-pointer transition-all duration-300">
-                  <div class="flex items-center gap-3 p-3">
-                    <i data-lucide="users" class="w-4 h-4 text-blue-700 shrink-0"></i>
-                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">Network</p><p class="text-[9px] text-bark-lighter">People near your zone</p></div>
-                    <span class="text-[8px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">Live</span>
-                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-blue-700 ml-auto"></i>
-                  </div>
-                  <div data-attendee-panel="network" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
-                    <div class="space-y-2 pb-3">
-                      <div class="flex items-center justify-between bg-white/80 rounded-lg px-2.5 py-2 border border-blue-100">
-                        <div>
-                          <p class="text-[9px] font-medium text-bark">Aarav Kapoor (Zenith College)</p>
-                          <p class="text-[8px] text-bark-lighter">Near Workshop Hall A</p>
-                        </div>
-                        <span class="text-[8px] text-blue-700">12m</span>
-                      </div>
-                      <div class="flex items-center justify-between bg-white/80 rounded-lg px-2.5 py-2 border border-blue-100">
-                        <div>
-                          <p class="text-[9px] font-medium text-bark">Meera Iyer (Zenith College)</p>
-                          <p class="text-[8px] text-bark-lighter">Near Main Stage</p>
-                        </div>
-                        <span class="text-[8px] text-blue-700">18m</span>
-                      </div>
-                      <p id="attendee-network-live" class="text-[8px] text-blue-700">Updating nearby attendees...</p>
-                    </div>
-                  </div>
-                </div>
-                <div data-attendee-card data-panel="ai" class="bg-tea/8 rounded-xl border border-tea/15 cursor-pointer transition-all duration-300">
-                  <div class="flex items-center gap-3 p-3">
-                    <i data-lucide="bot" class="w-4 h-4 text-tea-dark shrink-0"></i>
-                    <div class="min-w-0"><p class="text-[11px] font-medium text-bark">AI Event Assistant</p><p class="text-[9px] text-bark-lighter">Powered by Event Knowledge</p></div>
-                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-tea-dark ml-auto"></i>
-                  </div>
-                  <div data-attendee-panel="ai" class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 px-3 pb-0">
-                    <div class="space-y-2 pb-3">
-                      <div class="rounded-xl bg-bark px-3 py-2 text-[9px] text-ivory">When does the keynote start?</div>
-                      <div class="rounded-xl border border-tea/15 bg-white px-3 py-2 text-[9px] text-bark">The keynote begins at 2:15 PM on the Main Stage.</div>
-                      <div class="flex items-center gap-1.5 rounded-full bg-tea/10 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-wide text-tea-dark w-max">
-                        <span class="w-1.5 h-1.5 bg-tea rounded-full animate-dot-blink"></span>
-                        Powered by Event Knowledge
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 grid grid-cols-5 px-3 py-2.5 border-t border-bark/5 bg-ivory rounded-b-[2.4rem]">
-              <div class="flex flex-col items-center gap-0.5"><i data-lucide="images" class="w-4 h-4 text-bark-lighter"></i><span class="text-[8px] text-bark-lighter">Photos</span></div>
-              <div class="flex flex-col items-center gap-0.5"><i data-lucide="map" class="w-4 h-4 text-terra"></i><span class="text-[8px] text-terra font-medium">Map</span></div>
-              <div class="flex flex-col items-center gap-0.5"><i data-lucide="clock" class="w-4 h-4 text-bark-lighter"></i><span class="text-[8px] text-bark-lighter">Schedule</span></div>
-              <div class="flex flex-col items-center gap-0.5"><i data-lucide="bell" class="w-4 h-4 text-bark-lighter"></i><span class="text-[8px] text-bark-lighter">Alerts</span></div>
-              <div class="flex flex-col items-center gap-0.5"><i data-lucide="bot" class="w-4 h-4 text-bark-lighter"></i><span class="text-[8px] text-bark-lighter">AI</span></div>
-            </div>
-          </div>
-        </div>
+      <div id="view-attendee" class="transition-all duration-500 flex justify-center">
+        <iframe src="attendee-view.html?embed=1" title="Interactive attendee experience demo" loading="lazy" class="w-full max-w-md h-[680px] border-0"></iframe>
       </div>
     </div>
   </section>
