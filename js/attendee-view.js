@@ -180,3 +180,35 @@ refreshIcons();
 if (new URLSearchParams(window.location.search).has('embed')) {
   document.body.classList.add('embed');
 }
+
+// Event photos: fade each in once decoded, then warm the rest in the background
+// so hidden tabs (Photos, Schedule) are ready before the user opens them.
+function initPhotoLoading() {
+  const photos = Array.from(document.querySelectorAll('img.photo-fade'));
+  if (!photos.length) return;
+  document.documentElement.classList.add('photos-pending');
+
+  const reveal = (img) => {
+    const show = () => img.classList.add('is-loaded');
+    if (typeof img.decode === 'function') img.decode().then(show, show);
+    else show();
+  };
+
+  photos.forEach((img) => {
+    if (img.complete && img.naturalWidth) reveal(img);
+    else {
+      img.addEventListener('load', () => reveal(img), { once: true });
+      img.addEventListener('error', () => img.classList.add('is-loaded'), { once: true });
+    }
+  });
+
+  const preload = () => photos.forEach((img) => { img.loading = 'eager'; });
+  const schedule = () => {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(preload, { timeout: 2000 });
+    else setTimeout(preload, 300);
+  };
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule, { once: true });
+}
+
+initPhotoLoading();
